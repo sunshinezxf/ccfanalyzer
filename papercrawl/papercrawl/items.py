@@ -5,10 +5,33 @@
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/items.html
 
-import scrapy
+from scrapy.item import Item, Field
 
 
-class PapercrawlItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
+class PaperItem(Item):
+    author = Field()
+    editor = Field()
+    title = Field()
+    book_title = Field()
+    pages = Field()
+    publisher = Field()
+    year = Field()
+    url = Field()
+    doi = Field()
+    timestamp = Field()
+    bib_url = Field()
+    bib_source = Field()
     pass
+
+
+class MeetingItem(Item):
+    editor = Field()
+    title = Field()
+    publisher = Field()
+    year = Field()
+    url = Field()
+    doi = Field()
+    isbn = Field()
+    timestamp = Field()
+    bib_url = Field()
+    bib_source = Field()
