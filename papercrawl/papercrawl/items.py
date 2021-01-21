@@ -21,7 +21,8 @@ class PaperItem(Item):
     timestamp = Field()
     bib_url = Field()
     bib_source = Field()
-    pass
+    citation = Field()
+    abstract = Field()
 
 
 class MeetingItem(Item):
