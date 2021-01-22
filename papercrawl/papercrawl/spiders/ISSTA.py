@@ -13,6 +13,8 @@ class IsstaSpider(scrapy.Spider):
     def parse(self, response):
         view_hrefs = response.xpath('//*[@class="entry editor toc"]/nav/ul/li[1]/div[1]/a/@href').getall()
         for view_href in view_hrefs:
+            # 用return测试单个会议
+            # yield scrapy.Request(url=view_href, callback=self.view_parse)
             return scrapy.Request(url=view_href, callback=self.view_parse)
 
     def view_parse(self, response):
@@ -24,8 +26,10 @@ class IsstaSpider(scrapy.Spider):
         paper_view_href = response.xpath('//*[@class="entry inproceedings"]/nav/ul/li[1]/div[1]/a/@href').getall()
 
         for index in range(0, len(paper_view_href)):
+            # 用break测试单个文章
             yield scrapy.Request(url=paper_record_href[index], callback=self.paper_record_parse,
                                  cb_kwargs=dict(view_url=paper_view_href[index]))
+            # break
 
     def meeting_parse(self, response):
         detail_meeting_info = response.xpath('//*[@id="bibtex-section"]/pre/text()').get()
@@ -83,11 +87,15 @@ class IsstaSpider(scrapy.Spider):
 
     def paper_view_parse(self, response, paper_item):
         citation = response.xpath(
-            '//*[@id="pb-page-content"]/div/main/div[2]/article/div[1]/div[2]/div/div[5]/div'
-            '/div[1]/div/ul/li[1]/span/span[1]/text()').get()
+            '//*[@class="icon-quote"][1]/../span[1]/text()').get()
+        keywords = response.xpath('//*[@class="tags-widget__content"]/ul/li/a/@href').getall()
+        for i in range(0, len(keywords)):
+            match = re.match(r'.*/(.*)\?.*', keywords[i])
+            keywords[i] = match.group(1)
         raw_abstract = response.xpath('//*[@class="abstractSection abstractInFull"]/p/text()').getall()
         abstract = '\n'.join(str(i) for i in raw_abstract)
         paper_item['citation'] = citation
         paper_item['abstract'] = abstract
+        paper_item['keywords'] = keywords
 
         return paper_item

@@ -23,6 +23,7 @@ class PaperItem(Item):
     bib_source = Field()
     citation = Field()
     abstract = Field()
+    keywords = Field()
 
 
 class MeetingItem(Item):

@@ -16,19 +16,22 @@ class PapercrawlPipeline(object):
             self.connect = pymysql.connect(host='localhost', port=3306, user='root', passwd='RV39LMgnYKvqpZuNW6R4',
                                            db='ccfdb')
             self.cursor = self.connect.cursor()
-            print('succeed to connect')
+            print('------------------ succeed to connect database ------------------')
         except Exception as e:
-            print('fail to connect', e)
+            print('------------------ fail to connect database ------------------', e)
 
     def process_item(self, item, spider):
-        # if isinstance(item, PaperItem):
-        #     self.paper_insert(item)
-        # elif isinstance(item, MeetingItem):
-        #     self.meeting_insert(item)
-        pass
+        if isinstance(item, PaperItem):
+            self.paper_insert(item)
+        elif isinstance(item, MeetingItem):
+            self.meeting_insert(item)
 
     def paper_insert(self, paper):
+
         authors = str(paper['author']).split(' and ')
+        keywords = paper['keywords']
+        print('keywords = ', str(keywords))
+
         insert_paper = """
         insert into paper(title, abstract, citation, book_title, doi, pages, publisher, year, url,
          time, bib_url, bib_source) VALUES 
@@ -38,10 +41,19 @@ class PapercrawlPipeline(object):
         insert into author(author) VALUES 
         (%s)
         """
+        insert_keyword = """
+        insert into keyword(keyword) VALUES 
+        (%s)
+        """
         insert_author_relation = """
         insert into paper_author_relation(paper_id,author_id) VALUES 
         (%s,%s)
         """
+        insert_keyword_relation = """
+        insert into paper_keyword_relation(paper_id, keyword_id) VALUES 
+        (%s,%s)
+        """
+
         try:
             self.cursor.execute(insert_paper,
                                 (paper['title'], paper['abstract'], paper['citation'], paper['book_title'],
@@ -49,15 +61,21 @@ class PapercrawlPipeline(object):
                                  paper['url'], paper['timestamp'], paper['bib_url'], paper['bib_source']))
 
             paper_id = self.cursor.lastrowid
+
             for author in authors:
                 self.cursor.execute(insert_author, author)
                 author_id = self.cursor.lastrowid
                 self.cursor.execute(insert_author_relation, (paper_id, author_id))
 
+            for keyword in keywords:
+                self.cursor.execute(insert_keyword, keyword)
+                keyword_id = self.cursor.lastrowid
+                self.cursor.execute(insert_keyword_relation, (paper_id, keyword_id))
+
             self.connect.commit()
 
         except Exception as e:
-            print('!!!!!!!!!!paper insert failed')
+            print('------------------ paper insert failed ------------------')
             print(e)
 
     def meeting_insert(self, meeting):
@@ -89,7 +107,7 @@ class PapercrawlPipeline(object):
             self.connect.commit()
 
         except Exception as e:
-            print('!!!!!!!!!!meeting insert failed')
+            print('------------------ meeting insert failed ------------------')
             print(e)
 
     def close_spider(self, spider):
