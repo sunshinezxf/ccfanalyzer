@@ -1,0 +1,612 @@
+<template xmlns:el-col="http://www.w3.org/1999/html">
+  <el-container>
+    <el-header class="headerr" :style ="this.$store.state.background" height="230px">
+      <div style="margin-left: -19px;margin-right: -19px;text-align:center">
+        <el-row style="margin-bottom: 1%">
+          <el-col :span="4">
+            <div class="grid-content2 bg-purple2" style="color: white;text-align:center">
+
+              <el-row>
+                  <span class="avatar-dropdown">
+                    <i class="el-icon-s-home" ></i>
+                    <span class="u" style="font-size: 20px;color: grey;text-align: center">
+                    &nbsp;&nbsp;HomePage &nbsp;
+                 </span>
+                  </span>
+              </el-row>
+
+            </div>
+          </el-col>
+
+          <el-col :span="17">
+            <div class="grid-content2 bg-purple2" style="color: white;">
+
+              <el-row style="margin-bottom: -8%"></el-row>
+            </div>
+          </el-col>
+          <el-col :span="3"><div class="grid-content2 bg-purple2" style="color: white;">
+            <div v-show="user.login">
+              <el-dropdown @command="handleCommand">
+                 <span class="avatar-dropdown">
+                  <!--<el-avatar class="user-avatar" :src="avatar"></el-avatar>-->
+                  <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+
+
+                 <span class="u" style="font-size: 20px">
+                    &nbsp;&nbsp;{{ user.username }} &nbsp;
+                 </span>
+
+
+                   <i class="el-icon-arrow-down el-icon--right"></i>
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </div>
+
+            <div v-show="user.logout">
+
+                   <span class="avatar-dropdown">
+                        <!--<el-avatar class="user-avatar" :src="avatar"></el-avatar>-->
+                        <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+
+
+                       <span class="u" style="font-size: 20px">
+                          &nbsp;&nbsp; Login&nbsp;In&nbsp;&nbsp;
+                       </span>
+
+                      </span>
+            </div>
+          </div>
+          </el-col>
+        </el-row>
+      </div>
+
+      <el-dialog
+        title="Administrator Login"
+        :visible.sync="dialogVisible"
+        width="30%"
+        center>
+        <div style="text-align:center">
+          <el-input style="width: 70%" placeholder="username" v-model="username" clearable></el-input>
+        </div>
+        <div style="text-align:center">
+          <el-input style="width: 70%; margin-top: 5%" placeholder="password" v-model="password" show-password></el-input>
+        </div>
+        <span slot="footer" class="dialog-footer">
+          <el-button style="width: 70%; margin-bottom: 5%; font-size: large" type="primary" @click="dialogVisible = false; login()">LOGIN</el-button>
+        </span>
+      </el-dialog>
+
+
+
+      <el-row>
+        <el-col :span="4">
+          <el-row>
+            <div class="OASIS" id="OASIS" style="font-weight:bold;color:white;font-size: 40px;text-align:center;margin-top: 12%"
+                 @mouseenter="highlight" @mouseout="redoHightLight" @click="toHomepage">
+              Cff Analyzer
+            </div>
+          </el-row>
+          <!--<el-row><div class="OASIS" style="color:white;font-size: 17px;text-align:center; ">-->
+          <!--OASIS/Search-->
+          <!--</div>-->
+          <!--</el-row>-->
+        </el-col>
+        <el-col :span="20">
+          <!--普通搜索-->
+          <div style="text-align: center;">
+            <el-select v-model="commonSearchTypeValue" clearable placeholder="All" style="opacity:80%; width: 10%">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+            <el-input
+              style="opacity:80%;width:50%; justify-content: center;;margin-top: 4%"
+              placeholder="Enter something..."
+              v-model="commonInput"
+              :disabled="searching"
+              @keyup.enter.native="commonSearch"
+              clearable>
+            </el-input>
+
+            <el-button @click="commonSearch" type="primary" icon="el-icon-search" :loading="searching">SEARCH</el-button>
+
+          </div>
+        </el-col>
+      </el-row>
+
+    </el-header>
+    <el-container>
+      <el-aside width=70%>
+        <div style="margin: 39px">
+          <el-row>
+            <el-col :span="17">
+          <span style="font-size: 45px;color: black"><strong>{{item.title}}</strong></span><br><br>
+            </el-col>
+            <el-col :span="3">
+              <div class="st" style="font-size: 60px;margin-top: -25px">
+              <el-button  icon="el-icon-star-off" circle></el-button>
+              </div>
+            </el-col>
+            <el-col :span="3">
+              <div class="st" style="font-size: 60px;margin-top: -25px">
+              <el-button icon="el-icon-share" circle></el-button>
+              </div>
+            </el-col>
+          </el-row>
+          <span style="font-size: 23px;color: dimgray;font-style:italic" >{{item.publicationYear}}&nbsp;&nbsp;</span><br>
+          <el-row>
+          <span  style="font-size: 21px;color: dimgray">
+            <el-col span="3">
+                Affiliations:
+              </el-col>
+            <el-col span="21">
+              <span  style="font-size: 19px;color: dimgray" class="divider" v-if="item.affiliations.length==0">None</span>
+          <span v-for="(aff,index) in item.affiliations" :key="index">
+                <span role="separator" class="divider" v-if="index != 0">,</span>
+                <el-link style="font-size: 21px;color: cornflowerblue;font-style:italic"  :key='aff.name' @click="searchAffiliationPor(aff.affiliationId)">{{aff.name}}</el-link>
+          </span>
+              </el-col><br>
+          </span>
+          </el-row>
+          <el-row>
+          <span  style="font-size: 21px;color: dimgray">
+            <el-col span="3">
+                Authors:
+            </el-col>
+              <el-col span="21">
+                <span  style="font-size: 19px;color: dimgray" class="divider" v-if="item.authors.length==0">None</span>
+          <span v-for="(author,index) in item.authors" :key="index">
+                <span role="separator" class="divider" v-if="index != 0">,</span>
+             <el-link style="font-size: 21px;color: cornflowerblue;font-style:italic" :key="author.name" @click="searchAuthorPor(author.authorId)">{{author.name}}</el-link>
+          </span><br></el-col>
+          </span>
+          </el-row>
+          <el-row>
+          <span  style="font-size: 21px;color: dimgray">
+            <el-col span="3">
+                Directions:
+            </el-col>
+              <el-col span="21">
+                <span  style="font-size: 19px;color: dimgray" class="divider" v-if="item.directions.length==0">None</span>
+          <span v-for="(direction,index) in item.directions" :key="index">
+                <span role="separator" class="divider" v-if="index != 0">,</span>
+             <el-link style="font-size: 21px;color: cornflowerblue;font-style:italic" :key="direction.name" @click="searchDirectionPor(direction.directionId)">{{direction.name}}</el-link>
+          </span><br></el-col>
+          </span>
+          </el-row>
+          <br>
+          <span style="font-size: 17px;color: dimgray" >{{item.summary}}</span><br><br><br>
+          <el-row>
+            <el-col span="3">
+          <span style="font-size: 19px;color: dimgray" >
+            Keywords:</span></el-col>
+          <el-col span="21">
+            <span  style="font-size: 19px;color: dimgray" class="divider" v-if="item.keywords.length==0">None</span>
+          <span v-for="(keyword,index) in item.keywords" :key="index">
+
+                <span role="separator" class="divider" v-if="index != 0">,</span>
+              <el-link style="font-size: 19px;color:cornflowerblue;font-style:italic" :key="keyword" @click="searchByKeyword(keyword)">{{keyword}}</el-link>
+              </span><br></el-col></el-row>
+          <el-row>
+            <el-col span="3">
+              <span style="font-size: 19px;color: dimgray" >Publication:</span></el-col>
+            <el-col span="21"><span ><el-link style="font-size: 19px;color:cornflowerblue;font-style:italic"  @click="searchConferencePor(item.publication)">{{item.publication}}</el-link></span></el-col>
+          </el-row>
+          <el-row>
+            <span  style="font-size: 19px;color: dimgray" class="divider" v-if="item.startPage>=0">
+            <el-col span="3">
+              <span style="font-size: 19px;color: dimgray" >StartPage:</span></el-col>
+            <el-col span="21"><span style="font-size: 19px;color: dimgray" >{{item.startPage}}</span></el-col></span>
+          </el-row>
+          <el-row>
+            <span  style="font-size: 19px;color: dimgray" class="divider" v-if="item.endPage>=0">
+            <el-col span="3">
+              <span style="font-size: 19px;color: dimgray" >EndPage:</span></el-col>
+            <el-col span="21"><span style="font-size: 19px;color: dimgray" >{{item.endPage}}</span></el-col>
+            </span>
+          </el-row>
+          <el-row>
+            <el-col span="3">
+              <span style="font-size: 19px;color: dimgray" >DOI:</span></el-col>
+            <el-col span="21"><span style="font-size: 19px;color: dimgray" >{{item.doi}}</span>
+              <el-button type="primary"  style="float:right" @click="pdflink(item.url)">PDF</el-button>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="5">
+              <i class="el-icon-view"></i>
+
+            </el-col>
+            <el-col :span="5">
+              <i class="el-icon-upload"></i>
+            </el-col>
+            <el-col :span="5">
+              <i class="el-icon-download"></i>
+            </el-col>
+            <el-col :span="9">
+
+            </el-col>
+          </el-row>
+        </div>
+      </el-aside>
+      <el-main>
+        <el-col span="4" style="height: 100%">
+          <div style="float:left;width: 1px;height: 100%; background: grey"></div>
+        </el-col>
+        <el-col span="18">
+          <br>
+          <div>
+            <el-row>
+            <el-col :span="8">
+              <div class="grid-content">
+                <Icon class="header_icon" type="md-school" size="50"/>
+              </div>
+            </el-col>
+
+            <el-col :span="16">
+              <div class="grid-content">
+                <div class="header_num" style="font-size: 23px;">{{item.articleCitationCount}}</div>
+                <div class="header_type">Article Citation Count</div>
+              </div>
+            </el-col>
+            </el-row>
+            <el-divider></el-divider>
+            <br>
+            <el-row>
+              <el-col :span="8">
+                <div class="grid-content">
+                  <Icon class="header_icon" type="md-school" size="50"/>
+                </div>
+              </el-col>
+              <el-col :span="16">
+                <div class="grid-content">
+                  <div class="header_num" style="font-size: 23px;">{{item.referenceCount}}</div>
+                  <div class="header_type">Reference Count</div>
+                </div>
+              </el-col>
+            </el-row>
+            <br><br>
+            <span style="font-size: 30px;">Reference Papers</span><br>
+
+            <div class="ref" v-for="refer in item.references" :key="refer">
+              <el-row>
+                <el-tooltip effect="dark" placement="left">
+                  <div slot="content">
+                    {{refer.reference}}
+                  </div>
+                  <el-link :title="refer.reference" @click="referlink(refer.googleScholarLink)">
+                    <div style="font-size: 17px;color: cornflowerblue;overflow: hidden;white-space: nowrap;width: 350px;text-overflow: ellipsis;">
+                      {{refer.reference}}
+                    </div>
+                  </el-link>
+                </el-tooltip>
+              </el-row>
+            </div>
+            </div>
+</el-col>
+      </el-main>
+    </el-container>
+  </el-container>
+
+</template>
+
+<script>
+// import {getPaperDetail} from '../../api/search/PaperDetailAPI'
+// import {getAdvancedSearchResult, getCommonSearchResult} from '../../api/home/HomePageAPI'
+export default {
+  name: 'PaperDetail',
+  data () {
+    return {
+      user:{
+        login: true,
+        logout: false,
+        username: 'yry',
+        password: '',
+      },
+      dialogVisible: false,
+      commonSearchTypeValue: '',
+      searching: false,
+      options: [
+        {
+          value: 'author',
+          label: 'Author'
+        }, {
+          value: 'affiliation',
+          label: 'Affiliation'
+        }, {
+          value: 'keyword',
+          label: 'Keyword'
+        }],
+      advSearchForm: {
+        authors: [],
+        affiliations: [],
+        startYear: 2013,
+        endYear: 2020,
+        conferenceName: '',
+        keywords: []
+      },
+      commonInput: '',
+      background: {
+        backgroundImage: 'url(' + require('@/assets/background.jpg') + ')',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover'
+      },
+      item: {
+        paperId: 0,
+        title: 'Learning Styles and Inclusion.',
+        authors: [{
+          authorId: 1,
+          name: 'yry'
+        }],
+        affiliations: [
+          {
+            authorId: 1,
+            name: 'yry'
+          }
+        ],
+        directions: [
+          {
+            directionId: 1,
+            name: 'yry'
+          }
+        ],
+        publication: 'IEEE',
+        publicationYear: '2005',
+        startPage: 0,
+        endPage: 0,
+        doi: '10.1109',
+        summary: 'Learning Models and the Learning Cycle Learning Differences and Learning Styles The Role of the Learning Environment Background to Learning Styles Assessment of Learning Styles Learning Styles Learning and Teaching The Inclusive School Characteristics and Challenges Learning Styles in the Inclusive Context Promoting Effective Learning Learning Styles Strategies and Insights ...',
+        keywords: ['Educational technology'],
+        url: 'http://www.baidu.com',
+        articleCitationCount: 0,
+        referenceCount: 0,
+        references: [{
+          reference: 'Learning Styles and Inclusion',
+          googleScholarLink: 'http://www.baidu.com'
+        }]
+      }
+    }
+  },
+  methods: {
+
+    Detail () {
+      // getPaperDetail(this.item.paperId).then((res) => {
+      //   this.item = res.data
+      // })
+    },
+    pdflink (e) {
+      window.location.href = e
+    },
+    referlink (e) {
+      window.location.href = e
+    },
+    commonSearch () {
+    //   if (this.searching) {
+    //     return
+    //   }
+    //   if (this.commonInput !== '') {
+    //     this.searching = true
+    //     let paperList = []
+    //     let total = 0
+    //     if (this.commonSearchTypeValue === '') { // type为All
+    //       getCommonSearchResult(this.commonInput, 0).then((res) => {
+    //         if (res.status.code === '0000') {
+    //           paperList = res.data.paperBriefInfoVOList
+    //           total = res.data.totalNum
+    //           this.searching = false
+    //           let newpage = this.$router.resolve({
+    //             name: 'SearchPaper',
+    //             query: {
+    //               papers: JSON.stringify(paperList),
+    //               totalNum: total,
+    //               content: this.commonInput,
+    //               kind: 0
+    //             }
+    //           })
+    //           window.open(newpage.href, '_blank')
+    //         } else {
+    //           this.searching = false
+    //           this.$message.error({
+    //             message: res.status.msg,
+    //             center: true
+    //           })
+    //         }
+    //       }).catch(error => console.log(error))
+    //     } else { // type有值
+    //       if (this.commonSearchTypeValue === 'author') {
+    //         this.advSearchForm.authors = [this.commonInput]
+    //         let paperList = []
+    //         let total = 0
+    //         getAdvancedSearchResult(this.advSearchForm).then((res) => {
+    //           if (res.status.code === '0000') {
+    //             paperList = res.data.paperBriefInfoVOList
+    //             total = res.data.totalNum
+    //             this.searching = false
+    //             let newpage = this.$router.resolve({
+    //               name: 'SearchPaper',
+    //               query: {
+    //                 papers: JSON.stringify(paperList),
+    //                 totalNum: total,
+    //                 content: this.commonInput,
+    //                 kind: 0
+    //               }
+    //             })
+    //             window.open(newpage.href, '_blank')
+    //           } else {
+    //             this.searching = false
+    //             this.$message.error({
+    //               message: res.status.msg,
+    //               center: true
+    //             })
+    //           }
+    //         }).catch(error => console.log(error))
+    //       } else if (this.commonSearchTypeValue === 'affiliation') {
+    //         this.advSearchForm.affiliations = [this.commonInput]
+    //         let paperList = []
+    //         let total = 0
+    //         getAdvancedSearchResult(this.advSearchForm).then((res) => {
+    //           if (res.status.code === '0000') {
+    //             paperList = res.data.paperBriefInfoVOList
+    //             total = res.data.totalNum
+    //             this.searching = false
+    //             let newpage = this.$router.resolve({
+    //               name: 'SearchPaper',
+    //               query: {
+    //                 papers: JSON.stringify(paperList),
+    //                 totalNum: total,
+    //                 content: this.commonInput,
+    //                 kind: 0
+    //               }
+    //             })
+    //             window.open(newpage.href, '_blank')
+    //           } else {
+    //             this.searching = false
+    //             this.$message.error({
+    //               message: res.status.msg,
+    //               center: true
+    //             })
+    //           }
+    //         }).catch(error => console.log(error))
+    //       } else if (this.commonSearchTypeValue === 'keyword') {
+    //         this.advSearchForm.keywords = [this.commonInput]
+    //         let paperList = []
+    //         let total = 0
+    //         getAdvancedSearchResult(this.advSearchForm).then((res) => {
+    //           if (res.status.code === '0000') {
+    //             paperList = res.data.paperBriefInfoVOList
+    //             total = res.data.totalNum
+    //             this.searching = false
+    //             let newpage = this.$router.resolve({
+    //               name: 'SearchPaper',
+    //               query: {
+    //                 papers: JSON.stringify(paperList),
+    //                 totalNum: total,
+    //                 content: this.commonInput,
+    //                 kind: 0
+    //               }
+    //             })
+    //             window.open(newpage.href, '_blank')
+    //           } else {
+    //             this.searching = false
+    //             this.$message.error({
+    //               message: res.status.msg,
+    //               center: true
+    //             })
+    //           }
+    //         }).catch(error => console.log(error))
+    //       }
+    //     }
+    //   } else {
+    //     this.$message({
+    //       message: 'Please Enter Something!',
+    //       center: true
+    //     })
+    //   }
+     },
+    searchAuthorPor (authorId) {
+    //   let newpage = this.$router.resolve({
+    //     name: 'AuthorPortrait',
+    //     query: {
+    //       authorId: authorId
+    //     }
+    //   })
+    //   window.open(newpage.href, '_blank')
+    },
+    searchDirectionPor (directionId) {
+    //   let newpage = this.$router.resolve({
+    //     name: 'DirectionPortrait',
+    //     query: {
+    //       directionId: directionId
+    //     }
+    //   })
+    //   window.open(newpage.href, '_blank')
+    },
+    searchAffiliationPor (affiliationId) {
+    //   let newpage = this.$router.resolve({
+    //     name: 'AffiliationPortrait',
+    //     query: {
+    //       affiliationId: affiliationId
+    //     }
+    //   })
+    //   window.open(newpage.href, '_blank')
+     },
+    getContent (e) {
+    //   let newpage = this.$router.resolve({
+    //     name: 'PaperDetail',
+    //     query: {
+    //       paperId: e
+    //     }
+    //   })
+    //   window.open(newpage.href, '_blank')
+    },
+    searchConferencePor (name) {
+    //   let newpage = this.$router.resolve({
+    //     name: 'ConferencePortrait',
+    //     query: {
+    //       name: name
+    //     }
+    //   })
+    //   window.open(newpage.href, '_blank')
+    },
+     searchByKeyword (name) {
+    //   this.advSearchForm.keywords = [name]
+    //   let paperList = []
+    //   let total = 0
+    //   getAdvancedSearchResult(this.advSearchForm).then((res) => {
+    //     paperList = res.data.paperBriefInfoVOList
+    //     total = res.data.totalNum
+    //     let newpage = this.$router.resolve({
+    //       name: 'SearchPaper',
+    //       query: {
+    //         papers: JSON.stringify(paperList),
+    //         totalNum: total,
+    //         content: this.advSearchForm,
+    //         kind: 0
+    //       }
+    //     })
+    //     window.open(newpage.href, '_blank')
+    //   }).catch(error => console.log(error))
+    },
+    toHomepage () {
+      this.$router.push({path: '/'})
+    },
+    highlight () {
+      document.getElementById('OASIS').style.cursor = 'pointer'
+      document.getElementById('OASIS').style.fontSize = '80px'
+    },
+    redoHightLight () {
+      document.getElementById('OASIS').style.fontSize = '70px'
+    }
+  },
+  mounted () {
+    // let id = this.$route.query.paperId
+    // this.item.paperId = id
+    // this.Detail()
+    // this.$store.dispatch('flushFun')
+  }
+}
+</script>
+<style>
+  .avatar-dropdown {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+    height: 50px;
+    padding: 0;
+    font-size: 30px;
+  }
+  .bg-purple2 {
+    background-color: rgba(255,255,255,0.8);
+  }
+  .grid-content2 {
+    min-height: 60px;
+  }
+</style>
