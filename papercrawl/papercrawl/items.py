@@ -9,7 +9,7 @@ from scrapy.item import Item, Field
 
 
 class PaperItem(Item):
-    author = Field()
+    authors = Field()
     editor = Field()
     title = Field()
     book_title = Field()
@@ -24,6 +24,7 @@ class PaperItem(Item):
     citation = Field()
     abstract = Field()
     keywords = Field()
+    author_affiliations = Field()
 
 
 class MeetingItem(Item):

@@ -28,9 +28,9 @@ class PapercrawlPipeline(object):
 
     def paper_insert(self, paper):
 
-        authors = str(paper['author']).split(' and ')
+        authors = paper['authors']
+        author_affiliations = paper['author_affiliations']
         keywords = paper['keywords']
-        print('keywords = ', str(keywords))
 
         insert_paper = """
         insert into paper(title, abstract, citation, book_title, doi, pages, publisher, year, url,
@@ -38,8 +38,8 @@ class PapercrawlPipeline(object):
         (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
         insert_author = """
-        insert into author(author) VALUES 
-        (%s)
+        insert into author(author, affiliation) VALUES 
+        (%s,%s)
         """
         insert_keyword = """
         insert into keyword(keyword) VALUES 
@@ -62,8 +62,8 @@ class PapercrawlPipeline(object):
 
             paper_id = self.cursor.lastrowid
 
-            for author in authors:
-                self.cursor.execute(insert_author, author)
+            for i in range(0, len(authors)):
+                self.cursor.execute(insert_author, (authors[i], author_affiliations[i]))
                 author_id = self.cursor.lastrowid
                 self.cursor.execute(insert_author_relation, (paper_id, author_id))
 

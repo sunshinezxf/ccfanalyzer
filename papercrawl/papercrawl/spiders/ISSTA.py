@@ -10,6 +10,11 @@ class IsstaSpider(scrapy.Spider):
     # allowed_domains = ['https://dblp.uni-trier.de/']
     start_urls = ['https://dblp.uni-trier.de/db/conf/issta/index.html']
 
+    def __init__(self, name=None, **kwargs):
+        super().__init__(name)
+        self.meeting_count = 0
+        self.paper_count = 0
+
     def parse(self, response):
         view_hrefs = response.xpath('//*[@class="entry editor toc"]/nav/ul/li[1]/div[1]/a/@href').getall()
         for view_href in view_hrefs:
@@ -55,6 +60,8 @@ class IsstaSpider(scrapy.Spider):
         meeting['bib_url'] = match.group(9)
         meeting['bib_source'] = match.group(10)
 
+        self.meeting_count = self.meeting_count + 1
+        self.logger.info('crawl ' + str(self.meeting_count) + ' meetings')
         return meeting
 
     def paper_record_parse(self, response, view_url):
@@ -70,7 +77,6 @@ class IsstaSpider(scrapy.Spider):
             r'biburl = {(.*?)}, bibsource = {(.*?)} }', text)
 
         paper = PaperItem()
-        paper['author'] = match.group(1)
         paper['editor'] = match.group(2)
         paper['title'] = match.group(3)
         paper['book_title'] = match.group(4)
@@ -89,13 +95,23 @@ class IsstaSpider(scrapy.Spider):
         citation = response.xpath(
             '//*[@class="icon-quote"][1]/../span[1]/text()').get()
         keywords = response.xpath('//*[@class="tags-widget__content"]/ul/li/a/@href').getall()
+
         for i in range(0, len(keywords)):
             match = re.match(r'.*/(.*)\?.*', keywords[i])
             keywords[i] = match.group(1)
         raw_abstract = response.xpath('//*[@class="abstractSection abstractInFull"]/p/text()').getall()
         abstract = '\n'.join(str(i) for i in raw_abstract)
+
+        authors = response.xpath('//*[@class="auth-name"]/a/text()').getall()
+        affiliations = response.xpath('//*[@class="pill-all-authors authors-accordion disable-truncate hidden"]'
+                                      '/div/div/ul/li[@class="loa__item"]/div/div[2]/p/text()').getall()
+
         paper_item['citation'] = citation
         paper_item['abstract'] = abstract
         paper_item['keywords'] = keywords
+        paper_item['authors'] = authors
+        paper_item['author_affiliations'] = affiliations
 
+        self.paper_count = self.paper_count + 1
+        self.logger.info('crawl ' + str(self.paper_count) + ' papers')
         return paper_item
