@@ -41,7 +41,7 @@ public class ConnectTest {
                 "bib_url='https://dblp.org/rec/conf/issta/HelmKKHESM20.bib', bib_source='dblp computer science" +
                 " bibliography, https://dblp.org'}";
         assertEquals(expected,paper.toString());
-//        logger.info(paper.toString());
+        logger.info(paper.toString());
     }
 
 }
