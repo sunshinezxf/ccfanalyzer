@@ -2,6 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.ccf.data.paper.PaperMapper">
     <select id="getPaperById" resultType="Paper">
-        select* from paper where paper_id = #{paper_id}
+        select * from paper where paper_id = #{paper_id}
     </select>
+    <select id="getInfoPaper" resultType="InfoPaper">
+        select p.title, k.keyword , a.author from paper p, paper_keyword_relation rk , keyword k,
+        paper_author_relation ar, author a
+        where p.paper_id=#{paper_id} and rk.paper_id=#{paper_id} and rk.keyword_id=k.keyword_id
+         and ar.paper_id=#{paper_id} and ar.author_id=a.author_id;
+    </select>
+    <resultMap id="InfoPaper" type="InfoPaper">
+        <collection property="keywords">
+            <result column="keyword"/>
+        </collection>
+        <collection property="authors">
+            <result column="author"/>
+        </collection>
+    </resultMap>
 </mapper>
