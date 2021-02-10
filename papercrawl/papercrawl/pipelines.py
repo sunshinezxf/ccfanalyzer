@@ -53,6 +53,10 @@ class PapercrawlPipeline(object):
         insert into paper_keyword_relation(paper_id, keyword_id) VALUES 
         (%s,%s)
         """
+        insert_ref = """
+        insert into paper_ref(paper_id, ref_count, ref_content) VALUES 
+        (%s,%s,%s)
+        """
 
         try:
             self.cursor.execute(insert_paper,
@@ -71,6 +75,8 @@ class PapercrawlPipeline(object):
                 self.cursor.execute(insert_keyword, keyword)
                 keyword_id = self.cursor.lastrowid
                 self.cursor.execute(insert_keyword_relation, (paper_id, keyword_id))
+
+            self.cursor.execute(insert_ref, (paper_id, paper['ref_count'], paper['ref_content']))
 
             self.connect.commit()
 

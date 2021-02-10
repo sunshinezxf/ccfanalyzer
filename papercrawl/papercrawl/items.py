@@ -25,6 +25,8 @@ class PaperItem(Item):
     abstract = Field()
     keywords = Field()
     author_affiliations = Field()
+    ref_count = Field()
+    ref_content = Field()
 
 
 class MeetingItem(Item):
