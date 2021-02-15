@@ -38,7 +38,7 @@ class PapercrawlPipeline(object):
         (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
         insert_author = """
-        insert into author(author, affiliation) VALUES 
+        insert into author(author, affiliation_id) VALUES 
         (%s,%s)
         """
         insert_keyword = """
@@ -57,6 +57,12 @@ class PapercrawlPipeline(object):
         insert into paper_ref(paper_id, ref_count, ref_content) VALUES 
         (%s,%s,%s)
         """
+        insert_affiliation = """
+        insert into affiliation(affiliation) VALUES
+        (%s)
+        """
+        query_affiliation = """
+        select * from affiliation where affiliation= %s"""
 
         try:
             self.cursor.execute(insert_paper,
@@ -67,8 +73,19 @@ class PapercrawlPipeline(object):
             paper_id = self.cursor.lastrowid
 
             for i in range(0, len(authors)):
-                self.cursor.execute(insert_author, (authors[i], author_affiliations[i]))
+
+                self.cursor.execute(query_affiliation, author_affiliations[i])
+                affiliation = self.cursor.fetchone()
+                if affiliation is not None:
+                    affiliation_id = affiliation[0]
+
+                else:
+                    self.cursor.execute(insert_affiliation, author_affiliations[i])
+                    affiliation_id = self.cursor.lastrowid
+
+                self.cursor.execute(insert_author, (authors[i], affiliation_id))
                 author_id = self.cursor.lastrowid
+
                 self.cursor.execute(insert_author_relation, (paper_id, author_id))
 
             for keyword in keywords:
@@ -117,8 +134,10 @@ class PapercrawlPipeline(object):
             print(e)
 
     def close_spider(self, spider):
+
         self.cursor.close()
         self.connect.close()
+
 # with open('test.txt', 'a', encoding='utf-8') as fp:
 #     fp.write(str(item))
 # fp.close()
