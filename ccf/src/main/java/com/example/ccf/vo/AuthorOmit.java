@@ -1,6 +1,6 @@
 package com.example.ccf.vo;
 
-public class Author {
+public class AuthorOmit {
 
     private int id;
 

@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.ccf.data.author.AuthorMapper">
-    <select id="getAuthorBuId" resultType="Author">
+    <select id="getAuthorById" resultType="Author">
         select * from author where author_id = #{author_id}
     </select>
+    <select id="getAuthorAffiliation" resultMap="Affiliation">
+        select af.affiliation_id, af.affiliation from author au, affiliation af where au.author_id = #{author_id}
+        and au.affiliation_id=af.affiliation_id;
+    </select>
+    <resultMap id="Affiliation" type="com.example.ccf.po.Affiliation">
+        <result column="affiliation_id" property="affiliation_id"></result>
+        <result column="affiliation" property="affiliation"></result>
+    </resultMap>
 </mapper>

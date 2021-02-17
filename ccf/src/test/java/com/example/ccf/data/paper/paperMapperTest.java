@@ -2,7 +2,6 @@ package com.example.ccf.data.paper;
 
 import com.example.ccf.bl.PaperService;
 import com.example.ccf.data.ConnectTest;
-import com.example.ccf.po.InfoPaper;
 import com.example.ccf.po.Paper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,10 +46,4 @@ public class paperMapperTest {
 
     }
 
-    @Test
-    public void InfoPaperTest(){
-        InfoPaper infoPaper=paperService.getInfoPaperById(1);
-        logger.info(infoPaper.toString());
-
-    }
 }

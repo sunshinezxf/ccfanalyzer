@@ -6,7 +6,7 @@ public class Author {
 
     private String author;
 
-    private String affiliation;
+    private String affiliation_id;
 
     public Integer getAuthor_id() {
         return author_id;
@@ -24,12 +24,12 @@ public class Author {
         this.author = author;
     }
 
-    public String getAffiliation() {
-        return affiliation;
+    public String getAffiliation_id() {
+        return affiliation_id;
     }
 
-    public void setAffiliation(String affiliation) {
-        this.affiliation = affiliation;
+    public void setAffiliation_id(String affiliation) {
+        this.affiliation_id = affiliation;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class Author {
         return "Author{" +
                 "author_id=" + author_id +
                 ", author='" + author + '\'' +
-                ", affiliation='" + affiliation + '\'' +
+                ", affiliation_id='" + affiliation_id + '\'' +
                 '}';
     }
 }

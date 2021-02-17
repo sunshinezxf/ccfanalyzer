@@ -1,7 +1,5 @@
 package com.example.ccf.vo;
 
-import com.example.ccf.vo.Affiliation;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,7 +9,7 @@ public class AuthorPortrait {
 
     private String name;
 
-    private List<Affiliation> affiliations;
+    private List<AffiliationOmit> affiliations;
 
     private String[] conferences;
 
@@ -35,12 +33,12 @@ public class AuthorPortrait {
         this.name = name;
     }
 
-    public List<Affiliation> getAffiliations() {
+    public List<AffiliationOmit> getAffiliationOmits() {
         return affiliations;
     }
 
-    public void setAffiliations(List<Affiliation> affiliations) {
-        this.affiliations = affiliations;
+    public void setAffiliationOmits(List<AffiliationOmit> affiliationOmits) {
+        this.affiliations = affiliationOmits;
     }
 
     public String[] getConferences() {

@@ -8,9 +8,9 @@ public class relatedPaper {
 
     private String name;
 
-    private List<Author> authors;
+    private List<AuthorOmit> authorOmits;
 
-    private List<Affiliation> affiliations;
+    private List<AffiliationOmit> affiliationOmits;
 
     private List<String> keywords;
 
@@ -36,20 +36,20 @@ public class relatedPaper {
         this.name = name;
     }
 
-    public List<Author> getAuthors() {
-        return authors;
+    public List<AuthorOmit> getAuthorOmits() {
+        return authorOmits;
     }
 
-    public void setAuthors(List<Author> authors) {
-        this.authors = authors;
+    public void setAuthorOmits(List<AuthorOmit> authorOmits) {
+        this.authorOmits = authorOmits;
     }
 
-    public List<Affiliation> getAffiliations() {
-        return affiliations;
+    public List<AffiliationOmit> getAffiliationOmits() {
+        return affiliationOmits;
     }
 
-    public void setAffiliations(List<Affiliation> affiliations) {
-        this.affiliations = affiliations;
+    public void setAffiliationOmits(List<AffiliationOmit> affiliationOmits) {
+        this.affiliationOmits = affiliationOmits;
     }
 
     public List<String> getKeywords() {
@@ -89,8 +89,8 @@ public class relatedPaper {
         return "relatedPaper{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", authors=" + authors +
-                ", affiliations=" + affiliations +
+                ", authors=" + authorOmits +
+                ", affiliations=" + affiliationOmits +
                 ", keywords=" + keywords +
                 ", summary='" + summary + '\'' +
                 ", publication='" + publication + '\'' +

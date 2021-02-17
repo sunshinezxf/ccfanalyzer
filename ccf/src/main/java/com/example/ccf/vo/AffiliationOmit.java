@@ -1,6 +1,8 @@
 package com.example.ccf.vo;
 
-public class Affiliation {
+import com.example.ccf.po.Affiliation;
+
+public class AffiliationOmit {
 
     private int id;
 
