@@ -38,8 +38,8 @@ class PapercrawlPipeline(object):
         (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """
         insert_author = """
-        insert into author(author, affiliation_id) VALUES 
-        (%s,%s)
+        insert into author(author) VALUES 
+        (%s)
         """
         insert_keyword = """
         insert into keyword(keyword) VALUES 
@@ -62,7 +62,12 @@ class PapercrawlPipeline(object):
         (%s)
         """
         query_affiliation = """
-        select * from affiliation where affiliation= %s"""
+        select * from affiliation where affiliation= %s
+        """
+        insert_affiliation_relation = """
+        insert into author_affiliation_relation(author_id, affiliation_id) VALUES 
+        (%s,%s)
+        """
 
         try:
             self.cursor.execute(insert_paper,
@@ -74,19 +79,23 @@ class PapercrawlPipeline(object):
 
             for i in range(0, len(authors)):
 
-                self.cursor.execute(query_affiliation, author_affiliations[i])
-                affiliation = self.cursor.fetchone()
-                if affiliation is not None:
-                    affiliation_id = affiliation[0]
-
-                else:
-                    self.cursor.execute(insert_affiliation, author_affiliations[i])
-                    affiliation_id = self.cursor.lastrowid
-
-                self.cursor.execute(insert_author, (authors[i], affiliation_id))
+                self.cursor.execute(insert_author, authors[i])
                 author_id = self.cursor.lastrowid
-
                 self.cursor.execute(insert_author_relation, (paper_id, author_id))
+
+                affiliations = author_affiliations[i].split(' / ')
+                for affiliation in affiliations:
+
+                    self.cursor.execute(query_affiliation, affiliation)
+                    affiliation_query = self.cursor.fetchone()
+                    if affiliation_query is not None:
+                        affiliation_id = affiliation_query[0]
+
+                    else:
+                        self.cursor.execute(insert_affiliation, affiliation)
+                        affiliation_id = self.cursor.lastrowid
+
+                    self.cursor.execute(insert_affiliation_relation, (author_id, affiliation_id))
 
             for keyword in keywords:
                 self.cursor.execute(insert_keyword, keyword)
