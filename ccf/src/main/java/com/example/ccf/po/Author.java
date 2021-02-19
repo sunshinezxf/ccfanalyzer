@@ -6,7 +6,25 @@ public class Author {
 
     private String author;
 
-    private String affiliation_id;
+    private int article_num;
+
+    private int article_citation_num;
+
+    public int getArticle_num() {
+        return article_num;
+    }
+
+    public void setArticle_num(int article_num) {
+        this.article_num = article_num;
+    }
+
+    public int getArticle_citation_num() {
+        return article_citation_num;
+    }
+
+    public void setArticle_citation_num(int article_citation_num) {
+        this.article_citation_num = article_citation_num;
+    }
 
     public Integer getAuthor_id() {
         return author_id;
@@ -24,20 +42,13 @@ public class Author {
         this.author = author;
     }
 
-    public String getAffiliation_id() {
-        return affiliation_id;
-    }
-
-    public void setAffiliation_id(String affiliation) {
-        this.affiliation_id = affiliation;
-    }
-
     @Override
     public String toString() {
         return "Author{" +
                 "author_id=" + author_id +
                 ", author='" + author + '\'' +
-                ", affiliation_id='" + affiliation_id + '\'' +
+                ", article_num=" + article_num +
+                ", article_citation_num=" + article_citation_num +
                 '}';
     }
 }

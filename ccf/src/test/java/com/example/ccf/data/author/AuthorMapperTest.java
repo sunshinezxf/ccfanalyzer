@@ -26,7 +26,7 @@ public class AuthorMapperTest {
     @Test
     public void authorAffiliationsTest(){
 
-        List<Affiliation> affiliations=authorMapper.getAuthorAffiliation(1);
+        List<Affiliation> affiliations=authorMapper.getAuthorAffiliation(38);
         logger.info(affiliations.toString());
     }
 
@@ -35,6 +35,5 @@ public class AuthorMapperTest {
 
         Author author =authorMapper.getAuthorById(1);
         logger.info(author.toString());
-
     }
 }

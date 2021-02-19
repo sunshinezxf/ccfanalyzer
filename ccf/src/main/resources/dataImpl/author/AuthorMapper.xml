@@ -5,11 +5,15 @@
         select * from author where author_id = #{author_id}
     </select>
     <select id="getAuthorAffiliation" resultMap="Affiliation">
-        select af.affiliation_id, af.affiliation from author au, affiliation af where au.author_id = #{author_id}
-        and au.affiliation_id=af.affiliation_id;
+        select a.affiliation_id, a.affiliation,a.article_num,a.article_citation_num,a.author_num
+        from affiliation a, author_affiliation_relation af
+        where af.author_id = #{author_id} and af.affiliation_id=a.affiliation_id;
     </select>
     <resultMap id="Affiliation" type="com.example.ccf.po.Affiliation">
         <result column="affiliation_id" property="affiliation_id"></result>
         <result column="affiliation" property="affiliation"></result>
+        <result column="article_num" property="article_num"></result>
+        <result column="article_citation_num" property="article_citation_num"></result>
+        <result column="author_num" property="author_num"></result>
     </resultMap>
 </mapper>
