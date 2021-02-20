@@ -1,6 +1,7 @@
 package com.example.ccf.vo;
 
 public class ConferencePortrait {
+
     private String name;
 
     private int authorNum;

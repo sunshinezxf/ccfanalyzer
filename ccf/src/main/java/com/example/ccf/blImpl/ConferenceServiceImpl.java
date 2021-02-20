@@ -27,8 +27,11 @@ public class ConferenceServiceImpl implements ConferenceService {
         Meeting meeting=meetingMapper.getMeetingById(conferenceId);
 
         conferencePortrait.setName(meeting.getTitle());
+        conferencePortrait.setAffiliationNum(meeting.getAffiliation_num());
+        conferencePortrait.setArticleCitationNum(meeting.getArticle_citation_num());
+        conferencePortrait.setArticleNum(meeting.getArticle_num());
+        conferencePortrait.setAuthorNum(meeting.getAuthor_num());
 
-        // TODO
         return ResponseVO.buildSuccess(conferencePortrait);
     }
 

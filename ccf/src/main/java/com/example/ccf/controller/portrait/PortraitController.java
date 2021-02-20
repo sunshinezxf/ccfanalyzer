@@ -37,12 +37,12 @@ public class PortraitController {
         return affiliationService.getAffiliationPortrait(affiliationId);
     }
 
-    @RequestMapping(value = "/conference/{name}",method = RequestMethod.GET)
-    public ResponseVO conferencePortrait(@PathVariable String name){
-        // TODO
-        return conferenceService.getConferencePortrait(1);
+    @RequestMapping(value = "/conference/{conferenceId}",method = RequestMethod.GET)
+    public ResponseVO conferencePortrait(@PathVariable int conferenceId){
+        return conferenceService.getConferencePortrait(conferenceId);
     }
 
+    // TODO
     @RequestMapping(value = "/author/papers",method = RequestMethod.GET)
     public ResponseVO authorRelatedPapers(int authorId,int index){
         return authorService.getAuthorRelatedPapers(authorId,index);
@@ -50,7 +50,6 @@ public class PortraitController {
 
     @RequestMapping(value = "/conference/papers",method = RequestMethod.GET)
     public ResponseVO conferenceRelatedPapers(String name,int index){
-        // TODO
         return conferenceService.getConferenceRelatedPapers(1,index);
     }
 

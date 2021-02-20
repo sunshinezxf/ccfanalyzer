@@ -2,7 +2,7 @@ package com.example.ccf.vo;
 
 import java.util.List;
 
-public class relatedPaper {
+public class RelatedPaper {
 
     private int id;
 

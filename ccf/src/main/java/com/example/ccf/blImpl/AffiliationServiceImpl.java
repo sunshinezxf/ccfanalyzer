@@ -28,8 +28,11 @@ public class AffiliationServiceImpl implements AffiliationService {
 
         affiliationPortrait.setAffiliationId(affiliation.getAffiliation_id());
         affiliationPortrait.setName(affiliation.getAffiliation());
+        affiliationPortrait.setArticleNum(affiliation.getAuthor_num());
+        affiliationPortrait.setArticleCitationNum(affiliation.getArticle_citation_num());
+        affiliationPortrait.setAuthorNum(affiliation.getAuthor_num());
 
-        //TODO
+        //TODO 主要参与会议的列表
 
         return ResponseVO.buildSuccess(affiliationPortrait);
     }

@@ -33,23 +33,22 @@ public class AuthorServiceImpl implements AuthorService {
 
         authorPortrait.setAuthorId(author.getAuthor_id());
         authorPortrait.setName(author.getAuthor());
+        authorPortrait.setArticleNum(author.getArticle_num());
+        authorPortrait.setArticleCitationNum(author.getArticle_citation_num());
+
         List<Affiliation> affiliations=authorMapper.getAuthorAffiliation(authorId);
-
         List<AffiliationOmit> affiliationOmits=new LinkedList<>();
-
         for(Affiliation affiliation:affiliations){
 
             AffiliationOmit affiliationOmit=new AffiliationOmit();
             affiliationOmit.setId(affiliation.getAffiliation_id());
             affiliationOmit.setName(affiliation.getAffiliation());
-
             affiliationOmits.add(affiliationOmit);
-
         }
 
         authorPortrait.setAffiliationOmits(affiliationOmits);
 
-        // TODO
+        //TODO 主要参与会议的列表
 
         return ResponseVO.buildSuccess(authorPortrait);
     }
