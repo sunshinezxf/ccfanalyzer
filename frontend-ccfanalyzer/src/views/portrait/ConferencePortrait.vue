@@ -6,13 +6,93 @@
        style="overflow: hidden" >
     <el-container >
       <div id="link"></div>
-      <el-header class="headerr" :style ="this.$store.state.background" height="150px">
+      <el-header class="headerr" :style ="this.$store.state.background" height="230px">
+        <div style="margin-left: -19px;margin-right: -19px;text-align:center">
+          <el-row style="margin-bottom: 1%">
+            <el-col :span="4">
+              <div class="grid-content2 bg-purple2" style="color: white;text-align:center">
+
+                <el-row>
+                  <span class="avatar-dropdown">
+                    <i class="el-icon-s-home" ></i>
+                    <span class="u" style="font-size: 20px;color: grey;text-align: center">
+                    &nbsp;&nbsp;HomePage &nbsp;
+                 </span>
+                  </span>
+                </el-row>
+
+              </div>
+            </el-col>
+
+            <el-col :span="17">
+              <div class="grid-content2 bg-purple2" style="color: white;">
+
+                <el-row style="margin-bottom: -8%"></el-row>
+              </div>
+            </el-col>
+            <el-col :span="3"><div class="grid-content2 bg-purple2" style="color: white;">
+              <div v-show="user.login">
+                <el-dropdown @command="handleCommand">
+                 <span class="avatar-dropdown">
+                  <!--<el-avatar class="user-avatar" :src="avatar"></el-avatar>-->
+                  <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+
+
+                 <span class="u" style="font-size: 20px">
+                    &nbsp;&nbsp;{{ user.username }} &nbsp;
+                 </span>
+
+
+                   <i class="el-icon-arrow-down el-icon--right"></i>
+                </span>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
+              </div>
+
+              <div v-show="user.logout">
+
+                   <span class="avatar-dropdown">
+                        <!--<el-avatar class="user-avatar" :src="avatar"></el-avatar>-->
+                        <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+
+
+                       <span class="u" style="font-size: 20px">
+                          &nbsp;&nbsp; Login&nbsp;In&nbsp;&nbsp;
+                       </span>
+
+                      </span>
+              </div>
+            </div>
+            </el-col>
+          </el-row>
+        </div>
+
+        <el-dialog
+          title="Administrator Login"
+          :visible.sync="dialogVisible"
+          width="30%"
+          center>
+          <div style="text-align:center">
+            <el-input style="width: 70%" placeholder="username" v-model="username" clearable></el-input>
+          </div>
+          <div style="text-align:center">
+            <el-input style="width: 70%; margin-top: 5%" placeholder="password" v-model="password" show-password></el-input>
+          </div>
+          <span slot="footer" class="dialog-footer">
+          <el-button style="width: 70%; margin-bottom: 5%; font-size: large" type="primary" @click="dialogVisible = false; login()">LOGIN</el-button>
+        </span>
+        </el-dialog>
+
+
+
         <el-row>
-          <el-col :span="5">
+          <el-col :span="4">
             <el-row>
-              <div class="OASIS" id="OASIS" style="font-weight:bold;color:white;font-size: 70px;text-align:center;margin-top: 4%"
+              <div class="OASIS" id="OASIS" style="font-weight:bold;color:white;font-size: 40px;text-align:center;margin-top: 12%"
                    @mouseenter="highlight" @mouseout="redoHightLight" @click="toHomepage">
-                OASIS
+                CCF ANALYZER
               </div>
             </el-row>
             <!--<el-row><div class="OASIS" style="color:white;font-size: 17px;text-align:center; ">-->
@@ -20,7 +100,7 @@
             <!--</div>-->
             <!--</el-row>-->
           </el-col>
-          <el-col :span="19">
+          <el-col :span="20">
             <!--普通搜索-->
             <div style="text-align: center;">
               <el-select v-model="commonSearchTypeValue" clearable placeholder="All" style="opacity:80%; width: 10%">
@@ -35,6 +115,8 @@
                 style="opacity:80%;width:50%; justify-content: center;;margin-top: 4%"
                 placeholder="Enter something..."
                 v-model="commonInput"
+                :disabled="searching"
+                @keyup.enter.native="commonSearch"
                 clearable>
               </el-input>
 
@@ -43,6 +125,7 @@
             </div>
           </el-col>
         </el-row>
+
       </el-header>
       <el-main >
         <el-row>
@@ -197,6 +280,13 @@ export default {
 
   data () {
     return {
+      user:{
+        login: true,
+        logout: false,
+        username: 'yry',
+        password: '',
+      },
+      dialogVisible: false,
       loading_chart: false,
       searching: false,
       ConferencePor: {
@@ -480,11 +570,11 @@ export default {
     }
   },
   mounted () {
-    let name = this.$route.query.name
-    this.ConferencePor.name = name
-    this.getConferenceContent()
-    this.getPapers()
-    this.$store.dispatch('flushFun')
+    // let name = this.$route.query.name
+    // this.ConferencePor.name = name
+    // this.getConferenceContent()
+    // this.getPapers()
+    // this.$store.dispatch('flushFun')
   }
 }
 </script>
@@ -532,6 +622,22 @@ export default {
     -webkit-line-clamp:2;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+  .avatar-dropdown {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+    height: 50px;
+    padding: 0;
+    font-size: 30px;
+  }
+  .bg-purple2 {
+    background-color: rgba(255,255,255,0.8);
+  }
+  .grid-content2 {
+    min-height: 60px;
   }
 
 </style>

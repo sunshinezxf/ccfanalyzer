@@ -88,7 +88,7 @@
           <el-row>
             <div class="OASIS" id="OASIS" style="font-weight:bold;color:white;font-size: 40px;text-align:center;margin-top: 12%"
                  @mouseenter="highlight" @mouseout="redoHightLight" @click="toHomepage">
-              Cff Analyzer
+              CCF ANALYZER
             </div>
           </el-row>
           <!--<el-row><div class="OASIS" style="color:white;font-size: 17px;text-align:center; ">-->
