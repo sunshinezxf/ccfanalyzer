@@ -81,7 +81,7 @@
       </el-dialog>
 
       <div class="OASIS" style="font-weight: bold ;color:white;font-size: 130px;text-align:center;margin-top: 7%">
-            Cff Analyzer
+            CCF ANALYZER
       </div>
 
       <div class="_radio" style="text-align: center;margin-top: -8px">
