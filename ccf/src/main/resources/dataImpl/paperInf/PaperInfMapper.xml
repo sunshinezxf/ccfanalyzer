@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.ccf.data.paperInf.PaperInfMapper">
+    <select id="get_Inf" resultMap="paperInf">
+        select paper_id as paperId,book_title as publication,year as publicationYear,
+        pages as pages,abstract as summary,doi as doi,url as url,title as title
+        from paper where paper_id=#{paper_id}
+    </select>
+    <select id="get_Ref_Num" resultType="int">
+        select ref_count from paper_ref where paper_id =#{paper_id}
+    </select>
+    <select id="get_Ref" resultType="string">
+        select ref_content from paper_ref where paper_id =#{paper_id}
+    </select>
+    <resultMap id="paperInf" type="com.example.ccf.po.PaperInfOne">
+        <result column="paperId" property="paperId"></result>
+        <result column="publication" property="publication"></result>
+        <result column="publicationYear" property="publicationYear"></result>
+        <result column="pages" property="pages"></result>
+        <result column="summary" property="summary"></result>
+        <result column="doi" property="doi"></result>
+        <result column="url" property="url"></result>
+        <result column="title" property="title"></result>
+    </resultMap>
+</mapper>

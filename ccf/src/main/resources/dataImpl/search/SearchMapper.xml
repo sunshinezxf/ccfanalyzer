@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.ccf.data.search.SearchMapper">
+    <select id="get_id" resultType="int">
+        select distinct(paper_id) from SegmentationTitle where segmentation=#{word}
+    </select>
+    <select id="get_Inf" resultMap="SearchResultForm" parameterType="java.util.List">
+        select paper_id as paperId,title as title,abstract as summary,book_title as publication
+        from paper where paper_id in
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+    <select id="get_author"  resultMap="Authors">
+        select distinct author_id as authorId,author as name from SegmentationAuthorInf where paper_id =#{paper_id}
+    </select>
+    <select id="get_affiliation"  resultMap="Affiliations">
+        select distinct affiliation_id as affiliationId, affiliation as name from SegmentationAuthorInf where paper_id =#{paper_id}
+    </select>
+    <select id="get_keyword" resultType="string">
+        select distinct keyword from SegmentationKeyword where paper_id =#{paper_id}
+    </select>
+    <select id="author_to_id" resultType="int">
+        select distinct paper_id from SegmentationAuthorInf where author=#{author}
+    </select>
+    <select id="affiliation_to_id" resultType="int">
+        select distinct(paper_id) from SegmentationAuthorInf where affiliation=#{affiliation}
+    </select>
+    <select id="keyword_to_id" resultType="int">
+        select distinct(paper_id) from SegmentationKeyword where keyword=#{keyword}
+    </select>
+    <select id="year_to_id" resultType="int">
+        select paper_id from paper where year in
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
+    <select id="conference_to_id" resultType="int">
+        select paper_if from paper where publisher=#{conference}
+    </select>
+    <resultMap id="SearchResultForm" type="com.example.ccf.po.SearchResultForm">
+        <result column="paperId" property="paperId"></result>
+        <result column="title" property="title"></result>
+        <result column="summary" property="summary"></result>
+        <result column="publication" property="publication"></result>
+    </resultMap>
+    <resultMap id="Authors" type="com.example.ccf.po.Authors">
+        <result column="authorId" property="authorId"></result>
+        <result column="name" property="name"></result>
+    </resultMap>
+    <resultMap id="Affiliations" type="com.example.ccf.po.Affiliations">
+        <result column="affiliationId" property="affiliationId"></result>
+        <result column="name" property="name"></result>
+    </resultMap>
+</mapper>
