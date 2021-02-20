@@ -23,31 +23,30 @@ def author_process(cursor, connect, authors):
 
 def affiliation_process(cursor, connect):
     select_all_affiliation = '''select * from affiliation;'''
+    get_article_num = '''
+    select count(distinct pr.paper_id) from 
+    paper_author_relation pr, author_affiliation_relation ar
+    where ar.affiliation_id = %s and pr.author_id=ar.author_id;
+    '''
+    get_article_citation_num = '''
+    select sum(distinct p.citation)   
+    from author_affiliation_relation ar, paper_author_relation pr, paper p 
+    where ar.affiliation_id = %s and pr.author_id=ar.author_id and pr.paper_id=p.paper_id;
+    '''
+    get_author_num = '''
+    select count(distinct author_id) from author_affiliation_relation 
+    where affiliation_id = %s;
+    '''
+    update_affiliation = '''
+    update affiliation 
+    set article_num = %s , article_citation_num = %s  , author_num = %s
+    where affiliation_id = %s;
+    '''
 
     cursor.execute(select_all_affiliation)
     affiliations = cursor.fetchall()
 
     for affiliation in affiliations:
-        get_article_num = '''
-        select count(distinct pr.paper_id) from 
-        paper_author_relation pr, author_affiliation_relation ar
-        where ar.affiliation_id = %s and pr.author_id=ar.author_id;
-        '''
-        get_article_citation_num = '''
-        select sum(distinct p.citation)   
-        from author_affiliation_relation ar, paper_author_relation pr, paper p 
-        where ar.affiliation_id = %s and pr.author_id=ar.author_id and pr.paper_id=p.paper_id;
-        '''
-        get_author_num = '''
-        select count(distinct author_id) from author_affiliation_relation 
-        where affiliation_id = %s;
-        '''
-        update_affiliation = '''
-        update affiliation 
-        set article_num = %s , article_citation_num = %s  , author_num = %s
-        where affiliation_id = %s;
-        '''
-
         cursor.execute(get_article_num, affiliation[0])
         article_num = cursor.fetchone()
 
@@ -56,9 +55,57 @@ def affiliation_process(cursor, connect):
 
         cursor.execute(get_author_num, affiliation[0])
         author_num = cursor.fetchone()
-        # print(author_num[0])
 
         cursor.execute(update_affiliation, (article_num[0], article_citation_num[0], author_num[0], affiliation[0]))
+
+        connect.commit()
+
+
+def meeting_process(cursor, connect):
+    select_all_meeting = '''
+    select * from meeting;
+    '''
+    get_article_num = '''
+    select count(distinct p.paper_id) from meeting m,paper p 
+    where m.title=p.book_title and m.meeting_id=%s;
+    '''
+    get_article_citation_num = '''
+    select sum(p.citation) from meeting m,paper p 
+    where m.title=p.book_title and m.meeting_id=%s;
+    '''
+    get_author_num = '''
+    select count(distinct ar.author_id) from meeting m,paper p,paper_author_relation ar 
+    where m.title=p.book_title and p.paper_id=ar.paper_id and m.meeting_id=%s;
+    '''
+    get_affiliation_num = '''
+    select count(distinct ar.affiliation_id) 
+    from meeting m,paper p,paper_author_relation pr, author_affiliation_relation ar 
+    where m.title=p.book_title and p.paper_id=pr.paper_id and ar.author_id=pr.author_id and m.meeting_id=%s;
+    '''
+    update_meeting = '''
+    update meeting 
+    set article_num = %s , article_citation_num = %s  , author_num = %s , affiliation_num = %s
+    where meeting_id = %s;
+    '''
+
+    cursor.execute(select_all_meeting)
+    meetings = cursor.fetchall()
+
+    for meeting in meetings:
+        cursor.execute(get_article_num, meeting[0])
+        article_num = cursor.fetchone()
+
+        cursor.execute(get_article_citation_num, meeting[0])
+        article_citation_num = cursor.fetchone()
+
+        cursor.execute(get_author_num, meeting[0])
+        author_num = cursor.fetchone()
+
+        cursor.execute(get_affiliation_num, meeting[0])
+        affiliation_num = cursor.fetchone()
+
+        cursor.execute(update_meeting,
+                       (article_num[0], article_citation_num[0], author_num[0], affiliation_num[0], meeting[0]))
 
         connect.commit()
 
@@ -77,6 +124,7 @@ if __name__ == '__main__':
 
         author_process(cursor, connect, authors)
         affiliation_process(cursor, connect)
+        meeting_process(cursor, connect)
 
         cursor.close()
         connect.close()
