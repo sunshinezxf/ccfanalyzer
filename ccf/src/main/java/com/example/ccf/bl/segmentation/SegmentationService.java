@@ -1,8 +1,10 @@
 package com.example.ccf.bl.segmentation;
 
+import com.example.ccf.vo.ResponseVO;
+
 public interface SegmentationService {
-    void segmentation_title(int start_id);
-    void segmentation_authorInf(int start_id);
-    void segmentation_keyword(int start_id);
+    ResponseVO segmentation_title(int start_id);
+    ResponseVO segmentation_authorInf(int start_id);
+    ResponseVO segmentation_keyword(int start_id);
 
 }

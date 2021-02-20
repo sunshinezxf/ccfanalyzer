@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.ccf.data.author.AuthorMapper">
+<mapper namespace="com.example.ccf.data.meeting.MeetingMapper">
     <select id="getMeetingById" resultType="Meeting">
         select * from meeting where meeting_id = #{meeting_id}
     </select>

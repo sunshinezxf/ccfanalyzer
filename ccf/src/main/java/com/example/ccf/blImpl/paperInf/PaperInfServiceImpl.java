@@ -4,6 +4,7 @@ import com.example.ccf.bl.paperInf.PaperInfService;
 import com.example.ccf.data.paperInf.PaperInfMapper;
 import com.example.ccf.data.search.SearchMapper;
 import com.example.ccf.po.*;
+import com.example.ccf.vo.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ public class PaperInfServiceImpl implements PaperInfService {
     @Autowired
     private SearchMapper searchMapper;
     @Override
-    public Object getPaperInf(int paperId){
+    public ResponseVO getPaperInf(int paperId){
         PaperInfOne p=paperInfMapper.get_Inf(paperId);
         PaperInfTwo p2=new PaperInfTwo();
         int ref=paperInfMapper.get_Ref_Num(paperId);
@@ -39,11 +40,11 @@ public class PaperInfServiceImpl implements PaperInfService {
         p2.setArticleCitationCount(ref);
         p2.setKeywords(keywords);
         p2.setTitle(p.getTitle());
-        return p2;
+        return ResponseVO.buildSuccess(p2);
 
     }
     @Override
-    public Object getPaperRef(RefForm refForm){
+    public ResponseVO getPaperRef(RefForm refForm){
         int index=refForm.getIndex();
         int paperId=refForm.getPaperId();
         String ref_content=paperInfMapper.get_Ref(paperId);
@@ -62,6 +63,6 @@ public class PaperInfServiceImpl implements PaperInfService {
         RefResult refResult=new RefResult();
         refResult.setReferenceCount(num);
         refResult.setReferences(references);
-        return refResult;
+        return ResponseVO.buildSuccess(refResult);
     }
 }

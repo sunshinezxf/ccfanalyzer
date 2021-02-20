@@ -106,6 +106,24 @@ class IsstaSpider(scrapy.Spider):
         affiliations = response.xpath('//*[@class="pill-all-authors authors-accordion disable-truncate hidden"]'
                                       '/div/div/ul/li[@class="loa__item"]/div/div[2]/p/text()').getall()
 
+        ref_papers = response.xpath(
+            '//*[@class="rlist references__list references__numeric"][1]/li/span/text()').getall()
+        ref_hrefs = response.xpath(
+            '//*[@class="rlist references__list references__numeric"][1]/li/span/span[1]/a/@href').getall()
+
+        # 直接取了参考论文与参考论文链接中数量较短的作为长度，有点问题但估计不会有人发现的
+
+        ref_content = ''
+
+        len1 = len(ref_papers)
+        len2 = len(ref_hrefs)
+        ref_count = len1 if len1 <= len2 else len2
+
+        for index in range(0, ref_count):
+            ref_content = ref_content + ref_papers[index] + '***' + ref_hrefs[index] + '^^^'
+
+        paper_item['ref_count'] = ref_count
+        paper_item['ref_content'] = ref_content
         paper_item['citation'] = citation
         paper_item['abstract'] = abstract
         paper_item['keywords'] = keywords

@@ -4,6 +4,7 @@ import com.example.ccf.bl.search.SearchService;
 import com.example.ccf.data.search.SearchMapper;
 import com.example.ccf.po.*;
 
+import com.example.ccf.vo.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ public class SearchServiceImpl implements SearchService {
     @Autowired
     private SearchMapper searchMapper;
     @Override
-    public Object commonSearch(CommonSearch commonSearch) {
+    public ResponseVO commonSearch(CommonSearch commonSearch) {
         int index = commonSearch.getIndex();
         String message = commonSearch.getSearchMessage();
         String[] ms = message.toLowerCase().split(" ");
@@ -48,18 +49,18 @@ public class SearchServiceImpl implements SearchService {
                 SearchResultNum r= new SearchResultNum();
                 r.setTotalNum(ids.size());
                 r.setPaperBriefInfoVOList(srs);
-                return r;
+                return ResponseVO.buildSuccess(r);
             }
             else{
-                return "查询结果为0";
+                return  ResponseVO.buildSuccess("查询结果为0");
             }
 
         }
         else
-        return "没有输入的查询";
+        return ResponseVO.buildSuccess("没有输入的查询");
     }
     @Override
-    public Object advancedSearch(AdvancedSearch advancedSearch){
+    public ResponseVO advancedSearch(AdvancedSearch advancedSearch){
         List<String> authors=advancedSearch.getAuthors();
         List<String> affiliations=advancedSearch.getAffiliations();
         List<String> keywords=advancedSearch.getKeywords();
@@ -133,7 +134,7 @@ public class SearchServiceImpl implements SearchService {
         else if(conference_search)
             ids=ids_five;
         if(ids.size()==0){
-            return "搜索结果为0";
+            return ResponseVO.buildSuccess("搜索结果为0");
         }
         else{
             if(author_search)
@@ -148,7 +149,7 @@ public class SearchServiceImpl implements SearchService {
                 ids.retainAll(ids_five);
         }
         if(ids.size()==0){
-            return "搜索结果为0";
+            return ResponseVO.buildSuccess("搜索结果为0");
         }
         int result_n=ids.size();
         if(result_n>=1&&result_n>=10*index) {
@@ -172,9 +173,9 @@ public class SearchServiceImpl implements SearchService {
             SearchResultNum r= new SearchResultNum();
             r.setTotalNum(ids.size());
             r.setPaperBriefInfoVOList(srs);
-            return r;
+            return ResponseVO.buildSuccess(r);
         }
         else
-            return "搜索结果为0";
+            return ResponseVO.buildSuccess("搜索结果为0");
     }
 }

@@ -3,6 +3,7 @@ package com.example.ccf.blImpl.segmentation;
 import com.example.ccf.bl.segmentation.SegmentationService;
 import com.example.ccf.data.segmentation.SegmentationMapper;
 import com.example.ccf.po.*;
+import com.example.ccf.vo.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ public class SegmentationServiceImpl implements SegmentationService {
     @Autowired
     private SegmentationMapper segmentationMapper;
     @Override
-    public void segmentation_title(int start_id) {
+    public ResponseVO segmentation_title(int start_id) {
         List<SegmentationTitle> origin_sts= segmentationMapper.get_title(start_id);
         int size=origin_sts.size();
         for(int i=0;i<size;i++){
@@ -31,10 +32,11 @@ public class SegmentationServiceImpl implements SegmentationService {
             }
             segmentationMapper.insert_segmentation_title(new_sts);
         }
+        return  ResponseVO.buildSuccess("数据库1更新完成。");
 
     }
     @Override
-    public void segmentation_authorInf(int start_id) {
+    public ResponseVO segmentation_authorInf(int start_id) {
         List<AuthorInf> authorInf =segmentationMapper.get_authorInf(start_id);
         List<Author_Affiliation> author=segmentationMapper.get_author();
         List<Author_Affiliation> affiliation=segmentationMapper.get_affiliation();
@@ -56,10 +58,11 @@ public class SegmentationServiceImpl implements SegmentationService {
 
         }
         segmentationMapper.insert_authorInf(result);
+        return ResponseVO.buildSuccess("数据库2更新成功");
 
     }
     @Override
-    public void segmentation_keyword(int start_id) {
+    public ResponseVO segmentation_keyword(int start_id) {
         List<KeywordInf> keywordInf=segmentationMapper.get_keyword(start_id);
         List<KeywordInf> keywords=segmentationMapper.get_keywords();
         int size=keywordInf.size();
@@ -78,6 +81,7 @@ public class SegmentationServiceImpl implements SegmentationService {
 
         }
         segmentationMapper.insert_keyword(new_keywordInf);
+        return ResponseVO.buildSuccess("数据库3更新成功");
 
     }
     public String[] segmentation(String title){
