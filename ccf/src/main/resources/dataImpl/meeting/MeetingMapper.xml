@@ -4,4 +4,14 @@
     <select id="getMeetingById" resultType="Meeting">
         select * from meeting where meeting_id = #{meeting_id}
     </select>
+    <select id="getMeetingPaper" resultMap="Paper">
+        select p.* from paper p, meeting m
+        where p.book_title=m.title and m.meeting_id= #{meeting_id}
+        order by p.citation desc
+        limit #{offset}, 10
+    </select>
+    <resultMap id="Meeting" type="com.example.ccf.po.Meeting">
+    </resultMap>
+    <resultMap id="Paper" type="com.example.ccf.po.Paper">
+    </resultMap>
 </mapper>

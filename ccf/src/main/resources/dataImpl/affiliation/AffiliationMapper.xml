@@ -4,4 +4,23 @@
     <select id="getAffiliationById" resultType="Affiliation">
         select * from affiliation where affiliation_id = #{affiliation_id}
     </select>
+    <select id="getAffiliationPapers" resultMap="Paper">
+        select distinct p.* from paper p, affiliation af , paper_author_relation pr, affiliation_author_relation ar
+        where p.paper_id=pr.paper_id and pr.author_id=ar.author_id and ar.affiliation_id= #{affiliation_id}
+        order by p.citation desc
+        limit #{offset}, 10
+    </select>
+    <select id="getAffiliationAuthors" resultMap="Author">
+        select a.*
+        from author a, affiliation_author_relation ar
+        where a.author_id=ar.author_id and ar.affiliation_id= #{affiliation_id}
+        order by a.article_citation_num desc
+        limit #{offset}, 10;
+    </select>
+    <resultMap id="Affiliation" type="com.example.ccf.po.Affiliation">
+    </resultMap>
+    <resultMap id="Paper" type="com.example.ccf.po.Paper">
+    </resultMap>
+    <resultMap id="Author" type="com.example.ccf.po.Author">
+    </resultMap>
 </mapper>

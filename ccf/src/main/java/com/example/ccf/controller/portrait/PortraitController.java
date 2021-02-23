@@ -42,7 +42,6 @@ public class PortraitController {
         return conferenceService.getConferencePortrait(conferenceId);
     }
 
-    // TODO sql
     @RequestMapping(value = "/author/papers",method = RequestMethod.GET)
     public ResponseVO authorRelatedPapers(int authorId,int index){
         return authorService.getAuthorRelatedPapers(authorId,index);
@@ -58,6 +57,7 @@ public class PortraitController {
         return affiliationService.getAffiliationRelatedPapers(affiliationId,index);
     }
 
+    // 作者按照引用总数降序排列
     @RequestMapping(value = "/affiliation/authors",method = RequestMethod.GET)
     public ResponseVO affiliationAuthors(int affiliationId,int index){
         return affiliationService.getAffiliationAuthors(affiliationId,index);
