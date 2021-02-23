@@ -2,7 +2,9 @@ package com.example.ccf.data.paper;
 
 import com.example.ccf.bl.PaperService;
 import com.example.ccf.data.ConnectTest;
+import com.example.ccf.po.Author;
 import com.example.ccf.po.Paper;
+import com.example.ccf.vo.ResponseVO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -10,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -20,6 +24,8 @@ public class paperMapperTest {
 
     @Autowired
     private PaperService paperService;
+    @Autowired
+    private PaperMapper paperMapper;
 
     @Test
     public void paperTest(){
@@ -44,6 +50,18 @@ public class paperMapperTest {
                 " bibliography, https://dblp.org'}";
         assertEquals(expected,paper.toString());
 
+    }
+
+    @Test
+    public void getPaperAuthors(){
+        List<Author> authors=paperMapper.getPaperAuthors(1);
+        logger.info(authors.toString());
+    }
+
+    @Test
+    public void getPaperKeywords(){
+        List<String> keywords=paperMapper.getPaperKeywords(1);
+        logger.info(keywords.toString());
     }
 
 }

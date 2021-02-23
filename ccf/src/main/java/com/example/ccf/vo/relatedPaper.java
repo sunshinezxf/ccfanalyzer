@@ -4,52 +4,42 @@ import java.util.List;
 
 public class RelatedPaper {
 
-    private int id;
+    private int paperId;
 
-    private String name;
+    private String title;
 
-    private List<AuthorOmit> authorOmits;
-
-    private List<AffiliationOmit> affiliationOmits;
+    private List<AuthorOmit> authors;
 
     private List<String> keywords;
 
-    private String summary;
+    private String Abstract;
 
     private String publication;
 
     private int citationCnt;
 
-    public int getId() {
-        return id;
+    public int getPaperId() {
+        return paperId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setPaperId(int paperId) {
+        this.paperId = paperId;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public List<AuthorOmit> getAuthorOmits() {
-        return authorOmits;
+    public List<AuthorOmit> getAuthors() {
+        return authors;
     }
 
-    public void setAuthorOmits(List<AuthorOmit> authorOmits) {
-        this.authorOmits = authorOmits;
-    }
-
-    public List<AffiliationOmit> getAffiliationOmits() {
-        return affiliationOmits;
-    }
-
-    public void setAffiliationOmits(List<AffiliationOmit> affiliationOmits) {
-        this.affiliationOmits = affiliationOmits;
+    public void setAuthors(List<AuthorOmit> authors) {
+        this.authors = authors;
     }
 
     public List<String> getKeywords() {
@@ -60,12 +50,12 @@ public class RelatedPaper {
         this.keywords = keywords;
     }
 
-    public String getSummary() {
-        return summary;
+    public String getAbstract() {
+        return Abstract;
     }
 
-    public void setSummary(String summary) {
-        this.summary = summary;
+    public void setAbstract(String anAbstract) {
+        Abstract = anAbstract;
     }
 
     public String getPublication() {
@@ -86,13 +76,12 @@ public class RelatedPaper {
 
     @Override
     public String toString() {
-        return "relatedPaper{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", authors=" + authorOmits +
-                ", affiliations=" + affiliationOmits +
+        return "RelatedPaper{" +
+                "paperId=" + paperId +
+                ", title='" + title + '\'' +
+                ", authors=" + authors +
                 ", keywords=" + keywords +
-                ", summary='" + summary + '\'' +
+                ", Abstract='" + Abstract + '\'' +
                 ", publication='" + publication + '\'' +
                 ", citationCnt=" + citationCnt +
                 '}';

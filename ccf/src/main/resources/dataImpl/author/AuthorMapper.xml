@@ -6,8 +6,15 @@
     </select>
     <select id="getAuthorAffiliation" resultMap="Affiliation">
         select a.affiliation_id, a.affiliation,a.article_num,a.article_citation_num,a.author_num
-        from affiliation a, author_affiliation_relation af
+        from affiliation a, affiliation_author_relation af
         where af.author_id = #{author_id} and af.affiliation_id=a.affiliation_id;
+    </select>
+    <select id="getAuthorPapers" resultMap="Paper">
+        select p.paper_id, p.title, p.abstract, p.doi, p.citation, p.book_title, p.pages, p.publisher, p.year, p.url, p.time, p.bib_url, p.bib_source
+        from paper p, paper_author_relation pr
+        where p.paper_id=pr.paper_id and pr.author_id= #{author_id}
+        order by p.citation desc
+        limit #{offset}, 10
     </select>
     <resultMap id="Affiliation" type="com.example.ccf.po.Affiliation">
         <result column="affiliation_id" property="affiliation_id"></result>
@@ -15,5 +22,7 @@
         <result column="article_num" property="article_num"></result>
         <result column="article_citation_num" property="article_citation_num"></result>
         <result column="author_num" property="author_num"></result>
+    </resultMap>
+    <resultMap id="Paper" type="com.example.ccf.po.Paper">
     </resultMap>
 </mapper>

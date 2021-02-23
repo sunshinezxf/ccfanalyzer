@@ -1,6 +1,5 @@
 package com.example.ccf.vo;
 
-import com.example.ccf.po.Affiliation;
 
 public class AffiliationOmit {
 
@@ -24,4 +23,11 @@ public class AffiliationOmit {
         this.name = name;
     }
 
+    @Override
+    public String toString() {
+        return "AffiliationOmit{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

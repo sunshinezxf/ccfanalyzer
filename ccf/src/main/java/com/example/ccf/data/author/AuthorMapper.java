@@ -2,6 +2,7 @@ package com.example.ccf.data.author;
 
 import com.example.ccf.po.Affiliation;
 import com.example.ccf.po.Author;
+import com.example.ccf.po.Paper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -15,4 +16,6 @@ public interface AuthorMapper {
 
     List<Affiliation> getAuthorAffiliation(@Param("author_id")int author_id);
 
+    // index已经x10 -> offset
+    List<Paper> getAuthorPapers(@Param("author_id")int author_id, @Param("offset")int offset);
 }

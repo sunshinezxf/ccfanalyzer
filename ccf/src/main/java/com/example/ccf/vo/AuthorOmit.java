@@ -1,10 +1,14 @@
 package com.example.ccf.vo;
 
+import java.util.List;
+
 public class AuthorOmit {
 
     private int id;
 
     private String name;
+
+    private List<AffiliationOmit> affiliations;
 
     public int getId() {
         return id;
@@ -22,11 +26,20 @@ public class AuthorOmit {
         this.name = name;
     }
 
+    public List<AffiliationOmit> getAffiliations() {
+        return affiliations;
+    }
+
+    public void setAffiliations(List<AffiliationOmit> affiliations) {
+        this.affiliations = affiliations;
+    }
+
     @Override
     public String toString() {
-        return "Author{" +
+        return "AuthorOmit{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", affiliations=" + affiliations +
                 '}';
     }
 }
