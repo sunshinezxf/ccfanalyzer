@@ -8,9 +8,7 @@ public class AffiliationPortrait {
 
     private String name;
 
-    private String authors;
-
-    private String[] conferences;
+    private ConferenceOmit[] conferences;
 
     private int articleNum;
 
@@ -34,19 +32,11 @@ public class AffiliationPortrait {
         this.name = name;
     }
 
-    public String getAuthors() {
-        return authors;
-    }
-
-    public void setAuthors(String authors) {
-        this.authors = authors;
-    }
-
-    public String[] getConferences() {
+    public ConferenceOmit[] getConferences() {
         return conferences;
     }
 
-    public void setConferences(String[] conferences) {
+    public void setConferences(ConferenceOmit[] conferences) {
         this.conferences = conferences;
     }
 
@@ -76,10 +66,9 @@ public class AffiliationPortrait {
 
     @Override
     public String toString() {
-        return "affiliationPortrait{" +
+        return "AffiliationPortrait{" +
                 "affiliationId=" + affiliationId +
                 ", name='" + name + '\'' +
-                ", authors='" + authors + '\'' +
                 ", conferences=" + Arrays.toString(conferences) +
                 ", articleNum=" + articleNum +
                 ", articleCitationNum=" + articleCitationNum +

@@ -11,7 +11,7 @@ public class AuthorPortrait {
 
     private List<AffiliationOmit> affiliations;
 
-    private String[] conferences;
+    private ConferenceOmit[] conferences;
 
     private int articleNum;
 
@@ -41,11 +41,19 @@ public class AuthorPortrait {
         this.affiliations = affiliationOmits;
     }
 
-    public String[] getConferences() {
+    public List<AffiliationOmit> getAffiliations() {
+        return affiliations;
+    }
+
+    public void setAffiliations(List<AffiliationOmit> affiliations) {
+        this.affiliations = affiliations;
+    }
+
+    public ConferenceOmit[] getConferences() {
         return conferences;
     }
 
-    public void setConferences(String[] conferences) {
+    public void setConferences(ConferenceOmit[] conferences) {
         this.conferences = conferences;
     }
 

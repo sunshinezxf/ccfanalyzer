@@ -41,4 +41,9 @@ public class AffiliationServiceImpl implements AffiliationService {
     public ResponseVO getAffiliationRelatedPapers(int affiliationId,int index) {
         return null;
     }
+
+    @Override
+    public ResponseVO getAffiliationAuthors(int affiliationId, int index) {
+        return null;
+    }
 }

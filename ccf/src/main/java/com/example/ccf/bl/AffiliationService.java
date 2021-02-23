@@ -8,4 +8,6 @@ public interface AffiliationService {
 
     ResponseVO getAffiliationRelatedPapers(int affiliationId,int index);
 
+    ResponseVO getAffiliationAuthors(int affiliationId,int index);
+
 }

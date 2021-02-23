@@ -42,19 +42,24 @@ public class PortraitController {
         return conferenceService.getConferencePortrait(conferenceId);
     }
 
-    // TODO
+    // TODO sql
     @RequestMapping(value = "/author/papers",method = RequestMethod.GET)
     public ResponseVO authorRelatedPapers(int authorId,int index){
         return authorService.getAuthorRelatedPapers(authorId,index);
     }
 
     @RequestMapping(value = "/conference/papers",method = RequestMethod.GET)
-    public ResponseVO conferenceRelatedPapers(String name,int index){
-        return conferenceService.getConferenceRelatedPapers(1,index);
+    public ResponseVO conferenceRelatedPapers(int conferenceId,int index){
+        return conferenceService.getConferenceRelatedPapers(conferenceId,index);
     }
 
     @RequestMapping(value = "/affiliation/papers",method = RequestMethod.GET)
     public ResponseVO affiliationRelatedPapers(int affiliationId,int index){
-        return authorService.getAuthorRelatedPapers(affiliationId,index);
+        return affiliationService.getAffiliationRelatedPapers(affiliationId,index);
+    }
+
+    @RequestMapping(value = "/affiliation/authors",method = RequestMethod.GET)
+    public ResponseVO affiliationAuthors(int affiliationId,int index){
+        return affiliationService.getAffiliationAuthors(affiliationId,index);
     }
 }
