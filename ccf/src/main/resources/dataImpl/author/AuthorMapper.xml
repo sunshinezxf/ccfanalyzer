@@ -16,6 +16,12 @@
         order by p.citation desc
         limit #{offset}, 10
     </select>
+    <select id="getAuthorMainMeeting" resultMap="String">
+        select p.book_title, count(distinct p.paper_id) as count
+        from paper p, affiliation af , paper_author_relation pr
+        where p.paper_id=pr.paper_id and pr.author_id= #{author_id}
+        group by p.book_title order by count desc limit 0,5;
+    </select>
     <resultMap id="Affiliation" type="com.example.ccf.po.Affiliation">
         <result column="affiliation_id" property="affiliation_id"></result>
         <result column="affiliation" property="affiliation"></result>
@@ -24,5 +30,7 @@
         <result column="author_num" property="author_num"></result>
     </resultMap>
     <resultMap id="Paper" type="com.example.ccf.po.Paper">
+    </resultMap>
+    <resultMap id="String" type="java.lang.String">
     </resultMap>
 </mapper>

@@ -52,4 +52,11 @@ public class AuthorMapperTest {
         ResponseVO responseVO=authorService.getAuthorRelatedPapers(1,0);
         logger.info(responseVO.getContent().toString());
     }
+
+    @Test
+    public void getAuthorMainMeeting(){
+
+        List<String> meetings=authorMapper.getAuthorMainMeeting(1);
+        logger.info(meetings.toString());
+    }
 }

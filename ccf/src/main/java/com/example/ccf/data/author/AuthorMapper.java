@@ -18,4 +18,6 @@ public interface AuthorMapper {
 
     // index已经x10 -> offset
     List<Paper> getAuthorPapers(@Param("author_id")int author_id, @Param("offset")int offset);
+
+    List<String> getAuthorMainMeeting(@Param("author_id")int author_id);
 }

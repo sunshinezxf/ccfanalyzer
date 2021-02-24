@@ -1,6 +1,7 @@
 package com.example.ccf.blImpl.author;
 
 import com.example.ccf.bl.AuthorService;
+import com.example.ccf.blImpl.conference.ConferenceBlService;
 import com.example.ccf.blImpl.paper.PaperBlService;
 import com.example.ccf.data.author.AuthorMapper;
 import com.example.ccf.po.Affiliation;
@@ -17,11 +18,13 @@ public class AuthorServiceImpl implements AuthorService,AuthorBlService {
 
     private AuthorMapper authorMapper;
     private PaperBlService paperBlService;
+    private ConferenceBlService conferenceBlService;
 
     @Autowired
-    public void DI(AuthorMapper authorMapper,PaperBlService paperBlService){
+    public void DI(AuthorMapper authorMapper,PaperBlService paperBlService,ConferenceBlService conferenceBlService){
         this.authorMapper=authorMapper;
         this.paperBlService=paperBlService;
+        this.conferenceBlService=conferenceBlService;
     }
 
     @Override
@@ -38,7 +41,8 @@ public class AuthorServiceImpl implements AuthorService,AuthorBlService {
 
         authorPortrait.setAffiliationOmits(getAuthorAffiliation(authorId));
 
-        //TODO 主要参与会议的列表
+        List<String> meetings=authorMapper.getAuthorMainMeeting(authorId);
+        authorPortrait.setConferences(conferenceBlService.getConferenceOmit(meetings));
 
         return ResponseVO.buildSuccess(authorPortrait);
     }

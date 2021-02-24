@@ -1,6 +1,5 @@
 package com.example.ccf.vo;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class AuthorPortrait {
@@ -11,7 +10,7 @@ public class AuthorPortrait {
 
     private List<AffiliationOmit> affiliations;
 
-    private ConferenceOmit[] conferences;
+    private List<ConferenceOmit> conferences;
 
     private int articleNum;
 
@@ -49,11 +48,11 @@ public class AuthorPortrait {
         this.affiliations = affiliations;
     }
 
-    public ConferenceOmit[] getConferences() {
+    public List<ConferenceOmit> getConferences() {
         return conferences;
     }
 
-    public void setConferences(ConferenceOmit[] conferences) {
+    public void setConferences(List<ConferenceOmit> conferences) {
         this.conferences = conferences;
     }
 
@@ -79,7 +78,7 @@ public class AuthorPortrait {
                 "authorId=" + authorId +
                 ", name='" + name + '\'' +
                 ", affiliations=" + affiliations +
-                ", conferences=" + Arrays.toString(conferences) +
+                ", conferences=" + conferences +
                 ", articleNum=" + articleNum +
                 ", articleCitationNum=" + articleCitationNum +
                 '}';
