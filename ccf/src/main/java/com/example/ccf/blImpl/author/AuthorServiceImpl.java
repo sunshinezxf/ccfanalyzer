@@ -39,7 +39,7 @@ public class AuthorServiceImpl implements AuthorService,AuthorBlService {
         authorPortrait.setArticleNum(author.getArticle_num());
         authorPortrait.setArticleCitationNum(author.getArticle_citation_num());
 
-        authorPortrait.setAffiliationOmits(getAuthorAffiliation(authorId));
+        authorPortrait.setAffiliations(getAuthorAffiliation(authorId));
 
         List<String> meetings=authorMapper.getAuthorMainMeeting(authorId);
         authorPortrait.setConferences(conferenceBlService.getConferenceOmit(meetings));

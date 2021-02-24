@@ -32,14 +32,6 @@ public class AuthorPortrait {
         this.name = name;
     }
 
-    public List<AffiliationOmit> getAffiliationOmits() {
-        return affiliations;
-    }
-
-    public void setAffiliationOmits(List<AffiliationOmit> affiliationOmits) {
-        this.affiliations = affiliationOmits;
-    }
-
     public List<AffiliationOmit> getAffiliations() {
         return affiliations;
     }
