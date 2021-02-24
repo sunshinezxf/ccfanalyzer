@@ -22,6 +22,14 @@ public class Meeting {
 
     private String bib_source;
 
+    private int article_num;
+
+    private int article_citation_num;
+
+    private int author_num;
+
+    private int affiliation_num;
+
     public Integer getMeeting_id() {
         return meeting_id;
     }
@@ -102,6 +110,38 @@ public class Meeting {
         this.bib_source = bib_source;
     }
 
+    public int getArticle_num() {
+        return article_num;
+    }
+
+    public void setArticle_num(int article_num) {
+        this.article_num = article_num;
+    }
+
+    public int getArticle_citation_num() {
+        return article_citation_num;
+    }
+
+    public void setArticle_citation_num(int article_citation_num) {
+        this.article_citation_num = article_citation_num;
+    }
+
+    public int getAuthor_num() {
+        return author_num;
+    }
+
+    public void setAuthor_num(int author_num) {
+        this.author_num = author_num;
+    }
+
+    public int getAffiliation_num() {
+        return affiliation_num;
+    }
+
+    public void setAffiliation_num(int affiliation_num) {
+        this.affiliation_num = affiliation_num;
+    }
+
     @Override
     public String toString() {
         return "Meeting{" +
@@ -115,6 +155,10 @@ public class Meeting {
                 ", time='" + time + '\'' +
                 ", bib_url='" + bib_url + '\'' +
                 ", bib_source='" + bib_source + '\'' +
+                ", article_num=" + article_num +
+                ", article_citation_num=" + article_citation_num +
+                ", author_num=" + author_num +
+                ", affiliation_num=" + affiliation_num +
                 '}';
     }
 }

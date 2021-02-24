@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.ccf.data.segmentation.SegmentationMapper">
+    <select id="get_title" resultMap="SegmentationTitle">
+        select paper_id,title from paper where paper_id >= #{start_id}
+    </select>
+    <select id="get_authorInf" resultMap="AuthorInf">
+        select paper_id,author_id from paper_author_relation where paper_id >= #{start_id}
+    </select>
+    <select id="get_author" resultMap="Author">
+        select author_id,author from author
+    </select>
+    <select id="get_affiliation" resultMap="Affiliation">
+        select affiliation_id,affiliation from affiliation
+    </select>
+    <select id="get_relation" resultType="int">
+        select affiliation_id from  author_affiliation_relation where author_id =#{author_id}
+    </select>
+    <select id="get_keyword" resultMap="Keyword">
+        select paper_id, keyword_id from  paper_keyword_relation where paper_id >=#{start_id}
+    </select>
+    <select id="get_keywords" resultMap="Keywords">
+        select  keyword_id,keyword from   keyword
+    </select>
+
+    <insert id="insert_segmentation_title" parameterType="java.util.List">
+        insert into SegmentationTitle(segmentation,paper_id) values
+            <foreach collection="list" item="item" separator="," close=";">
+                (#{item.title},#{item.paper_id})
+            </foreach>
+    </insert>
+    <insert id="insert_authorInf" parameterType="java.util.List">
+        insert into SegmentationAuthorInf(author_id,affiliation_id,author,affiliation,paper_id) values
+        <foreach collection="list" item="item" separator="," close=";">
+            (#{item.author_id},#{item.affiliation_id},#{item.author},#{item.affiliation},#{item.paper_id})
+        </foreach>
+    </insert>
+    <insert id="insert_keyword" parameterType="java.util.List">
+        insert into SegmentationKeyword(keyword,paper_id) values
+        <foreach collection="list" item="item" separator="," close=";">
+            (#{item.keyword},#{item.paper_id})
+        </foreach>
+    </insert>
+    <resultMap id="SegmentationTitle" type="com.example.ccf.po.SegmentationTitle">
+        <result column="paper_id" property="paper_id"></result>
+        <result column="title" property="title"></result>
+    </resultMap>
+    <resultMap id="AuthorInf" type="com.example.ccf.po.AuthorInf">
+        <result column="paper_id" property="paper_id"></result>
+        <result column="author_id" property="author_id"></result>
+    </resultMap>
+    <resultMap id="Author" type="com.example.ccf.po.Author_Affiliation">
+        <result column="author_id" property="author_id"></result>
+        <result column="author" property="author"></result>
+    </resultMap>
+    <resultMap id="Affiliation" type="com.example.ccf.po.Author_Affiliation">
+        <result column="affiliation_id" property="affiliation_id"></result>
+        <result column="affiliation" property="affiliation"></result>
+    </resultMap>
+    <resultMap id="Keyword" type="com.example.ccf.po.KeywordInf">
+        <result column="paper_id" property="paper_id"></result>
+        <result column="keyword_id" property="keyword_id"></result>
+    </resultMap>
+    <resultMap id="Keywords" type="com.example.ccf.po.KeywordInf">
+        <result column="keyword_id" property="keyword_id"></result>
+        <result column="keyword" property="keyword"></result>
+    </resultMap>
+</mapper>
