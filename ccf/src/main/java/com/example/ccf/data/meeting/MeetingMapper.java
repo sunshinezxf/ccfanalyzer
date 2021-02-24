@@ -17,4 +17,6 @@ public interface MeetingMapper {
 
     // index已经x10 -> offset
     List<Paper> getMeetingPaper(@Param("meeting_id")int meeting_id, @Param("offset")int offset);
+
+    List<Meeting> getMeetingByTitle(@Param("titles")List<String> titles);
 }

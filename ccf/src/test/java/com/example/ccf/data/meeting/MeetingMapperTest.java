@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -36,5 +38,13 @@ public class MeetingMapperTest {
 
         ResponseVO responseVO=conferenceService.getConferenceRelatedPapers(1,0);
         logger.info(responseVO.getContent().toString());
+    }
+
+    @Test
+    public void getMeetingByTitle(){
+        List<String> titles= Arrays.asList("23", "{ISSTA} '20: 29th {ACM} {SIGSOFT} International Symposium on Software " +
+                "Testing and Analysis, Virtual Event, USA, July 18-22, 2020", "123123","qwe","wqerwqer");
+        List<Meeting> meetings=meetingMapper.getMeetingByTitle(titles);
+        logger.info(meetings.toString());
     }
 }

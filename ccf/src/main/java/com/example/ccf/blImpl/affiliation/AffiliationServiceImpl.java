@@ -1,16 +1,13 @@
 package com.example.ccf.blImpl.affiliation;
 
 import com.example.ccf.bl.AffiliationService;
-import com.example.ccf.blImpl.author.AuthorBlService;
+import com.example.ccf.blImpl.conference.ConferenceBlService;
 import com.example.ccf.blImpl.paper.PaperBlService;
 import com.example.ccf.data.affiliation.AffiliationMapper;
 import com.example.ccf.po.Affiliation;
 import com.example.ccf.po.Author;
 import com.example.ccf.po.Paper;
-import com.example.ccf.vo.AffiliationPortrait;
-import com.example.ccf.vo.AuthorOmit;
-import com.example.ccf.vo.RelatedPaper;
-import com.example.ccf.vo.ResponseVO;
+import com.example.ccf.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +19,13 @@ public class AffiliationServiceImpl implements AffiliationService {
 
     private AffiliationMapper affiliationMapper;
     private PaperBlService paperBlService;
+    private ConferenceBlService conferenceBlService;
 
     @Autowired
-    public void DI(AffiliationMapper affiliationMapper, PaperBlService paperBlService){
+    public void DI(AffiliationMapper affiliationMapper, PaperBlService paperBlService, ConferenceBlService conferenceBlService){
         this.affiliationMapper=affiliationMapper;
         this.paperBlService=paperBlService;
+        this.conferenceBlService=conferenceBlService;
     }
 
     @Override
@@ -42,7 +41,8 @@ public class AffiliationServiceImpl implements AffiliationService {
         affiliationPortrait.setArticleCitationNum(affiliation.getArticle_citation_num());
         affiliationPortrait.setAuthorNum(affiliation.getAuthor_num());
 
-        //TODO 主要参与会议的列表
+        List<String> titles=affiliationMapper.getAffiliationMainMeeting(affiliationId);
+        affiliationPortrait.setConferences(conferenceBlService.getConferenceOmit(titles));
 
         return ResponseVO.buildSuccess(affiliationPortrait);
     }

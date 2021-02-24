@@ -43,4 +43,11 @@ public class AffiliationMapperTest {
         List<Author> authors=affiliationMapper.getAffiliationAuthors(1,0);
         logger.info(authors.toString());
     }
+
+    @Test
+    public void getAffiliationMainMeeting(){
+
+        List<String> strings=affiliationMapper.getAffiliationMainMeeting(1);
+        logger.info(strings.toString());
+    }
 }

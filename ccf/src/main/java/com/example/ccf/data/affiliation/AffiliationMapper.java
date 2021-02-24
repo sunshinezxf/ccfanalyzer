@@ -20,4 +20,6 @@ public interface AffiliationMapper {
 
     // index已经x10 -> offset
     List<Author> getAffiliationAuthors(@Param("affiliation_id")int affiliation_id, @Param("offset")int offset);
+
+    List<String> getAffiliationMainMeeting(@Param("affiliation_id")int affiliation_id);
 }

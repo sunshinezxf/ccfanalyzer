@@ -8,10 +8,11 @@ import com.example.ccf.po.Paper;
 import com.example.ccf.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
-public class ConferenceServiceImpl implements ConferenceService {
+public class ConferenceServiceImpl implements ConferenceService,ConferenceBlService {
 
     private MeetingMapper meetingMapper;
     private PaperBlService paperBlService;
@@ -45,5 +46,23 @@ public class ConferenceServiceImpl implements ConferenceService {
         List<RelatedPaper> paperBriefInfoVOList=paperBlService.getRelatedPaper(papers);
 
         return ResponseVO.buildSuccess(paperBriefInfoVOList);
+    }
+
+    @Override
+    public List<ConferenceOmit> getConferenceOmit(List<String> titles) {
+
+        List<Meeting> meetings=meetingMapper.getMeetingByTitle(titles);
+
+        List<ConferenceOmit> ConferenceOmits=new LinkedList<>();
+        for(Meeting meeting:meetings){
+
+            ConferenceOmit conferenceOmit=new ConferenceOmit();
+            conferenceOmit.setConferenceId(meeting.getMeeting_id());
+            conferenceOmit.setName(meeting.getTitle());
+
+            ConferenceOmits.add(conferenceOmit);
+        }
+
+        return ConferenceOmits;
     }
 }

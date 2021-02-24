@@ -1,6 +1,7 @@
 package com.example.ccf.vo;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class AffiliationPortrait {
 
@@ -8,7 +9,7 @@ public class AffiliationPortrait {
 
     private String name;
 
-    private ConferenceOmit[] conferences;
+    private List<ConferenceOmit> conferences;
 
     private int articleNum;
 
@@ -32,11 +33,11 @@ public class AffiliationPortrait {
         this.name = name;
     }
 
-    public ConferenceOmit[] getConferences() {
+    public List<ConferenceOmit> getConferences() {
         return conferences;
     }
 
-    public void setConferences(ConferenceOmit[] conferences) {
+    public void setConferences(List<ConferenceOmit> conferences) {
         this.conferences = conferences;
     }
 
@@ -69,7 +70,7 @@ public class AffiliationPortrait {
         return "AffiliationPortrait{" +
                 "affiliationId=" + affiliationId +
                 ", name='" + name + '\'' +
-                ", conferences=" + Arrays.toString(conferences) +
+                ", conferences=" + conferences +
                 ", articleNum=" + articleNum +
                 ", articleCitationNum=" + articleCitationNum +
                 ", authorNum=" + authorNum +
