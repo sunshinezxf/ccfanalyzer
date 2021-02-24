@@ -592,7 +592,7 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
   .avatar-dropdown {
     display: flex;
     align-content: center;
