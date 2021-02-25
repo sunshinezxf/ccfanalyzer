@@ -1,11 +1,57 @@
 import pymysql
 
 
+def common_process(cursor, connect):
+    get_paper_num = '''
+    select count(*) from paper;
+    '''
+    get_author_num = '''
+    select count(*) from author
+    '''
+    get_meeting_num = '''
+    select count(*) from meeting
+    '''
+    get_affiliation_num = '''
+    select count(*) from affiliation
+    '''
+    get_citation_num = '''
+    select sum(citation) from paper
+    '''
+    update_statistic = '''
+    update statistic set paper_num = %s , author_num = %s , meeting_num = %s , affiliation_num = %s ,
+    citation_num = %s where statistic_id = 1;
+    '''
+
+    cursor.execute(get_paper_num)
+    paper_num = cursor.fetchall()[0][0]
+
+    cursor.execute(get_author_num)
+    author_num = cursor.fetchall()[0][0]
+
+    cursor.execute(get_meeting_num)
+    meeting_num = cursor.fetchall()[0][0]
+
+    cursor.execute(get_affiliation_num)
+    affiliation_num = cursor.fetchall()[0][0]
+
+    cursor.execute(get_citation_num)
+    citation_num = cursor.fetchall()[0][0]
+
+    cursor.execute(update_statistic, (paper_num, author_num, meeting_num, affiliation_num, citation_num))
+    connect.commit()
+
+
 def author_process(cursor, connect, authors):
-    get_article_num = '''select count(*) from paper_author_relation where author_id = %s'''
-    get_article_citation_num = '''select sum(p.citation) from paper p, paper_author_relation pr 
-    where pr.author_id = %s and p.paper_id=pr.paper_id;'''
-    update_author = '''update author set article_num = %s , article_citation_num = %s where author_id = %s;'''
+    get_article_num = '''
+    select count(*) from paper_author_relation where author_id = %s
+    '''
+    get_article_citation_num = '''
+    select sum(p.citation) from paper p, paper_author_relation pr 
+    where pr.author_id = %s and p.paper_id=pr.paper_id;
+    '''
+    update_author = '''
+    update author set article_num = %s , article_citation_num = %s where author_id = %s;
+    '''
 
     for author in authors:
         cursor.execute(get_article_num, author[0])
@@ -125,6 +171,7 @@ if __name__ == '__main__':
         author_process(cursor, connect, authors)
         affiliation_process(cursor, connect)
         meeting_process(cursor, connect)
+        common_process(cursor, connect)
 
         cursor.close()
         connect.close()
