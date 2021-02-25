@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/portrait")
+@CrossOrigin
 public class PortraitController {
 
     private AffiliationService affiliationService;
@@ -22,7 +23,6 @@ public class PortraitController {
         this.conferenceService=conferenceService;
     }
 
-    @CrossOrigin
     @RequestMapping(value = "/author/{authorId}",method = RequestMethod.GET)
     public ResponseVO authorPortrait(@PathVariable int authorId){
         return authorService.getAuthorPortrait(authorId);
