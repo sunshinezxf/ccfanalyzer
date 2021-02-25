@@ -681,7 +681,7 @@
 // import {
 //   getStatistics, getTopPapers, getTopAffiliations, getTopAuthors, getCommonSearchResult, getAdvancedSearchResult, adminLogin,
 //   getAffiliationActivityRanking, getAuthorActivityRanking, getResearchDirectionPopularityRanking
-// } from '../../api/home/HomePageAPI'
+// } from '../../api/home/Home'
 
 export default {
   data () {

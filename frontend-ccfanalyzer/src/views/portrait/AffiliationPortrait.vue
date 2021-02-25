@@ -299,7 +299,7 @@
 </template>
 
 <script>
-// import {getCommonSearchResult, getAdvancedSearchResult} from '../../api/home/HomePageAPI'
+// import {getCommonSearchResult, getAdvancedSearchResult} from '../../api/home/Home'
 // import {getAffiliationPortrait, getAffiliationPaper, getAffiliationValue} from '../../api/portrait/AffiliationPortraitAPI'
 
 export default {

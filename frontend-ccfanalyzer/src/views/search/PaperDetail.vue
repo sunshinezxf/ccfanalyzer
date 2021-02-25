@@ -298,7 +298,7 @@
 
 <script>
 // import {getPaperDetail} from '../../api/search/PaperDetailAPI'
-// import {getAdvancedSearchResult, getCommonSearchResult} from '../../api/home/HomePageAPI'
+// import {getAdvancedSearchResult, getCommonSearchResult} from '../../api/home/Home'
 export default {
   name: 'PaperDetail',
   data () {

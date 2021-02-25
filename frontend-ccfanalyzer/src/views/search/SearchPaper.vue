@@ -195,7 +195,7 @@
 <script>
 // import {
 //   getCommonSearchResult, getAdvancedSearchResult
-// } from '../../api/home/HomePageAPI'
+// } from '../../api/home/Home'
 export default {
 
   data () {
