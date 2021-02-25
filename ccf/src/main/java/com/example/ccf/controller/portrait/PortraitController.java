@@ -5,19 +5,14 @@ import com.example.ccf.bl.AuthorService;
 import com.example.ccf.bl.ConferenceService;
 import com.example.ccf.vo.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/portrait")
 public class PortraitController {
 
     private AffiliationService affiliationService;
-
     private AuthorService authorService;
-
     private ConferenceService conferenceService;
 
     @Autowired
@@ -27,6 +22,7 @@ public class PortraitController {
         this.conferenceService=conferenceService;
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/author/{authorId}",method = RequestMethod.GET)
     public ResponseVO authorPortrait(@PathVariable int authorId){
         return authorService.getAuthorPortrait(authorId);
