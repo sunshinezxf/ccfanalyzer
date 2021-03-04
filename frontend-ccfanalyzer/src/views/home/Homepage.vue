@@ -93,14 +93,16 @@
 
       <!--普通搜索-->
       <div style="text-align: center;" v-if="searchRadio==='1'">
-        <el-select v-model="commonSearchTypeValue" clearable placeholder="All" style="opacity:80%; width: 10%">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
+
+        <el-select v-model="commonSearchTypeValue" clearable placeholder="All"  style="opacity:80%; width: 10%;text-align: left;position:relative; z-index:9999;" :popper-append-to-body="false" >
+        <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+        </el-option>
+
+      </el-select>
         <el-input
           class="common_input"
           style="opacity:80%;width:40%;margin-top: 4%"
@@ -121,7 +123,7 @@
         <div style="text-align: center;">
           <el-row>
             <el-col :span="12" style="text-align: center;">
-              <el-select style="opacity:80%;width: 45%;margin-top: 6%; margin-left: 45%" v-model="firstType" clearable placeholder="TYPE">
+              <el-select style="opacity:80%;width: 45%;margin-top: 6%; margin-left: 45%;text-align: left;position:relative; z-index:9999;" :popper-append-to-body="false" v-model="firstType" clearable placeholder="TYPE">
                 <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -148,7 +150,7 @@
         <div style="text-align: center;" v-for="(sc_item, index) in searchContexts" v-bind:key="index">
           <el-row v-show="sc_item.isShow">
             <el-col :span="12" style="text-align: center;">
-              <el-select style="opacity:80%;width: 45%; margin-left: 45%" v-model="sc_item.type" clearable placeholder="TYPE">
+              <el-select style="opacity:80%;width: 45%; margin-left: 45%;text-align: left;position:relative; z-index:9999;" :popper-append-to-body="false" v-model="sc_item.type" clearable placeholder="TYPE">
                 <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -185,7 +187,7 @@
 
             </el-col>
             <el-col :span="12" style="text-align: center;">
-              <el-select style="opacity:80%;width: 40%;margin-right:50%;" v-model="ase_icse_type" clearable placeholder="Conference">
+              <el-select style="opacity:80%;width: 40%;margin-right:50%;text-align: left;position:relative; z-index:9999;" :popper-append-to-body="false" v-model="ase_icse_type" clearable placeholder="Conference">
                 <el-option
                   v-for="item in options1"
                   :key="item.value"
@@ -678,15 +680,15 @@
 </template>
 
 <script>
-// import {
-//   getStatistics, getTopPapers, getTopAffiliations, getTopAuthors, getCommonSearchResult, getAdvancedSearchResult, adminLogin,
-//   getAffiliationActivityRanking, getAuthorActivityRanking, getResearchDirectionPopularityRanking
-// } from '../../api/home/Home'
+import {
+  getStatistics,getCommonSearchResult, getAdvancedSearchResult,
+  //   getAffiliationActivityRanking, getAuthorActivityRanking, getResearchDirectionPopularityRanking, getTopPapers, getTopAffiliations, getTopAuthors,  adminLogin,
+} from '../../API/Home/HomePageAPIs'
 
 export default {
-  data () {
+  data() {
     return {
-      user:{
+      user: {
         login: true,
         logout: false,
         username: 'yry',
@@ -808,52 +810,52 @@ export default {
     }
   },
   methods: {
-    login () {
-    //   if (this.username === '') {
-    //     this.$message({
-    //       message: 'Please Enter Username',
-    //       center: true
-    //     })
-    //   } else if (this.password === '') {
-    //     this.$message({
-    //       message: 'Please Enter Password',
-    //       center: true
-    //     })
-    //   } else {
-    //     adminLogin({
-    //       username: this.username,
-    //       password: this.password
-    //     }).then(res => {
-    //       if (res.status.code === '0000') {
-    //         localStorage.setItem('Flag', 'isLogin')
-    //         this.$message.success({
-    //           message: 'Login Successful',
-    //           center: true
-    //         })
-    //         setTimeout(function () {
-    //           this.$router.push({
-    //             name: 'UploadFile'
-    //           })
-    //         }.bind(this), 500)
-    //       } else {
-    //         this.$message.error({
-    //           message: res.status.msg,
-    //           center: true
-    //         })
-    //       }
-    //     }).catch(err => {
-    //       this.$message.error({
-    //         message: err.toString(),
-    //         center: true
-    //       })
-    //     })
-    //   }
+    login() {
+      //   if (this.username === '') {
+      //     this.$message({
+      //       message: 'Please Enter Username',
+      //       center: true
+      //     })
+      //   } else if (this.password === '') {
+      //     this.$message({
+      //       message: 'Please Enter Password',
+      //       center: true
+      //     })
+      //   } else {
+      //     adminLogin({
+      //       username: this.username,
+      //       password: this.password
+      //     }).then(res => {
+      //       if (res.status.code === '0000') {
+      //         localStorage.setItem('Flag', 'isLogin')
+      //         this.$message.success({
+      //           message: 'Login Successful',
+      //           center: true
+      //         })
+      //         setTimeout(function () {
+      //           this.$router.push({
+      //             name: 'UploadFile'
+      //           })
+      //         }.bind(this), 500)
+      //       } else {
+      //         this.$message.error({
+      //           message: res.status.msg,
+      //           center: true
+      //         })
+      //       }
+      //     }).catch(err => {
+      //       this.$message.error({
+      //         message: err.toString(),
+      //         center: true
+      //       })
+      //     })
+      //   }
     },
-    toPercent (point) {
+    toPercent(point) {
       var str = Number(point).toFixed(2)
       return str
     },
-    addSearchBox (index) {
+    addSearchBox(index) {
       if (this.searchCount <= 4) {
         this.searchCount++
         for (var i = 0; i < this.searchContexts.length; i++) {
@@ -868,7 +870,7 @@ export default {
         this.putAddIcon()
       }
     },
-    deleteSearchBox (index) {
+    deleteSearchBox(index) {
       this.searchCount--
       this.searchContexts[index].isShow = false
       this.searchContexts[index].value = ''
@@ -878,7 +880,7 @@ export default {
         this.putAddIcon()
       }
     },
-    putAddIcon () {
+    putAddIcon() {
       for (var i = this.searchContexts.length - 1; i >= 0; i--) {
         if (this.searchContexts[i].isShow) {
           this.searchContexts[i].isLastOne = true
@@ -886,7 +888,7 @@ export default {
         }
       }
     },
-    loadData () {
+    loadData() {
       this.loadStatisticsNums()
       this.loadTopAffiliations()
       this.loadTopAuthors()
@@ -896,305 +898,308 @@ export default {
       this.loadRankingAuthor()
       this.loadRankingReserchDirection()
     },
-    loadStatisticsNums () {
-      // getStatistics().then(res => {
-      //   if (res.status.code === '0000') {
-      //     this.statisticsNums.authorNum = (res.data.authorNum).toLocaleString('en-US')
-      //     this.statisticsNums.affiliationNum = (res.data.affiliationNum).toLocaleString('en-US')
-      //     this.statisticsNums.paperNum = (res.data.paperNum).toLocaleString('en-US')
-      //     this.statisticsNums.allArticleCitationCount = (res.data.allArticleCitationCount).toLocaleString('en-US')
-      //   } else {
-      //     this.$message.error({
-      //       message: res.status.msg,
-      //       center: true
-      //     })
-      //   }
-      // }).catch(error => console.log(error))
-      this.statisticsNums.authorNum = (124).toLocaleString('en-US')
-      this.statisticsNums.affiliationNum = (45564).toLocaleString('en-US')
-      this.statisticsNums.paperNum = (342).toLocaleString('en-US')
-      this.statisticsNums.allArticleCitationCount = (453).toLocaleString('en-US')
+    loadStatisticsNums() {
+      getStatistics().then(res => {
+        console.log("fdsa")
+        console.log(res.content.authorNum)
+        if (res.success) {
+          this.statisticsNums.authorNum = (res.content.authorNum).toLocaleString('en-US')
+          this.statisticsNums.affiliationNum = (res.content.affiliationNum).toLocaleString('en-US')
+          this.statisticsNums.paperNum = (res.content.paperNum).toLocaleString('en-US')
+          this.statisticsNums.allArticleCitationCount = (res.content.allArticleCitationCount).toLocaleString('en-US')
+        } else {
+          this.$message.error({
+            message: res.status.msg,
+            center: true
+          })
+        }
+      }).catch(error => console.log(error))
+      // this.statisticsNums.authorNum = (124).toLocaleString('en-US')
+      // this.statisticsNums.affiliationNum = (45564).toLocaleString('en-US')
+      // this.statisticsNums.paperNum = (342).toLocaleString('en-US')
+      // this.statisticsNums.allArticleCitationCount = (453).toLocaleString('en-US')
     },
-    loadTopAffiliations () {
-    //   getTopAffiliations().then(res => {
-    //     if (res.status.code === '0000') {
-    //       this.topAffiliationList = res.data
-    //       this.articleNumMost_affiliation = this.topAffiliationList[0].articleNum
-    //     } else {
-    //       this.$message.error({
-    //         message: res.status.msg,
-    //         center: true
-    //       })
-    //     }
-    //   }).catch(error => console.log(error))
+    loadTopAffiliations() {
+      //   getTopAffiliations().then(res => {
+      //     if (res.status.code === '0000') {
+      //       this.topAffiliationList = res.data
+      //       this.articleNumMost_affiliation = this.topAffiliationList[0].articleNum
+      //     } else {
+      //       this.$message.error({
+      //         message: res.status.msg,
+      //         center: true
+      //       })
+      //     }
+      //   }).catch(error => console.log(error))
     },
-    loadTopAuthors () {
-    //   getTopAuthors().then(res => {
-    //     if (res.status.code === '0000') {
-    //       this.topAuthorList = res.data
-    //       this.articleNumMost_author = this.topAuthorList[0].articleNum
-    //     } else {
-    //       this.$message.error({
-    //         message: res.status.msg,
-    //         center: true
-    //       })
-    //     }
-    //   }).catch(error => console.log(error))
+    loadTopAuthors() {
+      //   getTopAuthors().then(res => {
+      //     if (res.status.code === '0000') {
+      //       this.topAuthorList = res.data
+      //       this.articleNumMost_author = this.topAuthorList[0].articleNum
+      //     } else {
+      //       this.$message.error({
+      //         message: res.status.msg,
+      //         center: true
+      //       })
+      //     }
+      //   }).catch(error => console.log(error))
     },
-    loadTopPapers () {
-    //   getTopPapers().then(res => {
-    //     if (res.status.code === '0000') {
-    //       this.topPaperList = res.data
-    //       this.timedCitedMost = this.topPaperList[0].articleCitationCount
-    //     } else {
-    //       this.$message.error({
-    //         message: res.status.msg,
-    //         center: true
-    //       })
-    //     }
-    //   }).catch(error => console.log(error))
+    loadTopPapers() {
+      //   getTopPapers().then(res => {
+      //     if (res.status.code === '0000') {
+      //       this.topPaperList = res.data
+      //       this.timedCitedMost = this.topPaperList[0].articleCitationCount
+      //     } else {
+      //       this.$message.error({
+      //         message: res.status.msg,
+      //         center: true
+      //       })
+      //     }
+      //   }).catch(error => console.log(error))
     },
-    loadRankingAffiliation () {
-    //   getAffiliationActivityRanking().then(res => {
-    //     if (res.status.code === '0000') {
-    //       this.ranking2s[0].contents5 = res.data
-    //     } else {
-    //       this.$message.error({
-    //         message: res.status.msg,
-    //         center: true
-    //       })
-    //     }
-    //   }).catch(error => console.log(error))
+    loadRankingAffiliation() {
+      //   getAffiliationActivityRanking().then(res => {
+      //     if (res.status.code === '0000') {
+      //       this.ranking2s[0].contents5 = res.data
+      //     } else {
+      //       this.$message.error({
+      //         message: res.status.msg,
+      //         center: true
+      //       })
+      //     }
+      //   }).catch(error => console.log(error))
     },
-    loadRankingAuthor () {
-    //   getAuthorActivityRanking().then(res => {
-    //     if (res.status.code === '0000') {
-    //       this.ranking2s[1].contents5 = res.data
-    //     } else {
-    //       this.$message.error({
-    //         message: res.status.msg,
-    //         center: true
-    //       })
-    //     }
-    //   }).catch(error => console.log(error))
+    loadRankingAuthor() {
+      //   getAuthorActivityRanking().then(res => {
+      //     if (res.status.code === '0000') {
+      //       this.ranking2s[1].contents5 = res.data
+      //     } else {
+      //       this.$message.error({
+      //         message: res.status.msg,
+      //         center: true
+      //       })
+      //     }
+      //   }).catch(error => console.log(error))
     },
-    loadRankingReserchDirection () {
-    //   getResearchDirectionPopularityRanking().then(res => {
-    //     if (res.status.code === '0000') {
-    //       this.ranking2s[2].contents5 = res.data
-    //     } else {
-    //       this.$message.error({
-    //         message: res.status.msg,
-    //         center: true
-    //       })
-    //     }
-    //   }).catch(error => console.log(error))
-     },
-    commonSearch () {
-    //   if (this.searching) {
-    //     return
-    //   }
-    //   if (this.commonInput !== '') {
-    //     this.searching = true
-    //     let paperList = []
-    //     let total = 0
-    //     if (this.commonSearchTypeValue === '') { // type为All
-    //       getCommonSearchResult(this.commonInput, 0).then(res => {
-    //         if (res.status.code === '0000') {
-    //           paperList = res.data.paperBriefInfoVOList
-    //           total = res.data.totalNum
-    //           this.searching = false
-    //           this.$router.push({
-    //             name: 'SearchPaper',
-    //             query: {
-    //               papers: JSON.stringify(paperList),
-    //               totalNum: total,
-    //               content: this.commonInput,
-    //               kind: '0'
-    //             }
-    //           })
-    //         } else {
-    //           this.searching = false
-    //           this.$message.error({
-    //             message: res.status.msg,
-    //             center: true
-    //           })
-    //         }
-    //       }).catch(error => console.log(error))
-    //     } else { // type有值
-    //       if (this.commonSearchTypeValue === 'author') {
-    //         this.advSearchForm.authors = [this.commonInput]
-    //         let paperList = []
-    //         let total = 0
-    //         getAdvancedSearchResult(this.advSearchForm).then(res => {
-    //           if (res.status.code === '0000') {
-    //             paperList = res.data.paperBriefInfoVOList
-    //             total = res.data.totalNum
-    //             this.searching = false
-    //             this.$router.push({
-    //               name: 'SearchPaper',
-    //               query: {
-    //                 papers: JSON.stringify(paperList),
-    //                 totalNum: total,
-    //                 content: this.advSearchForm,
-    //                 kind: '1'
-    //               }
-    //             })
-    //           } else {
-    //             this.searching = false
-    //             this.$message.error({
-    //               message: res.status.msg,
-    //               center: true
-    //             })
-    //           }
-    //         }).catch(error => console.log(error))
-    //       } else if (this.commonSearchTypeValue === 'affiliation') {
-    //         this.advSearchForm.affiliations = [this.commonInput]
-    //         let paperList = []
-    //         let total = 0
-    //         getAdvancedSearchResult(this.advSearchForm).then(res => {
-    //           if (res.status.code === '0000') {
-    //             paperList = res.data.paperBriefInfoVOList
-    //             total = res.data.totalNum
-    //             this.searching = false
-    //             this.$router.push({
-    //               name: 'SearchPaper',
-    //               query: {
-    //                 papers: JSON.stringify(paperList),
-    //                 totalNum: total,
-    //                 content: this.advSearchForm,
-    //                 kind: '1'
-    //               }
-    //             })
-    //           } else {
-    //             this.searching = false
-    //             this.$message.error({
-    //               message: res.status.msg,
-    //               center: true
-    //             })
-    //           }
-    //         }).catch(error => console.log(error))
-    //       } else if (this.commonSearchTypeValue === 'keyword') {
-    //         this.advSearchForm.keywords = [this.commonInput]
-    //         let paperList = []
-    //         let total = 0
-    //         getAdvancedSearchResult(this.advSearchForm).then(res => {
-    //           if (res.status.code === '0000') {
-    //             paperList = res.data.paperBriefInfoVOList
-    //             total = res.data.totalNum
-    //             this.searching = false
-    //             this.$router.push({
-    //               name: 'SearchPaper',
-    //               query: {
-    //                 papers: JSON.stringify(paperList),
-    //                 totalNum: total,
-    //                 content: this.advSearchForm,
-    //                 kind: '1'
-    //               }
-    //             })
-    //           } else {
-    //             this.searching = false
-    //             this.$message.error({
-    //               message: res.status.msg,
-    //               center: true
-    //             })
-    //           }
-    //         }).catch(error => console.log(error))
-    //       }
-    //     }
-    //   } else {
-    //     this.$message({
-    //       message: 'Please Enter Something!',
-    //       center: true
-    //     })
-    //   }
+    loadRankingReserchDirection() {
+      //   getResearchDirectionPopularityRanking().then(res => {
+      //     if (res.status.code === '0000') {
+      //       this.ranking2s[2].contents5 = res.data
+      //     } else {
+      //       this.$message.error({
+      //         message: res.status.msg,
+      //         center: true
+      //       })
+      //     }
+      //   }).catch(error => console.log(error))
     },
-    advancedSearch () {
-    //   // let isnull = true
-    //   this.searching_advanced = true
-    //   let noType = false // 有输入没选类型
-    //   let noValue = false // 选了类型没输入值
-    //   if (this.firstInput !== '') {
-    //     // isnull = false
-    //     if (this.firstType === '') {
-    //       noType = true
-    //     }
-    //   } else if (this.firstType !== '') {
-    //     noValue = true
-    //   }
-    //   for (var i = 0; i < this.searchContexts.length; i++) {
-    //     if (this.searchContexts[i].value !== '') {
-    //       // isnull = false
-    //       if (this.searchContexts[i].type === '') {
-    //         noType = true
-    //       }
-    //     } else if (this.searchContexts[i].type !== '') {
-    //       noValue = true
-    //     }
-    //   }
-    //   if (noType) {
-    //     this.searching_advanced = false
-    //     this.$message({
-    //       message: 'Please Choose Type!',
-    //       center: true
-    //     })
-    //   } else if (noValue) {
-    //     this.searching_advanced = false
-    //     this.$message({
-    //       message: 'Please Enter Something!',
-    //       center: true
-    //     })
-    //   } else {
-    //     this.advSearchForm.startYear = this.value_year[0]
-    //     this.advSearchForm.endYear = this.value_year[1]
-    //     this.advSearchForm.conferenceName = this.ase_icse_type
-    //     if (this.firstInput !== '') {
-    //       if (this.firstType === 'author') {
-    //         this.advSearchForm.authors.push(this.firstInput)
-    //       } else if (this.firstType === 'affiliation') {
-    //         this.advSearchForm.affiliations.push(this.firstInput)
-    //       } else if (this.firstType === 'keyword') {
-    //         this.advSearchForm.keywords.push(this.firstInput)
-    //       }
-    //     }
-    //     for (var j = 0; j < this.searchContexts.length; j++) {
-    //       if (this.searchContexts[j].value !== '') {
-    //         if (this.searchContexts[j].type === 'author') {
-    //           this.advSearchForm.authors.push(this.searchContexts[j].value)
-    //         } else if (this.searchContexts[j].type === 'affiliation') {
-    //           this.advSearchForm.affiliations.push(this.searchContexts[j].value)
-    //         } else if (this.searchContexts[j].type === 'keyword') {
-    //           this.advSearchForm.keywords.push(this.searchContexts[j].value)
-    //         }
-    //       }
-    //     }
-    //     let paperList = []
-    //     let total = 0
-    //     getAdvancedSearchResult(this.advSearchForm).then(res => {
-    //       if (res.status.code === '0000') {
-    //         paperList = res.data.paperBriefInfoVOList
-    //         total = res.data.totalNum
-    //         this.searching_advanced = false
-    //         this.$router.push({
-    //           name: 'SearchPaper',
-    //           query: {
-    //             papers: JSON.stringify(paperList),
-    //             totalNum: total,
-    //             content: this.advSearchForm,
-    //             kind: '1'
-    //           }
-    //         })
-    //       } else {
-    //         this.searching_advanced = false
-    //         this.$message.error({
-    //           message: res.status.msg,
-    //           center: true
-    //         })
-    //       }
-    //     }).catch(error => console.log(error))
-     }
+    commonSearch() {
+      if (this.searching) {
+        return
+      }
+      if (this.commonInput !== '') {
+        this.searching = true
+        let paperList = []
+        let total = 0
+        if (this.commonSearchTypeValue === '') { // type为All
+          getCommonSearchResult(this.commonInput, 0).then(res => {
+            if (res.status.code === '0000') {
+              paperList = res.data.paperBriefInfoVOList
+              total = res.data.totalNum
+              this.searching = false
+              this.$router.push({
+                name: 'SearchPaper',
+                query: {
+                  papers: JSON.stringify(paperList),
+                  totalNum: total,
+                  content: this.commonInput,
+                  kind: '0'
+                }
+              })
+            } else {
+              this.searching = false
+              this.$message.error({
+                message: res.status.msg,
+                center: true
+              })
+            }
+          }).catch(error => console.log(error))
+        } else { // type有值
+          if (this.commonSearchTypeValue === 'author') {
+            this.advSearchForm.authors = [this.commonInput]
+            let paperList = []
+            let total = 0
+            getAdvancedSearchResult(this.advSearchForm).then(res => {
+              if (res.status.code === '0000') {
+                paperList = res.data.paperBriefInfoVOList
+                total = res.data.totalNum
+                this.searching = false
+                this.$router.push({
+                  name: 'SearchPaper',
+                  query: {
+                    papers: JSON.stringify(paperList),
+                    totalNum: total,
+                    content: this.advSearchForm,
+                    kind: '1'
+                  }
+                })
+              } else {
+                this.searching = false
+                this.$message.error({
+                  message: res.status.msg,
+                  center: true
+                })
+              }
+            }).catch(error => console.log(error))
+          } else if (this.commonSearchTypeValue === 'affiliation') {
+            this.advSearchForm.affiliations = [this.commonInput]
+            let paperList = []
+            let total = 0
+            getAdvancedSearchResult(this.advSearchForm).then(res => {
+              if (res.status.code === '0000') {
+                paperList = res.data.paperBriefInfoVOList
+                total = res.data.totalNum
+                this.searching = false
+                this.$router.push({
+                  name: 'SearchPaper',
+                  query: {
+                    papers: JSON.stringify(paperList),
+                    totalNum: total,
+                    content: this.advSearchForm,
+                    kind: '1'
+                  }
+                })
+              } else {
+                this.searching = false
+                this.$message.error({
+                  message: res.status.msg,
+                  center: true
+                })
+              }
+            }).catch(error => console.log(error))
+          } else if (this.commonSearchTypeValue === 'keyword') {
+            this.advSearchForm.keywords = [this.commonInput]
+            let paperList = []
+            let total = 0
+            getAdvancedSearchResult(this.advSearchForm).then(res => {
+              if (res.status.code === '0000') {
+                paperList = res.data.paperBriefInfoVOList
+                total = res.data.totalNum
+                this.searching = false
+                this.$router.push({
+                  name: 'SearchPaper',
+                  query: {
+                    papers: JSON.stringify(paperList),
+                    totalNum: total,
+                    content: this.advSearchForm,
+                    kind: '1'
+                  }
+                })
+              } else {
+                this.searching = false
+                this.$message.error({
+                  message: res.status.msg,
+                  center: true
+                })
+              }
+            }).catch(error => console.log(error))
+          }
+        }
+      } else {
+        this.$message({
+          message: 'Please Enter Something!',
+          center: true
+        })
+      }
+    },
+    advancedSearch() {
+      // let isnull = true
+      this.searching_advanced = true
+      let noType = false // 有输入没选类型
+      let noValue = false // 选了类型没输入值
+      if (this.firstInput !== '') {
+        // isnull = false
+        if (this.firstType === '') {
+          noType = true
+        }
+      } else if (this.firstType !== '') {
+        noValue = true
+      }
+      for (var i = 0; i < this.searchContexts.length; i++) {
+        if (this.searchContexts[i].value !== '') {
+          // isnull = false
+          if (this.searchContexts[i].type === '') {
+            noType = true
+          }
+        } else if (this.searchContexts[i].type !== '') {
+          noValue = true
+        }
+      }
+      if (noType) {
+        this.searching_advanced = false
+        this.$message({
+          message: 'Please Choose Type!',
+          center: true
+        })
+      } else if (noValue) {
+        this.searching_advanced = false
+        this.$message({
+          message: 'Please Enter Something!',
+          center: true
+        })
+      } else {
+        this.advSearchForm.startYear = this.value_year[0]
+        this.advSearchForm.endYear = this.value_year[1]
+        this.advSearchForm.conferenceName = this.ase_icse_type
+        if (this.firstInput !== '') {
+          if (this.firstType === 'author') {
+            this.advSearchForm.authors.push(this.firstInput)
+          } else if (this.firstType === 'affiliation') {
+            this.advSearchForm.affiliations.push(this.firstInput)
+          } else if (this.firstType === 'keyword') {
+            this.advSearchForm.keywords.push(this.firstInput)
+          }
+        }
+        for (var j = 0; j < this.searchContexts.length; j++) {
+          if (this.searchContexts[j].value !== '') {
+            if (this.searchContexts[j].type === 'author') {
+              this.advSearchForm.authors.push(this.searchContexts[j].value)
+            } else if (this.searchContexts[j].type === 'affiliation') {
+              this.advSearchForm.affiliations.push(this.searchContexts[j].value)
+            } else if (this.searchContexts[j].type === 'keyword') {
+              this.advSearchForm.keywords.push(this.searchContexts[j].value)
+            }
+          }
+        }
+        let paperList = []
+        let total = 0
+        getAdvancedSearchResult(this.advSearchForm).then(res => {
+          if (res.status.code === '0000') {
+            paperList = res.data.paperBriefInfoVOList
+            total = res.data.totalNum
+            this.searching_advanced = false
+            this.$router.push({
+              name: 'SearchPaper',
+              query: {
+                papers: JSON.stringify(paperList),
+                totalNum: total,
+                content: this.advSearchForm,
+                kind: '1'
+              }
+            })
+          } else {
+            this.searching_advanced = false
+            this.$message.error({
+              message: res.status.msg,
+              center: true
+            })
+          }
+        }).catch(error => console.log(error))
+      }
 
 
+    }
   },
   mounted: function () {
     // this.$store.dispatch('flushFun')
@@ -1204,7 +1209,6 @@ export default {
 </script>
 
 <style scoped >
-
   .el-row {
     margin-bottom: 20px;
   &:last-child {
@@ -1340,10 +1344,10 @@ export default {
   .funny_card:hover{
     box-shadow: 0 2px 12px 10px rgba(0, 0, 0, 0.1);
   }
-</style>
 
-<style>
-  .el-select-dropdown{
+  .el-select-dropdown__item span{
     opacity: 80%;
   }
 </style>
+
+

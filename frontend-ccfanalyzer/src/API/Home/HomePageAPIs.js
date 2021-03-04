@@ -1,9 +1,8 @@
 import axios from 'axios'
 
+
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
-axios.defaults.baseURL = process.env.NODE_ENV === 'production'
-  ? 'http://47.97.288.185:8080'
-  : 'http://localhost:3180'
+axios.defaults.baseURL = 'http://47.97.228.185:8080'
 
 // 获得论文相关的统计数据
 export const getStatistics = () => {
