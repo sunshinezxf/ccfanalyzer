@@ -17,7 +17,9 @@ export const getCommonSearchResult = (searchMessage, index) => {
 
 // 高级搜索论文
 export const getAdvancedSearchResult = (advSearchMessage) => {
-  return axios.post('/paper/search/advanced', advSearchMessage).then(res => res.data)
+  console.log("fdsa")
+  console.log(advSearchMessage.authors)
+  return axios.get('/paper/search/advanced?authors='+advSearchMessage.authors+'&affiliations='+advSearchMessage.affiliations+'&startYear='+advSearchMessage.startYear+'&endYear='+advSearchMessage.endYear+'&conferenceName='+advSearchMessage.conferenceName+'&keywords='+advSearchMessage.keywords+'&index='+advSearchMessage.index).then(res => res.data)
 }
 
 // 管理员登录

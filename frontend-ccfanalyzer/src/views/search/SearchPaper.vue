@@ -86,7 +86,7 @@
       <el-row>
         <el-col :span="4">
           <el-row>
-            <div class="OASIS" id="OASIS" style="font-weight:bold;color:white;font-size: 40px;text-align:center;margin-top: 12%"
+            <div class="OASIS" id="OASIS" style="font-weight:bold;color:white;font-size: 40px;text-align:center;margin-top: 4%"
                  @mouseenter="highlight" @mouseout="redoHightLight" @click="toHomepage">
               CCF ANALYZER
             </div>
@@ -99,7 +99,7 @@
         <el-col :span="20">
         <!--普通搜索-->
         <div style="text-align: center;">
-          <el-select v-model="commonSearchTypeValue" clearable placeholder="All" style="opacity:80%; width: 10%">
+          <el-select v-model="commonSearchTypeValue" clearable placeholder="All" style="opacity:80%; width: 10%;text-align: left;position:relative; z-index:9999;" :popper-append-to-body="false">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -193,9 +193,11 @@
 </template>
 
 <script>
-// import {
-//   getCommonSearchResult, getAdvancedSearchResult
-// } from '../../api/home/Home'
+  import {
+    getCommonSearchResult, getAdvancedSearchResult,
+    //   getAffiliationActivityRanking, getAuthorActivityRanking, getResearchDirectionPopularityRanking, getTopPapers, getTopAffiliations, getTopAuthors,  adminLogin,
+  } from '../../API/Home/HomePageAPIs'
+
 export default {
 
   data () {
@@ -230,7 +232,8 @@ export default {
         startYear: 2013,
         endYear: 2020,
         conferenceName: '',
-        keywords: []
+        keywords: [],
+        index:0
       },
       maxlen: 250,
       background: {
@@ -257,171 +260,172 @@ export default {
       return v.length > this.maxlen ? v.slice(0, this.maxlen) + '...' : v
     },
     commonSearch () {
-    //   if (this.searching) {
-    //     return
-    //   }
-    //   if (this.commonInput !== '') {
-    //     this.searching = true
-    //     let paperList = []
-    //     let total = 0
-    //     if (this.commonSearchTypeValue === '') { // type为All
-    //       getCommonSearchResult(this.commonInput, 0).then((res) => {
-    //         if (res.status.code === '0000') {
-    //           paperList = res.data.paperBriefInfoVOList
-    //           total = res.data.totalNum
-    //           this.searching = false
-    //           let newpage = this.$router.resolve({
-    //             name: 'SearchPaper',
-    //             query: {
-    //               papers: JSON.stringify(paperList),
-    //               totalNum: total,
-    //               content: this.commonInput,
-    //               kind: 0
-    //             }
-    //           })
-    //           window.open(newpage.href, '_blank')
-    //         } else {
-    //           this.searching = false
-    //           this.$message.error({
-    //             message: res.status.msg,
-    //             center: true
-    //           })
-    //         }
-    //       }).catch(error => console.log(error))
-    //     } else { // type有值
-    //       if (this.commonSearchTypeValue === 'author') {
-    //         this.advSearchForm.authors = [this.commonInput]
-    //         let paperList = []
-    //         let total = 0
-    //         getAdvancedSearchResult(this.advSearchForm).then((res) => {
-    //           if (res.status.code === '0000') {
-    //             paperList = res.data.paperBriefInfoVOList
-    //             total = res.data.totalNum
-    //             this.searching = false
-    //             let newpage = this.$router.resolve({
-    //               name: 'SearchPaper',
-    //               query: {
-    //                 papers: JSON.stringify(paperList),
-    //                 totalNum: total,
-    //                 content: this.commonInput,
-    //                 kind: 0
-    //               }
-    //             })
-    //             window.open(newpage.href, '_blank')
-    //           } else {
-    //             this.searching = false
-    //             this.$message.error({
-    //               message: res.status.msg,
-    //               center: true
-    //             })
-    //           }
-    //         }).catch(error => console.log(error))
-    //       } else if (this.commonSearchTypeValue === 'affiliation') {
-    //         this.advSearchForm.affiliations = [this.commonInput]
-    //         let paperList = []
-    //         let total = 0
-    //         getAdvancedSearchResult(this.advSearchForm).then((res) => {
-    //           if (res.status.code === '0000') {
-    //             paperList = res.data.paperBriefInfoVOList
-    //             total = res.data.totalNum
-    //             this.searching = false
-    //             let newpage = this.$router.resolve({
-    //               name: 'SearchPaper',
-    //               query: {
-    //                 papers: JSON.stringify(paperList),
-    //                 totalNum: total,
-    //                 content: this.commonInput,
-    //                 kind: 0
-    //               }
-    //             })
-    //             window.open(newpage.href, '_blank')
-    //           } else {
-    //             this.searching = false
-    //             this.$message.error({
-    //               message: res.status.msg,
-    //               center: true
-    //             })
-    //           }
-    //         }).catch(error => console.log(error))
-    //       } else if (this.commonSearchTypeValue === 'keyword') {
-    //         this.advSearchForm.keywords = [this.commonInput]
-    //         let paperList = []
-    //         let total = 0
-    //         getAdvancedSearchResult(this.advSearchForm).then((res) => {
-    //           if (res.status.code === '0000') {
-    //             paperList = res.data.paperBriefInfoVOList
-    //             total = res.data.totalNum
-    //             this.searching = false
-    //             let newpage = this.$router.resolve({
-    //               name: 'SearchPaper',
-    //               query: {
-    //                 papers: JSON.stringify(paperList),
-    //                 totalNum: total,
-    //                 content: this.commonInput,
-    //                 kind: 0
-    //               }
-    //             })
-    //             window.open(newpage.href, '_blank')
-    //           } else {
-    //             this.searching = false
-    //             this.$message.error({
-    //               message: res.status.msg,
-    //               center: true
-    //             })
-    //           }
-    //         }).catch(error => console.log(error))
-    //       }
-    //     }
-    //   } else {
-    //     this.$message({
-    //       message: 'Please Enter Something!',
-    //       center: true
-    //     })
-    //   }
+      if (this.searching) {
+        return
+      }
+      if (this.commonInput !== '') {
+        this.searching = true
+        let paperList = []
+        let total = 0
+        if (this.commonSearchTypeValue === '') { // type为All
+          getCommonSearchResult(this.commonInput, 0).then((res) => {
+            if (res.success) {
+              paperList = res.content.paperBriefInfoVOList
+              total = res.content.totalNum
+              this.searching = false
+              let newpage = this.$router.resolve({
+                name: 'SearchPaper',
+                query: {
+                  papers: JSON.stringify(paperList),
+                  totalNum: total,
+                  content: this.commonInput,
+                  kind: 0
+                }
+              })
+              window.open(newpage.href, '_blank')
+            } else {
+              this.searching = false
+              this.$message.error({
+                message: res.status.msg,
+                center: true
+              })
+            }
+          }).catch(error => console.log(error))
+        } else { // type有值
+          if (this.commonSearchTypeValue === 'author') {
+            this.advSearchForm.authors = [this.commonInput]
+            let paperList = []
+            let total = 0
+            getAdvancedSearchResult(this.advSearchForm).then((res) => {
+              if (res.success) {
+                console.log(res.content.totalNum)
+                paperList = res.content.paperBriefInfoVOList
+                total = res.content.totalNum
+                this.searching = false
+                let newpage = this.$router.resolve({
+                  name: 'SearchPaper',
+                  query: {
+                    papers: JSON.stringify(paperList),
+                    totalNum: total,
+                    content: this.commonInput,
+                    kind: 0
+                  }
+                })
+                window.open(newpage.href, '_blank')
+              } else {
+                this.searching = false
+                this.$message.error({
+                  message: res.status.msg,
+                  center: true
+                })
+              }
+            }).catch(error => console.log(error))
+          } else if (this.commonSearchTypeValue === 'affiliation') {
+            this.advSearchForm.affiliations = [this.commonInput]
+            let paperList = []
+            let total = 0
+            getAdvancedSearchResult(this.advSearchForm).then((res) => {
+              if (res.success) {
+                paperList = res.content.paperBriefInfoVOList
+                total = res.content.totalNum
+                this.searching = false
+                let newpage = this.$router.resolve({
+                  name: 'SearchPaper',
+                  query: {
+                    papers: JSON.stringify(paperList),
+                    totalNum: total,
+                    content: this.commonInput,
+                    kind: 0
+                  }
+                })
+                window.open(newpage.href, '_blank')
+              } else {
+                this.searching = false
+                this.$message.error({
+                  message: res.status.msg,
+                  center: true
+                })
+              }
+            }).catch(error => console.log(error))
+          } else if (this.commonSearchTypeValue === 'keyword') {
+            this.advSearchForm.keywords = [this.commonInput]
+            let paperList = []
+            let total = 0
+            getAdvancedSearchResult(this.advSearchForm).then((res) => {
+              if (res.success) {
+                paperList = res.content.paperBriefInfoVOList
+                total = res.content.totalNum
+                this.searching = false
+                let newpage = this.$router.resolve({
+                  name: 'SearchPaper',
+                  query: {
+                    papers: JSON.stringify(paperList),
+                    totalNum: total,
+                    content: this.commonInput,
+                    kind: 0
+                  }
+                })
+                window.open(newpage.href, '_blank')
+              } else {
+                this.searching = false
+                this.$message.error({
+                  message: res.status.msg,
+                  center: true
+                })
+              }
+            }).catch(error => console.log(error))
+          }
+        }
+      } else {
+        this.$message({
+          message: 'Please Enter Something!',
+          center: true
+        })
+      }
     },
     searchAuthorPor (authorId) {
-    //   let newpage = this.$router.resolve({
-    //     name: 'AuthorPortrait',
-    //     query: {
-    //       authorId: authorId
-    //     }
-    //   })
-    //   window.open(newpage.href, '_blank')
+      let newpage = this.$router.resolve({
+        name: 'AuthorPortrait',
+        query: {
+          authorId: authorId
+        }
+      })
+      window.open(newpage.href, '_blank')
      },
     searchAffiliationPor (affiliationId) {
-    //   let newpage = this.$router.resolve({
-    //     name: 'AffiliationPortrait',
-    //     query: {
-    //       affiliationId: affiliationId
-    //     }
-    //   })
-    //   window.open(newpage.href, '_blank')
+      let newpage = this.$router.resolve({
+        name: 'AffiliationPortrait',
+        query: {
+          affiliationId: affiliationId
+        }
+      })
+      window.open(newpage.href, '_blank')
     },
      searchConferencePor (name) {
-    //   let newpage = this.$router.resolve({
-    //     name: 'ConferencePortrait',
-    //     query: {
-    //       name: name
-    //     }
-    //   })
-    //   window.open(newpage.href, '_blank')
+      let newpage = this.$router.resolve({
+        name: 'ConferencePortrait',
+        query: {
+          name: name
+        }
+      })
+      window.open(newpage.href, '_blank')
     },
     getContent (e) {
-    //   let newpage = this.$router.resolve({
-    //     name: 'PaperDetail',
-    //     query: {
-    //       paperId: e
-    //     }
-    //   })
-    //   window.open(newpage.href, '_blank')
+      let newpage = this.$router.resolve({
+        name: 'PaperDetail',
+        query: {
+          paperId: e
+        }
+      })
+      window.open(newpage.href, '_blank')
      },
     searchByKeyword (name) {
     //   this.advSearchForm.keywords = [name]
     //   let paperList = []
     //   let total = 0
     //   getAdvancedSearchResult(this.advSearchForm).then((res) => {
-    //     paperList = res.data.paperBriefInfoVOList
-    //     total = res.data.totalNum
+    //     paperList = res.content.paperBriefInfoVOList
+    //     total = res.content.totalNum
     //     let newpage = this.$router.resolve({
     //       name: 'SearchPaper',
     //       query: {
@@ -438,14 +442,14 @@ export default {
     //   this.page = val - 1
     //   if (this.$route.query.kind === '0') {
     //     getCommonSearchResult(this.$route.query.content, this.page).then((res) => {
-    //       this.PaperList = res.data.paperBriefInfoVOList
+    //       this.PaperList = res.content.paperBriefInfoVOList
     //     }).catch(error => console.log(error))
     //   }
     //   if (this.$route.query.kind === '1') {
     //     let newin = this.$route.query.content
     //     newin.index = this.page
     //     getAdvancedSearchResult(this.$route.query.content).then((res) => {
-    //       this.PaperList = res.data.paperBriefInfoVOList
+    //       this.PaperList = res.content.paperBriefInfoVOList
     //     }).catch(error => console.log(error))
     //   }
     //   document.querySelector('#link').scrollIntoView(true)
@@ -455,23 +459,24 @@ export default {
     },
     highlight () {
       document.getElementById('OASIS').style.cursor = 'pointer'
-      document.getElementById('OASIS').style.fontSize = '80px'
+      document.getElementById('OASIS').style.fontSize = '40px'
     },
     redoHightLight () {
-      document.getElementById('OASIS').style.fontSize = '70px'
+      document.getElementById('OASIS').style.fontSize = '50px'
     }
   },
   mounted () {
-    // let paperList = JSON.parse(this.$route.query.papers)
-    // this.PaperList = paperList
-    // this.paperNum = this.$route.query.totalNum
-    // this.searchContent = this.$route.query.content
-    // if (JSON.stringify(this.searchContent).substring(0, 1) === '{') {
-    //   this.showSearchContent = false
-    // } else {
-    //   this.showSearchContent = true
-    // }
-    // this.$store.dispatch('flushFun')
+    let paperList = JSON.parse(this.$route.query.papers)
+    this.PaperList = paperList
+    this.paperNum = this.$route.query.totalNum
+    this.searchContent = this.$route.query.content
+    if (JSON.stringify(this.searchContent).substring(0, 1) === '{'||JSON.stringify(this.searchContent).substring(1, 2) === '[') {
+
+      this.showSearchContent = false
+    } else {
+      this.showSearchContent = true
+    }
+    this.$store.dispatch('flushFun')
   }
 }
 </script>

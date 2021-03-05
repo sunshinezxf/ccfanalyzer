@@ -769,7 +769,7 @@ export default {
       advSearchForm: {
         authors: [],
         affiliations: [],
-        startYear: 2013,
+        startYear: 2000,
         endYear: 2020,
         conferenceName: '',
         keywords: [],
@@ -826,7 +826,7 @@ export default {
       //       username: this.username,
       //       password: this.password
       //     }).then(res => {
-      //       if (res.status.code === '0000') {
+      //       if (res.success === '0000') {
       //         localStorage.setItem('Flag', 'isLogin')
       //         this.$message.success({
       //           message: 'Login Successful',
@@ -839,7 +839,7 @@ export default {
       //         }.bind(this), 500)
       //       } else {
       //         this.$message.error({
-      //           message: res.status.msg,
+      //           message: res.success ,
       //           center: true
       //         })
       //       }
@@ -900,7 +900,6 @@ export default {
     },
     loadStatisticsNums() {
       getStatistics().then(res => {
-        console.log("fdsa")
         console.log(res.content.authorNum)
         if (res.success) {
           this.statisticsNums.authorNum = (res.content.authorNum).toLocaleString('en-US')
@@ -909,15 +908,11 @@ export default {
           this.statisticsNums.allArticleCitationCount = (res.content.allArticleCitationCount).toLocaleString('en-US')
         } else {
           this.$message.error({
-            message: res.status.msg,
+            message: res.success ,
             center: true
           })
         }
       }).catch(error => console.log(error))
-      // this.statisticsNums.authorNum = (124).toLocaleString('en-US')
-      // this.statisticsNums.affiliationNum = (45564).toLocaleString('en-US')
-      // this.statisticsNums.paperNum = (342).toLocaleString('en-US')
-      // this.statisticsNums.allArticleCitationCount = (453).toLocaleString('en-US')
     },
     loadTopAffiliations() {
       //   getTopAffiliations().then(res => {
@@ -1004,9 +999,10 @@ export default {
         let total = 0
         if (this.commonSearchTypeValue === '') { // type为All
           getCommonSearchResult(this.commonInput, 0).then(res => {
-            if (res.status.code === '0000') {
-              paperList = res.data.paperBriefInfoVOList
-              total = res.data.totalNum
+            if (res.success) {
+              paperList = res.content.paperBriefInfoVOList
+              total = res.content.totalNum
+              console.log(total)
               this.searching = false
               this.$router.push({
                 name: 'SearchPaper',
@@ -1020,7 +1016,7 @@ export default {
             } else {
               this.searching = false
               this.$message.error({
-                message: res.status.msg,
+                message: "Invaild Input",
                 center: true
               })
             }
@@ -1031,9 +1027,10 @@ export default {
             let paperList = []
             let total = 0
             getAdvancedSearchResult(this.advSearchForm).then(res => {
-              if (res.status.code === '0000') {
-                paperList = res.data.paperBriefInfoVOList
-                total = res.data.totalNum
+              if (res.success) {
+                console.log(this.advSearchForm.authors)
+                paperList = res.content.paperBriefInfoVOList
+                total = res.content.totalNum
                 this.searching = false
                 this.$router.push({
                   name: 'SearchPaper',
@@ -1047,7 +1044,7 @@ export default {
               } else {
                 this.searching = false
                 this.$message.error({
-                  message: res.status.msg,
+                  message: "Invaild Input" ,
                   center: true
                 })
               }
@@ -1057,9 +1054,9 @@ export default {
             let paperList = []
             let total = 0
             getAdvancedSearchResult(this.advSearchForm).then(res => {
-              if (res.status.code === '0000') {
-                paperList = res.data.paperBriefInfoVOList
-                total = res.data.totalNum
+              if (res.success) {
+                paperList = res.content.paperBriefInfoVOList
+                total = res.content.totalNum
                 this.searching = false
                 this.$router.push({
                   name: 'SearchPaper',
@@ -1073,7 +1070,7 @@ export default {
               } else {
                 this.searching = false
                 this.$message.error({
-                  message: res.status.msg,
+                  message: "Invaild Input" ,
                   center: true
                 })
               }
@@ -1082,10 +1079,12 @@ export default {
             this.advSearchForm.keywords = [this.commonInput]
             let paperList = []
             let total = 0
+            console.log("fsa")
             getAdvancedSearchResult(this.advSearchForm).then(res => {
-              if (res.status.code === '0000') {
-                paperList = res.data.paperBriefInfoVOList
-                total = res.data.totalNum
+              console.log("fsa")
+              if (res.success ) {
+                paperList = res.content.paperBriefInfoVOList
+                total = res.content.totalNum
                 this.searching = false
                 this.$router.push({
                   name: 'SearchPaper',
@@ -1099,7 +1098,7 @@ export default {
               } else {
                 this.searching = false
                 this.$message.error({
-                  message: res.status.msg,
+                  message: "Invaild Input",
                   center: true
                 })
               }
@@ -1175,9 +1174,9 @@ export default {
         let paperList = []
         let total = 0
         getAdvancedSearchResult(this.advSearchForm).then(res => {
-          if (res.status.code === '0000') {
-            paperList = res.data.paperBriefInfoVOList
-            total = res.data.totalNum
+          if (res.success ) {
+            paperList = res.content.paperBriefInfoVOList
+            total = res.content.totalNum
             this.searching_advanced = false
             this.$router.push({
               name: 'SearchPaper',
@@ -1191,7 +1190,7 @@ export default {
           } else {
             this.searching_advanced = false
             this.$message.error({
-              message: res.status.msg,
+              message: "Invaild Input" ,
               center: true
             })
           }
