@@ -1,5 +1,6 @@
 package com.example.ccf.blImpl.search;
 
+import com.example.ccf.blImpl.search.SearchServiceImpl;
 import com.example.ccf.po.AdvancedSearch;
 import com.example.ccf.po.CommonSearch;
 import org.junit.Test;
