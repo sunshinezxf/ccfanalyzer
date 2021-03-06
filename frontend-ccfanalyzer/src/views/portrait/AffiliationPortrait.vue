@@ -299,8 +299,8 @@
 </template>
 
 <script>
-// import {getCommonSearchResult, getAdvancedSearchResult} from '../../api/home/Home'
-// import {getAffiliationPortrait, getAffiliationPaper, getAffiliationValue} from '../../api/portrait/AffiliationPortraitAPI'
+ import {getCommonSearchResult, getAdvancedSearchResult} from '../../API/Home/HomePageAPIs'
+ import {getAffiliationPortrait, getAffiliationPaper, getAffiliationValue} from '../../API/Portrait/AffiliationPortraitAPIs'
 
 export default {
 

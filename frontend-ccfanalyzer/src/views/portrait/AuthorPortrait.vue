@@ -310,7 +310,7 @@
 </template>
 
 <script>
-// import {getCommonSearchResult, getAdvancedSearchResult} from '../../api/home/Home'
+import {getCommonSearchResult, getAdvancedSearchResult} from '../../API/Home/HomePageAPIs'
 import {getAuthorPortrait} from '../../API/Portrait/AuthorPortraitAPIs'
 
 export default {
