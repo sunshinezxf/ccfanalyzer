@@ -39,7 +39,7 @@ public class SearchServiceImpl implements SearchService {
                     List<Affiliations> affiliations=searchMapper.get_affiliation(s.getPaperId());
                     List<String> keywords=searchMapper.get_keyword(s.getPaperId());
 //                    System.out.println(authors.get(0).getName());
-                    System.out.println(affiliations.get(0).getName());
+                   // System.out.println(affiliations.get(0).getName());
 //                    System.out.println(keywords.get(0));
                     s.setAuthors(authors);
                     s.setAffiliations(affiliations);

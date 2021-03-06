@@ -65,4 +65,28 @@ public class PaperInfServiceImpl implements PaperInfService {
         refResult.setReferences(references);
         return ResponseVO.buildSuccess(refResult);
     }
+    @Override
+    public ResponseVO match_author(String input){
+        List<Authors> r=paperInfMapper.match_author(input);
+//        for(int i=0;i<r.size();i++){
+//            System.out.println(r.get(i).getName());
+//        }
+        return ResponseVO.buildSuccess(r);
+    }
+    @Override
+    public ResponseVO match_affiliation(String input){
+        List<Affiliations> r=paperInfMapper.match_affiliation(input);
+//        for(int i=0;i<r.size();i++){
+//            System.out.println(r.get(i).getName());
+//        }
+        return ResponseVO.buildSuccess(r);
+    }
+    @Override
+    public ResponseVO match_conference(String input){
+        List<String> r=paperInfMapper.match_conference(input);
+//        for(int i=0;i<r.size();i++){
+//            System.out.println(r.get(i));
+//        }
+        return ResponseVO.buildSuccess(r);
+    }
 }

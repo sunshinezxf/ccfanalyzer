@@ -25,4 +25,10 @@ public class PaperInfServiceTest {
         r.setPaperId(1);
         paperInfService.getPaperRef(r);
     }
+    @Test
+    public void test3(){
+        paperInfService.match_author("Yang");
+        paperInfService.match_affiliation("University of ");
+        paperInfService.match_conference("{ISSTA} '20: 29th {ACM} {SIGSOFT} International Symposium on Software");
+    }
 }

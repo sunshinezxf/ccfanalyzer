@@ -20,6 +20,8 @@ public class SegmentationServiceImpl implements SegmentationService {
         int size=origin_sts.size();
         for(int i=0;i<size;i++){
             int paper_id =origin_sts.get(i).getPaper_id();
+//            System.out.println(paper_id);
+//            System.out.println(origin_sts.get(i).getTitle());
             List<SegmentationTitle> new_sts=new ArrayList<>();
             String[] segmentation=segmentation(origin_sts.get(i).getTitle());
             for(int j=0;j<segmentation.length;j++) {
