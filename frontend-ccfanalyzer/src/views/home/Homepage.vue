@@ -104,6 +104,7 @@
 
       </el-select>
         <el-input
+          v-if="commonSearchTypeValue === ''"
           class="common_input"
           style="opacity:80%;width:40%;margin-top: 4%"
           placeholder="Enter something..."
@@ -112,6 +113,12 @@
           @keyup.enter.native="commonSearch"
           clearable>
         </el-input>
+        <el-autocomplete v-if="commonSearchTypeValue === 'author'"
+          :minlength="2" style="opacity:80%;width:40%;margin-top: 4%;text-align: left;position:relative; z-index:9999;" :popper-append-to-body="false" v-model="searchAuthor.name" :fetch-suggestions="querySearchAsync" placeholder="Enter something..."
+                         @select="handleSelect"></el-autocomplete>
+        <el-autocomplete v-if="commonSearchTypeValue === 'affiliation'"
+                         :minlength="2" style="opacity:80%;width:40%;margin-top: 4%;text-align: left;position:relative; z-index:9999;" :popper-append-to-body="false" v-model="searchAffiliation.name" :fetch-suggestions="querySearchAsync2" placeholder="Enter something..."
+                         @select="handleSelect2"></el-autocomplete>
 
         <el-button @click="commonSearch" type="primary" icon="el-icon-search" :loading="searching">SEARCH</el-button>
 
@@ -133,10 +140,16 @@
               </el-select>
             </el-col>
             <el-col :span="6">
-              <el-input  style="opacity:80%;width: 80%;margin-top: 12%;" placeholder="Enter something..."
+              <el-input  v-if="firstType === ''||firstType==='keyword'"style="opacity:80%;width: 80%;margin-top: 12%;" placeholder="Enter something..."
                          v-model="firstInput"
                          @keyup.enter.native="advancedSearch"
                          clearable></el-input>
+              <el-autocomplete v-if="firstType === 'author'"
+                               :minlength="2" style="opacity:80%;width: 80%;margin-top: 12%;text-align: left;position:relative; z-index:9999;" :popper-append-to-body="false" v-model="searchAuthor.name" :fetch-suggestions="querySearchAsync" placeholder="Enter something..."
+                               @select="handleSelect"></el-autocomplete>
+              <el-autocomplete v-if="firstType === 'affiliation'"
+                               :minlength="2" style="opacity:80%;width: 80%;margin-top: 12%;text-align: left;position:relative; z-index:9999;" :popper-append-to-body="false" v-model="searchAffiliation.name" :fetch-suggestions="querySearchAsync2" placeholder="Enter something..."
+                               @select="handleSelect2"></el-autocomplete>
             </el-col>
             <el-col :span="6" style="text-align: left">
               <el-button v-show="searchCount===1" @click="addSearchBox(-1)" style="margin-top: 12%;" type="primary" icon="el-icon-plus" circle></el-button>
@@ -681,7 +694,7 @@
 
 <script>
 import {
-  getStatistics,getCommonSearchResult, getAdvancedSearchResult,
+  getStatistics,getCommonSearchResult, getAdvancedSearchResult,getMatchAuthor,getMatchAffiliation
   //   getAffiliationActivityRanking, getAuthorActivityRanking, getResearchDirectionPopularityRanking, getTopPapers, getTopAffiliations, getTopAuthors,  adminLogin,
 } from '../../API/Home/HomePageAPIs'
 
@@ -694,6 +707,9 @@ export default {
         username: 'yry',
         password: '',
       },
+      searchAuthor:{},
+      searchAffiliation:{},
+      searchConference:{},
       searching: false,
       searching_advanced: false,
       dialogVisible: false,
@@ -993,11 +1009,11 @@ export default {
       if (this.searching) {
         return
       }
-      if (this.commonInput !== '') {
-        this.searching = true
-        let paperList = []
-        let total = 0
-        if (this.commonSearchTypeValue === '') { // type为All
+      if(this.commonSearchTypeValue === ''){
+        if (this.commonInput !== '') {
+          this.searching = true
+          let paperList = []
+          let total = 0
           getCommonSearchResult(this.commonInput, 0).then(res => {
             if (res.success) {
               paperList = res.content.paperBriefInfoVOList
@@ -1021,95 +1037,115 @@ export default {
               })
             }
           }).catch(error => console.log(error))
-        } else { // type有值
-          if (this.commonSearchTypeValue === 'author') {
-            this.advSearchForm.authors = [this.commonInput]
-            let paperList = []
-            let total = 0
-            getAdvancedSearchResult(this.advSearchForm).then(res => {
-              if (res.success) {
-                console.log(this.advSearchForm.authors)
-                paperList = res.content.paperBriefInfoVOList
-                total = res.content.totalNum
-                this.searching = false
-                this.$router.push({
-                  name: 'SearchPaper',
-                  query: {
-                    papers: JSON.stringify(paperList),
-                    totalNum: total,
-                    content: this.advSearchForm,
-                    kind: '1'
-                  }
-                })
-              } else {
-                this.searching = false
-                this.$message.error({
-                  message: "Invaild Input" ,
-                  center: true
-                })
-              }
-            }).catch(error => console.log(error))
-          } else if (this.commonSearchTypeValue === 'affiliation') {
-            this.advSearchForm.affiliations = [this.commonInput]
-            let paperList = []
-            let total = 0
-            getAdvancedSearchResult(this.advSearchForm).then(res => {
-              if (res.success) {
-                paperList = res.content.paperBriefInfoVOList
-                total = res.content.totalNum
-                this.searching = false
-                this.$router.push({
-                  name: 'SearchPaper',
-                  query: {
-                    papers: JSON.stringify(paperList),
-                    totalNum: total,
-                    content: this.advSearchForm,
-                    kind: '1'
-                  }
-                })
-              } else {
-                this.searching = false
-                this.$message.error({
-                  message: "Invaild Input" ,
-                  center: true
-                })
-              }
-            }).catch(error => console.log(error))
-          } else if (this.commonSearchTypeValue === 'keyword') {
-            this.advSearchForm.keywords = [this.commonInput]
-            let paperList = []
-            let total = 0
-            console.log("fsa")
-            getAdvancedSearchResult(this.advSearchForm).then(res => {
-              console.log("fsa")
-              if (res.success ) {
-                paperList = res.content.paperBriefInfoVOList
-                total = res.content.totalNum
-                this.searching = false
-                this.$router.push({
-                  name: 'SearchPaper',
-                  query: {
-                    papers: JSON.stringify(paperList),
-                    totalNum: total,
-                    content: this.advSearchForm,
-                    kind: '1'
-                  }
-                })
-              } else {
-                this.searching = false
-                this.$message.error({
-                  message: "Invaild Input",
-                  center: true
-                })
-              }
-            }).catch(error => console.log(error))
-          }
+        }else{
+          this.$message({
+            message: 'Please Enter Something!',
+            center: true
+          })
         }
-      } else {
-        this.$message({
-          message: 'Please Enter Something!',
-          center: true
-        })
+      }else if(this.commonSearchTypeValue === 'author'){
+        if (this.searchAuthor.name!== '') {
+          this.advSearchForm.authors = [this.searchAuthor.name]
+          let paperList = []
+          let total = 0
+          getAdvancedSearchResult(this.advSearchForm).then(res => {
+            if (res.success) {
+              console.log(this.advSearchForm.authors)
+              paperList = res.content.paperBriefInfoVOList
+              total = res.content.totalNum
+              this.searching = false
+              this.$router.push({
+                name: 'SearchPaper',
+                query: {
+                  papers: JSON.stringify(paperList),
+                  totalNum: total,
+                  content: this.advSearchForm,
+                  kind: '1'
+                }
+              })
+            } else {
+              this.searching = false
+              this.$message.error({
+                message: "Invaild Input" ,
+                center: true
+              })
+            }
+          }).catch(error => console.log(error))
+        }else{
+          this.$message({
+            message: 'Please Enter Something!',
+            center: true
+          })
+        }
+      }else if(this.commonSearchTypeValue === 'affiliation'){
+        if (this.searchAffiliation.name!== '') {
+          this.advSearchForm.affiliations = [this.searchAffiliation.name]
+          let paperList = []
+          let total = 0
+          getAdvancedSearchResult(this.advSearchForm).then(res => {
+            if (res.success) {
+              paperList = res.content.paperBriefInfoVOList
+              total = res.content.totalNum
+              this.searching = false
+              this.$router.push({
+                name: 'SearchPaper',
+                query: {
+                  papers: JSON.stringify(paperList),
+                  totalNum: total,
+                  content: this.advSearchForm,
+                  kind: '1'
+                }
+              })
+            } else {
+              this.searching = false
+              this.$message.error({
+                message: "Invaild Input" ,
+                center: true
+              })
+            }
+          }).catch(error => console.log(error))
+        }else{
+          this.$message({
+            message: 'Please Enter Something!',
+            center: true
+          })
+        }
+
+      }else if(this.commonSearchTypeValue === 'keyword'){
+        if (this.commonInput!== '') {
+          this.advSearchForm.keywords = [this.commonInput]
+          let paperList = []
+          let total = 0
+          console.log("fsa")
+          getAdvancedSearchResult(this.advSearchForm).then(res => {
+            console.log("fsa")
+            if (res.success ) {
+              paperList = res.content.paperBriefInfoVOList
+              total = res.content.totalNum
+              this.searching = false
+              this.$router.push({
+                name: 'SearchPaper',
+                query: {
+                  papers: JSON.stringify(paperList),
+                  totalNum: total,
+                  content: this.advSearchForm,
+                  kind: '1'
+                }
+              })
+            } else {
+              this.searching = false
+              this.$message.error({
+                message: "Invaild Input",
+                center: true
+              })
+            }
+          }).catch(error => console.log(error))
+        }else{
+          this.$message({
+            message: 'Please Enter Something!',
+            center: true
+          })
+        }
       }
     },
     advancedSearch() {
@@ -1117,14 +1153,27 @@ export default {
       this.searching_advanced = true
       let noType = false // 有输入没选类型
       let noValue = false // 选了类型没输入值
-      if (this.firstInput !== '') {
-        // isnull = false
-        if (this.firstType === '') {
-          noType = true
+
+      if(this.firstType===''){
+        noType=true
+      }else{
+        if(this.firstType==='author'){
+          if(this.searchAuthor.name===''){
+            noValue=true
+          }
         }
-      } else if (this.firstType !== '') {
-        noValue = true
+        if(this.firstType==='affiliation'){
+          if(this.searchAffiliation.name===''){
+            noValue=true
+          }
+        }
+        if(this.firstType==='keyword'){
+          if(this.firstInput===''){
+            noValue=true
+          }
+        }
       }
+
       for (var i = 0; i < this.searchContexts.length; i++) {
         if (this.searchContexts[i].value !== '') {
           // isnull = false
@@ -1148,14 +1197,15 @@ export default {
           center: true
         })
       } else {
+        console.log("!!!!!!!!!!!1")
         this.advSearchForm.startYear = this.value_year[0]
         this.advSearchForm.endYear = this.value_year[1]
         this.advSearchForm.conferenceName = this.ase_icse_type
         if (this.firstInput !== '') {
           if (this.firstType === 'author') {
-            this.advSearchForm.authors.push(this.firstInput)
+            this.advSearchForm.authors.push(this.searchAuthor.name)
           } else if (this.firstType === 'affiliation') {
-            this.advSearchForm.affiliations.push(this.firstInput)
+            this.advSearchForm.affiliations.push(this.searchAffiliation.name)
           } else if (this.firstType === 'keyword') {
             this.advSearchForm.keywords.push(this.firstInput)
           }
@@ -1174,6 +1224,7 @@ export default {
         let paperList = []
         let total = 0
         getAdvancedSearchResult(this.advSearchForm).then(res => {
+          console.log(this.advSearchForm)
           if (res.success ) {
             paperList = res.content.paperBriefInfoVOList
             total = res.content.totalNum
@@ -1198,7 +1249,45 @@ export default {
       }
 
 
-    }
+    },
+    querySearchAsync(queryString, cb) {
+      if (queryString && queryString.length > 2) {
+        getMatchAuthor(this.searchAuthor.name).then(res => {
+          console.log(res)
+          if (res.success) {
+            var list = [{}];
+            for(let i of res.content){
+              i.value = i.name;  //将想要展示的数据作为value
+            }
+            list = res.content;
+            cb(list);
+          }
+        })
+      }
+    },
+    handleSelect(item) {
+      this.searchAuthor.authorId = item.id
+      console.log(this.searchAuthor.authorId, item);
+    },
+    querySearchAsync2(queryString, cb) {
+      if (queryString && queryString.length > 2) {
+        getMatchAffiliation(this.searchAffiliation.name).then(res => {
+          console.log(res)
+          if (res.success) {
+            var list = [{}];
+            for(let i of res.content){
+              i.value = i.name;  //将想要展示的数据作为value
+            }
+            list = res.content;
+            cb(list);
+          }
+        })
+      }
+    },
+    handleSelect2(item) {
+      this.searchAffiliation.affiliationId = item.id
+      console.log(this.searchAffiliation.affiliationId, item);
+    },
   },
   mounted: function () {
     // this.$store.dispatch('flushFun')
