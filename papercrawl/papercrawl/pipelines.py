@@ -65,7 +65,7 @@ class PapercrawlPipeline(object):
         select * from affiliation where affiliation= %s
         """
         insert_affiliation_relation = """
-        insert into author_affiliation_relation(author_id, affiliation_id) VALUES 
+        insert into affiliation_author_relation(author_id, affiliation_id) VALUES 
         (%s,%s)
         """
 
@@ -86,13 +86,15 @@ class PapercrawlPipeline(object):
                 affiliations = author_affiliations[i].split(' / ')
                 for affiliation in affiliations:
 
-                    self.cursor.execute(query_affiliation, affiliation)
+                    new_affiliation = affiliation.replace('，', ',')
+                    self.cursor.execute(query_affiliation, new_affiliation)
                     affiliation_query = self.cursor.fetchone()
+
                     if affiliation_query is not None:
                         affiliation_id = affiliation_query[0]
 
                     else:
-                        self.cursor.execute(insert_affiliation, affiliation)
+                        self.cursor.execute(insert_affiliation, new_affiliation)
                         affiliation_id = self.cursor.lastrowid
 
                     self.cursor.execute(insert_affiliation_relation, (author_id, affiliation_id))

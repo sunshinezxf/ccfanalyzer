@@ -71,16 +71,16 @@ def affiliation_process(cursor, connect):
     select_all_affiliation = '''select * from affiliation;'''
     get_article_num = '''
     select count(distinct pr.paper_id) from 
-    paper_author_relation pr, author_affiliation_relation ar
+    paper_author_relation pr, affiliation_author_relation ar
     where ar.affiliation_id = %s and pr.author_id=ar.author_id;
     '''
     get_article_citation_num = '''
     select sum(distinct p.citation)   
-    from author_affiliation_relation ar, paper_author_relation pr, paper p 
+    from affiliation_author_relation ar, paper_author_relation pr, paper p 
     where ar.affiliation_id = %s and pr.author_id=ar.author_id and pr.paper_id=p.paper_id;
     '''
     get_author_num = '''
-    select count(distinct author_id) from author_affiliation_relation 
+    select count(distinct author_id) from affiliation_author_relation 
     where affiliation_id = %s;
     '''
     update_affiliation = '''
@@ -125,7 +125,7 @@ def meeting_process(cursor, connect):
     '''
     get_affiliation_num = '''
     select count(distinct ar.affiliation_id) 
-    from meeting m,paper p,paper_author_relation pr, author_affiliation_relation ar 
+    from meeting m,paper p,paper_author_relation pr, affiliation_author_relation ar 
     where m.title=p.book_title and p.paper_id=pr.paper_id and ar.author_id=pr.author_id and m.meeting_id=%s;
     '''
     update_meeting = '''
