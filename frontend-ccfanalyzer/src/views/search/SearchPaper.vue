@@ -98,27 +98,38 @@
         </el-col>
         <el-col :span="20">
         <!--普通搜索-->
-        <div style="text-align: center;">
-          <el-select v-model="commonSearchTypeValue" clearable placeholder="All" style="opacity:80%; width: 10%;text-align: left;position:relative; z-index:9999;" :popper-append-to-body="false">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-          <el-input
-            style="opacity:80%;width:50%; justify-content: center;;margin-top: 4%"
-            placeholder="Enter something..."
-            v-model="commonInput"
-            :disabled="searching"
-            @keyup.enter.native="commonSearch"
-            clearable>
-          </el-input>
+          <div style="text-align: center;" >
 
-          <el-button @click="commonSearch" type="primary" icon="el-icon-search" :loading="searching">SEARCH</el-button>
+            <el-select v-model="commonSearchTypeValue" clearable placeholder="All"  style="opacity:80%; width: 10%;text-align: left;position:relative; z-index:9999;" :popper-append-to-body="false" >
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
 
-        </div>
+            </el-select>
+            <el-input
+              v-if="commonSearchTypeValue === ''||commonSearchTypeValue === 'keyword'"
+              class="common_input"
+              style="opacity:80%;width:50%;margin-top: 4%"
+              placeholder="Enter something..."
+              v-model="commonInput"
+              :disabled="searching"
+              @keyup.enter.native="commonSearch"
+              clearable>
+            </el-input>
+            <el-autocomplete v-if="commonSearchTypeValue === 'author'"
+                             :minlength="2" style="opacity:80%;width:50%;margin-top: 4%;text-align: left;position:relative; z-index:9999;" :popper-append-to-body="false" v-model="searchAuthor.name" :fetch-suggestions="querySearchAsync" placeholder="Enter something..."
+                             @select="handleSelect"></el-autocomplete>
+            <el-autocomplete v-if="commonSearchTypeValue === 'affiliation'"
+                             :minlength="2" style="opacity:80%;width:50%;margin-top: 4%;text-align: left;position:relative; z-index:9999;" :popper-append-to-body="false" v-model="searchAffiliation.name" :fetch-suggestions="querySearchAsync2" placeholder="Enter something..."
+                             @select="handleSelect2"></el-autocomplete>
+
+            <el-button @click="commonSearch" type="primary" icon="el-icon-search" :loading="searching">SEARCH</el-button>
+
+          </div>
+
       </el-col>
       </el-row>
     </el-header>
@@ -138,7 +149,7 @@
               <el-row>
               <span class="affcon" style="font-size: 17px;color: dimgray">
                 Affiliations:&nbsp;&nbsp;&nbsp;
-                <span  class="divider" v-if="item.affiliations.length==0">None</span>
+                <span  class="divider" v-if="item.affiliations==='Null'">None</span>
               <span  v-for="(aff,index) in item.affiliations" :key="index">
                 <span role="separator" class="divider" v-if="index != 0">,</span>
                 <el-link style="font-size: 17px;color: cornflowerblue;font-style:italic"  :key='aff' @click="searchAffiliationPor(aff.affiliationId)">{{aff.name}}</el-link>
@@ -148,7 +159,7 @@
               <el-row>
               <span class="affcon" style="font-size: 17px;color: dimgray">
                 Authors:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span  class="divider" v-if="item.authors.length==0">None</span>
+                <span  class="divider" v-if="item.authors==='Null'">None</span>
               <span v-for="(author,index) in item.authors" :key="index">
                 <span role="separator" class="divider" v-if="index != 0">,</span>
               <el-link style="font-size: 17px;color: cornflowerblue;font-style:italic" :key="author" @click="searchAuthorPor(author.authorId)">{{author.name}}</el-link>
@@ -159,7 +170,7 @@
             <el-row>
               <span class="affcon" style="font-size: 17px;color: dimgray">
                 Keywords:&nbsp;&nbsp;&nbsp;
-                <span  class="divider" v-if="item.keywords.length==0">None</span>
+                <span  class="divider" v-if="item.keywords==='Null'">None</span>
               <span v-for="(keyword,index) in item.keywords" :key="index">
                 <span role="separator" class="divider" v-if="index != 0">,</span>
               <el-link style="font-size: 17px;color: cornflowerblue;font-style:italic" :key="keyword" @click="searchByKeyword(keyword)">{{keyword}}</el-link>
@@ -194,7 +205,7 @@
 
 <script>
   import {
-    getCommonSearchResult, getAdvancedSearchResult,
+    getCommonSearchResult, getAdvancedSearchResult,getMatchAuthor,getMatchAffiliation,getMatchConference
     //   getAffiliationActivityRanking, getAuthorActivityRanking, getResearchDirectionPopularityRanking, getTopPapers, getTopAffiliations, getTopAuthors,  adminLogin,
   } from '../../API/Home/HomePageAPIs'
 
@@ -202,6 +213,8 @@ export default {
 
   data () {
     return {
+      searchAuthor:{},
+      searchAffiliation:{},
       user:{
         login: true,
         logout: false,
@@ -259,19 +272,21 @@ export default {
     maxSlice (v) {
       return v.length > this.maxlen ? v.slice(0, this.maxlen) + '...' : v
     },
-    commonSearch () {
+    commonSearch() {
+      console.log("!!!!!!!!!!!!")
       if (this.searching) {
         return
       }
-      if (this.commonInput !== '') {
-        this.searching = true
-        let paperList = []
-        let total = 0
-        if (this.commonSearchTypeValue === '') { // type为All
-          getCommonSearchResult(this.commonInput, 0).then((res) => {
+      if(this.commonSearchTypeValue === ''){
+        if (this.commonInput !== '') {
+          this.searching = true
+          let paperList = []
+          let total = 0
+          getCommonSearchResult(this.commonInput, 0).then(res => {
             if (res.success) {
               paperList = res.content.paperBriefInfoVOList
               total = res.content.totalNum
+              console.log(total)
               this.searching = false
               let newpage = this.$router.resolve({
                 name: 'SearchPaper',
@@ -286,102 +301,165 @@ export default {
             } else {
               this.searching = false
               this.$message.error({
-                message: res.status.msg,
+                message: "Invaild Input",
                 center: true
               })
             }
           }).catch(error => console.log(error))
-        } else { // type有值
-          if (this.commonSearchTypeValue === 'author') {
-            this.advSearchForm.authors = [this.commonInput]
-            let paperList = []
-            let total = 0
-            getAdvancedSearchResult(this.advSearchForm).then((res) => {
-              if (res.success) {
-                console.log(res.content.totalNum)
-                paperList = res.content.paperBriefInfoVOList
-                total = res.content.totalNum
-                this.searching = false
-                let newpage = this.$router.resolve({
-                  name: 'SearchPaper',
-                  query: {
-                    papers: JSON.stringify(paperList),
-                    totalNum: total,
-                    content: this.commonInput,
-                    kind: 0
-                  }
-                })
-                window.open(newpage.href, '_blank')
-              } else {
-                this.searching = false
-                this.$message.error({
-                  message: res.status.msg,
-                  center: true
-                })
-              }
-            }).catch(error => console.log(error))
-          } else if (this.commonSearchTypeValue === 'affiliation') {
-            this.advSearchForm.affiliations = [this.commonInput]
-            let paperList = []
-            let total = 0
-            getAdvancedSearchResult(this.advSearchForm).then((res) => {
-              if (res.success) {
-                paperList = res.content.paperBriefInfoVOList
-                total = res.content.totalNum
-                this.searching = false
-                let newpage = this.$router.resolve({
-                  name: 'SearchPaper',
-                  query: {
-                    papers: JSON.stringify(paperList),
-                    totalNum: total,
-                    content: this.commonInput,
-                    kind: 0
-                  }
-                })
-                window.open(newpage.href, '_blank')
-              } else {
-                this.searching = false
-                this.$message.error({
-                  message: res.status.msg,
-                  center: true
-                })
-              }
-            }).catch(error => console.log(error))
-          } else if (this.commonSearchTypeValue === 'keyword') {
-            this.advSearchForm.keywords = [this.commonInput]
-            let paperList = []
-            let total = 0
-            getAdvancedSearchResult(this.advSearchForm).then((res) => {
-              if (res.success) {
-                paperList = res.content.paperBriefInfoVOList
-                total = res.content.totalNum
-                this.searching = false
-                let newpage = this.$router.resolve({
-                  name: 'SearchPaper',
-                  query: {
-                    papers: JSON.stringify(paperList),
-                    totalNum: total,
-                    content: this.commonInput,
-                    kind: 0
-                  }
-                })
-                window.open(newpage.href, '_blank')
-              } else {
-                this.searching = false
-                this.$message.error({
-                  message: res.status.msg,
-                  center: true
-                })
-              }
-            }).catch(error => console.log(error))
-          }
+        }else{
+          this.$message({
+            message: 'Please Enter Something!',
+            center: true
+          })
         }
-      } else {
-        this.$message({
-          message: 'Please Enter Something!',
-          center: true
+      }else if(this.commonSearchTypeValue === 'author'){
+        console.log("!!!!!!!!!!!!")
+        if (this.searchAuthor.name!== '') {
+          this.advSearchForm.authors = [this.searchAuthor.name]
+          let paperList = []
+          let total = 0
+          getAdvancedSearchResult(this.advSearchForm).then(res => {
+            if (res.success) {
+              console.log(this.advSearchForm.authors)
+              console.log(res)
+              paperList = res.content.paperBriefInfoVOList
+              total = res.content.totalNum
+              this.searching = false
+              let newpage = this.$router.resolve({
+                name: 'SearchPaper',
+                query: {
+                  papers: JSON.stringify(paperList),
+                  totalNum: total,
+                  content: this.searchAuthor.name+'(Author)',
+                  kind: 0
+                }
+              })
+              window.open(newpage.href, '_blank')
+
+            } else {
+              this.searching = false
+              this.$message.error({
+                message: "Invaild Input" ,
+                center: true
+              })
+            }
+          }).catch(error => console.log(error))
+        }else{
+          this.$message({
+            message: 'Please Enter Something!',
+            center: true
+          })
+        }
+      }else if(this.commonSearchTypeValue === 'affiliation'){
+        if (this.searchAffiliation.name!== '') {
+          this.advSearchForm.affiliations = [this.searchAffiliation.name]
+          let paperList = []
+          let total = 0
+          getAdvancedSearchResult(this.advSearchForm).then(res => {
+            if (res.success) {
+              paperList = res.content.paperBriefInfoVOList
+              total = res.content.totalNum
+              this.searching = false
+              let newpage = this.$router.resolve({
+                name: 'SearchPaper',
+                query: {
+                  papers: JSON.stringify(paperList),
+                  totalNum: total,
+                  content: this.searchAffiliation.name+'(Affiliation)',
+                  kind: 0
+                }
+              })
+              window.open(newpage.href, '_blank')
+            } else {
+              this.searching = false
+              this.$message.error({
+                message: "Invaild Input" ,
+                center: true
+              })
+            }
+          }).catch(error => console.log(error))
+        }else{
+          this.$message({
+            message: 'Please Enter Something!',
+            center: true
+          })
+        }
+
+      }else {
+        if (this.commonInput!== '') {
+          this.advSearchForm.keywords = [this.commonInput]
+          console.log(this.advSearchForm)
+          let paperList = []
+          let total = 0
+          getAdvancedSearchResult(this.advSearchForm).then(res => {
+            if (res.success ) {
+              paperList = res.content.paperBriefInfoVOList
+              total = res.content.totalNum
+              this.searching = false
+              let newpage = this.$router.resolve({
+                name: 'SearchPaper',
+                query: {
+                  papers: JSON.stringify(paperList),
+                  totalNum: total,
+                  content: this.commonInput+'(Keyword)',
+                  kind: 0
+                }
+              })
+              window.open(newpage.href, '_blank')
+            } else {
+              this.searching = false
+              this.$message.error({
+                message: "Invaild Input",
+                center: true
+              })
+            }
+          }).catch(error => console.log(error))
+        }else{
+          this.$message({
+            message: 'Please Enter Something!',
+            center: true
+          })
+        }
+      }
+    },
+    querySearchAsync(queryString, cb) {
+      if (queryString && queryString.length > 2) {
+        getMatchAuthor(queryString).then(res => {
+          console.log(res)
+          if (res.success) {
+            var list = [{}];
+            for(let i of res.content){
+              i.value = i.name;  //将想要展示的数据作为value
+            }
+            list = res.content;
+            cb(list);
+          }
         })
       }
+    },
+    handleSelect(item) {
+      this.searchAuthor.authorId = item.id
+      console.log(this.searchContexts)
+    },
+    querySearchAsync2(queryString, cb) {
+      if (queryString && queryString.length > 2) {
+        getMatchAffiliation(queryString).then(res => {
+          console.log(res)
+          if (res.success) {
+            var list = [{}];
+            for(let i of res.content){
+              i.value = i.name;  //将想要展示的数据作为value
+            }
+            list = res.content;
+            cb(list);
+          }
+        })
+      }
+    },
+    handleSelect2(item) {
+      this.searchAffiliation.affiliationId = item.id
+
+      console.log(this.searchAffiliation.affiliationId, item);
     },
     searchAuthorPor (authorId) {
       let newpage = this.$router.resolve({
@@ -468,10 +546,11 @@ export default {
   mounted () {
     let paperList = JSON.parse(this.$route.query.papers)
     this.PaperList = paperList
+    console.log(this.PaperList)
     this.paperNum = this.$route.query.totalNum
+    console.log(this.paperNum)
     this.searchContent = this.$route.query.content
     if (JSON.stringify(this.searchContent).substring(0, 1) === '{'||JSON.stringify(this.searchContent).substring(1, 2) === '[') {
-
       this.showSearchContent = false
     } else {
       this.showSearchContent = true

@@ -104,7 +104,7 @@
 
       </el-select>
         <el-input
-          v-if="commonSearchTypeValue === ''"
+          v-if="commonSearchTypeValue === ''||commonSearchTypeValue === 'keyword'"
           class="common_input"
           style="opacity:80%;width:40%;margin-top: 4%"
           placeholder="Enter something..."
@@ -163,7 +163,7 @@
         <div style="text-align: center;" v-for="(sc_item, index) in searchContexts" v-bind:key="index">
           <el-row v-show="sc_item.isShow">
             <el-col :span="12" style="text-align: center;">
-              <el-select style="opacity:80%;width: 45%; margin-left: 45%;text-align: left;position:relative; z-index:9999;" :popper-append-to-body="false" v-model="sc_item.type" clearable placeholder="TYPE">
+              <el-select style="opacity:80%;width: 45%; margin-left: 45%;text-align: left;position:relative;" :style="99-index":popper-append-to-body="false" v-model="sc_item.type" clearable placeholder="TYPE">
                 <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -173,7 +173,16 @@
               </el-select>
             </el-col>
             <el-col :span="6">
-              <el-input  style="opacity:80%;width: 80%;" placeholder="Enter something..." v-model="sc_item.value" clearable></el-input>
+              <el-input  v-if="sc_item.type === ''||sc_item.type==='keyword'"style="opacity:80%;width: 80%;text-align: left;position:relative; ":style="99-index"  :popper-append-to-body="false"placeholder="Enter something..."
+                         v-model="sc_item.value"
+                         @keyup.enter.native="advancedSearch"
+                         clearable></el-input>
+              <el-autocomplete v-if="sc_item.type === 'author'"
+                               :minlength="2" style="opacity:80%;width: 80%;text-align: left;position:relative; " :style="99-index" :popper-append-to-body="false" v-model="sc_item.value" :fetch-suggestions="querySearchAsync" placeholder="Enter something..."
+                               @select="handleSelect"></el-autocomplete>
+              <el-autocomplete v-if="sc_item.type === 'affiliation'"
+                               :minlength="2" style="opacity:80%;width: 80%;text-align: left;position:relative; " :style="99-index" :popper-append-to-body="false" v-model="sc_item.value" :fetch-suggestions="querySearchAsync2" placeholder="Enter something..."
+                               @select="handleSelect2"></el-autocomplete>
             </el-col>
             <el-col :span="6" style="text-align: left">
               <el-button @click="deleteSearchBox(index)" type="primary" icon="el-icon-minus" circle></el-button>
@@ -183,7 +192,7 @@
           </el-row>
 
         </div>
-
+<br><br><br>
         <!--年份和ise/icse选框-->
         <div style="text-align: center;">
           <el-row>
@@ -200,6 +209,8 @@
 
             </el-col>
             <el-col :span="12" style="text-align: center;">
+              <el-autocomplete :minlength="2" style="opacity:80%;width: 40%;margin-right:50%;text-align: left;position:relative; z-index:9999;" :popper-append-to-body="false" v-model="searchConference" :fetch-suggestions="querySearchAsync3" placeholder="Enter something..."
+                               @select="handleSelect3"></el-autocomplete>
               <el-select style="opacity:80%;width: 40%;margin-right:50%;text-align: left;position:relative; z-index:9999;" :popper-append-to-body="false" v-model="ase_icse_type" clearable placeholder="Conference">
                 <el-option
                   v-for="item in options1"
@@ -694,7 +705,7 @@
 
 <script>
 import {
-  getStatistics,getCommonSearchResult, getAdvancedSearchResult,getMatchAuthor,getMatchAffiliation
+  getStatistics,getCommonSearchResult, getAdvancedSearchResult,getMatchAuthor,getMatchAffiliation,getMatchConference
   //   getAffiliationActivityRanking, getAuthorActivityRanking, getResearchDirectionPopularityRanking, getTopPapers, getTopAffiliations, getTopAuthors,  adminLogin,
 } from '../../API/Home/HomePageAPIs'
 
@@ -709,7 +720,7 @@ export default {
       },
       searchAuthor:{},
       searchAffiliation:{},
-      searchConference:{},
+      searchConference:'',
       searching: false,
       searching_advanced: false,
       dialogVisible: false,
@@ -1059,7 +1070,7 @@ export default {
                 query: {
                   papers: JSON.stringify(paperList),
                   totalNum: total,
-                  content: this.advSearchForm,
+                  content: this.searchAuthor.name+'(Author)',
                   kind: '1'
                 }
               })
@@ -1092,7 +1103,7 @@ export default {
                 query: {
                   papers: JSON.stringify(paperList),
                   totalNum: total,
-                  content: this.advSearchForm,
+                  content: this.searchAffiliation.name+'(Affiliation)',
                   kind: '1'
                 }
               })
@@ -1111,14 +1122,13 @@ export default {
           })
         }
 
-      }else if(this.commonSearchTypeValue === 'keyword'){
+      }else {
         if (this.commonInput!== '') {
           this.advSearchForm.keywords = [this.commonInput]
+          console.log(this.advSearchForm)
           let paperList = []
           let total = 0
-          console.log("fsa")
           getAdvancedSearchResult(this.advSearchForm).then(res => {
-            console.log("fsa")
             if (res.success ) {
               paperList = res.content.paperBriefInfoVOList
               total = res.content.totalNum
@@ -1128,7 +1138,7 @@ export default {
                 query: {
                   papers: JSON.stringify(paperList),
                   totalNum: total,
-                  content: this.advSearchForm,
+                  content: this.commonInput+'(Keyword)',
                   kind: '1'
                 }
               })
@@ -1173,15 +1183,29 @@ export default {
           }
         }
       }
-
+      console.log(noType)
       for (var i = 0; i < this.searchContexts.length; i++) {
-        if (this.searchContexts[i].value !== '') {
-          // isnull = false
-          if (this.searchContexts[i].type === '') {
-            noType = true
+
+        if(this.searchContexts[i].type===''&&this.searchContexts[i].isShow){
+          noType=true
+        }else{
+          if(this.searchContexts[i].type==='author'){
+            if(this.searchAuthor.name===''&&!this.searchContexts[i].isShow){
+              noValue=true
+            }else{
+
+            }
           }
-        } else if (this.searchContexts[i].type !== '') {
-          noValue = true
+          if(this.searchContexts[i].type==='affiliation'){
+            if(this.searchAffiliation.name===''&&!this.searchContexts[i].isShow){
+              noValue=true
+            }
+          }
+          if(this.searchContexts[i].type==='keyword'){
+            if(this.searchContexts[i].value===''&&!this.searchContexts[i].isShow){
+              noValue=true
+            }
+          }
         }
       }
       if (noType) {
@@ -1197,11 +1221,11 @@ export default {
           center: true
         })
       } else {
-        console.log("!!!!!!!!!!!1")
+
         this.advSearchForm.startYear = this.value_year[0]
         this.advSearchForm.endYear = this.value_year[1]
         this.advSearchForm.conferenceName = this.ase_icse_type
-        if (this.firstInput !== '') {
+
           if (this.firstType === 'author') {
             this.advSearchForm.authors.push(this.searchAuthor.name)
           } else if (this.firstType === 'affiliation') {
@@ -1209,7 +1233,7 @@ export default {
           } else if (this.firstType === 'keyword') {
             this.advSearchForm.keywords.push(this.firstInput)
           }
-        }
+
         for (var j = 0; j < this.searchContexts.length; j++) {
           if (this.searchContexts[j].value !== '') {
             if (this.searchContexts[j].type === 'author') {
@@ -1252,7 +1276,7 @@ export default {
     },
     querySearchAsync(queryString, cb) {
       if (queryString && queryString.length > 2) {
-        getMatchAuthor(this.searchAuthor.name).then(res => {
+        getMatchAuthor(queryString).then(res => {
           console.log(res)
           if (res.success) {
             var list = [{}];
@@ -1267,11 +1291,11 @@ export default {
     },
     handleSelect(item) {
       this.searchAuthor.authorId = item.id
-      console.log(this.searchAuthor.authorId, item);
+      console.log(this.searchContexts)
     },
     querySearchAsync2(queryString, cb) {
       if (queryString && queryString.length > 2) {
-        getMatchAffiliation(this.searchAffiliation.name).then(res => {
+        getMatchAffiliation(queryString).then(res => {
           console.log(res)
           if (res.success) {
             var list = [{}];
@@ -1286,7 +1310,26 @@ export default {
     },
     handleSelect2(item) {
       this.searchAffiliation.affiliationId = item.id
+
       console.log(this.searchAffiliation.affiliationId, item);
+    },
+    querySearchAsync3(queryString, cb) {
+      if (queryString && queryString.length > 2) {
+        getMatchConference(queryString).then(res => {
+          console.log(res)
+          if (res.success) {
+            var list = [];
+            for(let i of res.content){
+              i.value = i;  //将想要展示的数据作为value
+            }
+            list = res.content;
+            cb(list);
+          }
+        })
+      }
+    },
+    handleSelect3(item) {
+      console.log(this.searchContexts)
     },
   },
   mounted: function () {

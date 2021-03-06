@@ -31,7 +31,11 @@ export const getMatchAuthor = (input) => {
 }
 
 //机构搜索提示
-//作者搜索提示
 export const getMatchAffiliation = (input) => {
   return axios.get('/paper/matchAffiliation?input='+input).then(res => res.data)
+}
+
+//会议搜索提示
+export const getMatchConference = (input) => {
+  return axios.get('/paper/matchConference?input='+input).then(res => res.data)
 }
