@@ -352,7 +352,10 @@ export default {
         }
       }else if(this.commonSearchTypeValue === 'affiliation'){
         if (this.searchAffiliation.name!== '') {
-          this.advSearchForm.affiliations = [this.searchAffiliation.name]
+          this.advSearchForm.affiliations = [this.searchAffiliation.name.replace(/,/ig,'，').replace(/&/ig,'%26').replace(/\+/g, '%2B').
+          replace(/\"/g,'%22').
+          replace(/\'/g, '%27').
+          replace(/\//g,'%2F')]
           let paperList = []
           let total = 0
           getAdvancedSearchResult(this.advSearchForm).then(res => {

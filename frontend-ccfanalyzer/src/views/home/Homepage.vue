@@ -211,21 +211,14 @@
             <el-col :span="12" style="text-align: center;">
               <el-autocomplete :minlength="2" style="opacity:80%;width: 40%;margin-right:50%;text-align: left;position:relative; z-index:9999;" :popper-append-to-body="false" v-model="searchConference" :fetch-suggestions="querySearchAsync3" placeholder="Enter something..."
                                @select="handleSelect3"></el-autocomplete>
-              <el-select style="opacity:80%;width: 40%;margin-right:50%;text-align: left;position:relative; z-index:9999;" :popper-append-to-body="false" v-model="ase_icse_type" clearable placeholder="Conference">
-                <el-option
-                  v-for="item in options1"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
             </el-col>
 
           </el-row>
 
         </div>
         <!--高级search按钮-->
-        <el-row style="text-align: right;margin-right: 30%">
+        <br>
+        <el-row style="text-align: right;margin-right: 27%">
           <el-button @click="advancedSearch" type="primary" icon="el-icon-search" :loading="searching_advanced">SEARCH</el-button>
         </el-row>
 
@@ -1090,10 +1083,16 @@ export default {
         }
       }else if(this.commonSearchTypeValue === 'affiliation'){
         if (this.searchAffiliation.name!== '') {
-          this.advSearchForm.affiliations = [this.searchAffiliation.name]
+          this.advSearchForm.affiliations = [this.searchAffiliation.name.replace(/,/ig,'，').replace(/&/ig,'%26').replace(/\+/g, '%2B').
+          replace(/\"/g,'%22').
+          replace(/\'/g, '%27').
+          replace(/\//g,'%2F')]
           let paperList = []
           let total = 0
           getAdvancedSearchResult(this.advSearchForm).then(res => {
+            console.log(this.advSearchForm)
+            console.log("!!!!!!!!")
+            console.log(res)
             if (res.success) {
               paperList = res.content.paperBriefInfoVOList
               total = res.content.totalNum
@@ -1229,7 +1228,10 @@ export default {
           if (this.firstType === 'author') {
             this.advSearchForm.authors.push(this.searchAuthor.name)
           } else if (this.firstType === 'affiliation') {
-            this.advSearchForm.affiliations.push(this.searchAffiliation.name)
+            this.advSearchForm.affiliations.push(this.searchAffiliation.name.replace(/,/ig,'，').replace(/&/ig,'%26').replace(/\+/g, '%2B').
+            replace(/\"/g,'%22').
+            replace(/\'/g, '%27').
+            replace(/\//g,'%2F'))
           } else if (this.firstType === 'keyword') {
             this.advSearchForm.keywords.push(this.firstInput)
           }
@@ -1239,7 +1241,10 @@ export default {
             if (this.searchContexts[j].type === 'author') {
               this.advSearchForm.authors.push(this.searchContexts[j].value)
             } else if (this.searchContexts[j].type === 'affiliation') {
-              this.advSearchForm.affiliations.push(this.searchContexts[j].value)
+              this.advSearchForm.affiliations.push(this.searchContexts[j].value.replace(/,/ig,'，').replace(/&/ig,'%26').replace(/\+/g, '%2B').
+              replace(/\"/g,'%22').
+              replace(/\'/g, '%27').
+              replace(/\//g,'%2F'))
             } else if (this.searchContexts[j].type === 'keyword') {
               this.advSearchForm.keywords.push(this.searchContexts[j].value)
             }
