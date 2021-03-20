@@ -90,9 +90,9 @@ public class SearchServiceImpl implements SearchService {
         size=affiliations.size();
         if(size>=1){
             affiliation_search=true;
-            ids_two=searchMapper.affiliation_to_id(affiliations.get(0));
+            ids_two=searchMapper.affiliation_to_id(affiliations.get(0).replace("，",","));
             for (int i = 1; i < size; i++) {
-                ids_two.retainAll(searchMapper.affiliation_to_id(affiliations.get(i)));
+                ids_two.retainAll(searchMapper.affiliation_to_id(change_str(affiliations.get(i).replace("，",","))));
             }
         }
         size=keywords.size();
@@ -155,6 +155,7 @@ public class SearchServiceImpl implements SearchService {
         if(result_n>=1&&result_n>=10*index) {
 //            System.out.println(result_n);
             List<SearchResultForm> srs=searchMapper.get_Inf(ids);
+            List<SearchResultForm> srs_new=new ArrayList<>();
             if(result_n>=10*index+10)
                 result_n=10*index+10;
             for (int i = 10*index; i < result_n; i++) {
@@ -162,20 +163,35 @@ public class SearchServiceImpl implements SearchService {
                 List<Authors> r_authors=searchMapper.get_author(s.getPaperId());
                 List<Affiliations> r_affiliations=searchMapper.get_affiliation(s.getPaperId());
                 List<String> r_keywords=searchMapper.get_keyword(s.getPaperId());
-//                    System.out.println(r_authors.get(0).getName());
-//                    System.out.println(r_affiliations.get(0).getName());
-//                    System.out.println(r_keywords.get(0));
+//                System.out.println(r_authors.get(0).getName());
+//                System.out.println(s.getPaperId());
+//                System.out.println(r_affiliations.get(0).getName());
+//                System.out.println(r_keywords.get(0));
                 s.setAuthors(r_authors);
                 s.setAffiliations(r_affiliations);
                 s.setKeywords(r_keywords);
                 srs.set(i,s);
+                srs_new.add(srs.get(i));
             }
             SearchResultNum r= new SearchResultNum();
             r.setTotalNum(ids.size());
-            r.setPaperBriefInfoVOList(srs);
+            r.setPaperBriefInfoVOList(srs_new);
             return ResponseVO.buildSuccess(r);
         }
         else
             return ResponseVO.buildSuccess("搜索结果为0");
+    }
+    public String change_str(String input){
+        String l=input.toLowerCase();
+        for(int i=0;i<l.length();i++){
+            if(!(l.charAt(i) >= 'a' && l.charAt(i) <= 'z')){
+                if(l.charAt(i)!=' '){
+                    input=input.substring(0,i)+","+input.substring(i+1,l.length());
+                    break;
+                }
+            }
+        }
+        return input;
+
     }
 }

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.ccf.data.team_manage.TeamManageMapper">
+    <insert id="team_create" useGeneratedKeys="true">
+        insert into team(team_name,team_owner_id)
+        values(#{team_name},#{user_id})
+    </insert>
+    <insert id="team_invite" useGeneratedKeys="true">
+        insert into team_user_relation(team_id,user_id)
+        values(#{team_id},#{invitee_id})
+    </insert>
+    <delete id="team_quit" >
+        delete from team_user_relation where user_id=#{user_id} and team_id=#{team_id}
+    </delete>
+    <delete id="team_dismiss">
+        delete from team where team_id=#{team_id}
+    </delete>
+    <delete id="team_members_quit">
+        delete from team_user_relation where team_id=#{team_id}
+    </delete>
+    <delete id="team_paper_delete">
+        delete from  private_paper where paper_id in
+        (select paper_id from privatepaper_team_relation where team_id=#{team_id})
+    </delete>
+    <delete id="team_member_quit">
+        delete from team_user_relation where team_id=#{team_id} and user_id=#{user_id}
+    </delete>
+    <delete id="team_paper_relation_delete">
+        delete from privatepaper_team_relation where team_id=#{team_id}
+    </delete>
+    <select id="find_id" resultType="Integer">
+        select user_id from user where username=#{username}
+    </select>
+    <select id="right_if" resultType="int">
+        select count(*) from team where team_id=#{team_id} and team_owner_id=#{user_id}
+    </select>
+    <select id="member_if" resultType="int">
+        select count(*) from team_user_relation where team_id=#{team_id} and user_id=#{user_id}
+    </select>
+    <select id="team_members" resultType="String">
+        select username from user where user_id in
+        (select user_id from team_user_relation where team_id=#{team_id})
+    </select>
+    <select id="team_list" resultMap="Team">
+        select team_id,team_name as name from team where team_id in
+        (select distinct team_id from team_user_relation where user_id=#{user_id})
+    </select>
+    <select id="find_team_id" resultType="Integer">
+        select team_id from team where team_name=#{team_name}
+    </select>
+    <resultMap id="Team" type="com.example.ccf.po.TeamInf">
+    </resultMap>
+</mapper>

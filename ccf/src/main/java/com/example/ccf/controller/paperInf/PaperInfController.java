@@ -18,7 +18,10 @@ public class PaperInfController {
     public ResponseVO paperSimpleInfo(int paperId){return paperInfService.getPaperInf(paperId);}
     @CrossOrigin(origins="*",maxAge=3600)
     @RequestMapping(value ="/simple/info/ref",method = RequestMethod.GET)
-    public ResponseVO paperSimpleInfoRef(RefForm refForm){return  paperInfService.getPaperRef(refForm); }
+    public ResponseVO paperSimpleInfoRef(RefForm refForm){return  paperInfService.getPaperRef(refForm);}
+    @CrossOrigin(origins="*",maxAge=3600)
+    @RequestMapping(value ="/private",method = RequestMethod.GET)
+    public ResponseVO private_paper(int paper_id,int user_id){return paperInfService.get_private_paper_inf(paper_id, user_id);}
     @CrossOrigin(origins="*",maxAge=3600)
     @RequestMapping(value ="/matchAuthor",method = RequestMethod.GET)
     public ResponseVO paper_match_author(String input){return paperInfService.match_author(input);}

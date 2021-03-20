@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.ccf.data.paper_upload.PaperUploadMapper">
+    <insert id="insert_private_paper" useGeneratedKeys="true"  keyProperty="paper_id">
+        insert into private_paper(title,abstract,doi,citation,book_title,pages,publisher,year,url,time,bib_url,bib_source)
+        values(#{title},#{abstracts},#{doi},#{citation},#{book_title},#{pages},#{publisher},#{year},#{url},#{time},#{bib_url},#{bib_source});
+    </insert>
+    <insert id="insert_team_paper" useGeneratedKeys="true">
+        insert into privatepaper_team_relation(paper_id,team_id)
+        values(#{paper_id},#{team_id})
+    </insert>
+    <insert id="insert_user_paper" useGeneratedKeys="true">
+        insert into privatepaper_user_relation(user_id,private_paper_id, permission)
+        values(#{user_id},#{paper_id},1)
+    </insert>
+</mapper>

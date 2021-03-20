@@ -14,10 +14,8 @@ public class SegmentationController {
     @CrossOrigin(origins="*",maxAge=3600)
     @RequestMapping(value ="/one",method = RequestMethod.GET)
     public ResponseVO updateMysqlOne(int paperId){return segmentationService.segmentation_title(paperId);}
+
     @CrossOrigin(origins="*",maxAge=3600)
     @RequestMapping(value ="/two",method = RequestMethod.GET)
-    public ResponseVO updateMysqlTwo(int paperId){return segmentationService.segmentation_authorInf(paperId);}
-    @CrossOrigin(origins="*",maxAge=3600)
-    @RequestMapping(value ="/three",method = RequestMethod.GET)
     public ResponseVO updateMysqlThree(int paperId){return segmentationService.segmentation_keyword(paperId);}
 }

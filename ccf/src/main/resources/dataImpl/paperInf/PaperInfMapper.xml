@@ -13,13 +13,19 @@
         select ref_content from paper_ref where paper_id =#{paper_id}
     </select>
     <select id="match_author" resultMap="Authors">
-        select author_id as authorId,author as name from author where author like CONCAT(#{input},'%')
+        select distinct author_id as authorId,author as name from author where author like CONCAT(#{input},'%')
     </select>
     <select id="match_affiliation" resultMap="Affiliations">
         select affiliation_id as affiliationId,affiliation as name from affiliation where affiliation like CONCAT(#{input},'%')
     </select>
     <select id="match_conference" resultType="string">
     select book_title from paper where book_title like CONCAT(#{input},'%')
+    </select>
+    <select id="get_private_paper_inf" resultMap="Private_Paper">
+        select * from  private_paper where  paper_id=#{paper_id}
+    </select>
+    <select id="get_private_paper_right" resultType="int">
+        select count(*) from privatepaper_user_relation where user_id=#{user_id} and private_paper_id=#{paper_id}
     </select>
     <resultMap id="paperInf" type="com.example.ccf.po.PaperInfOne">
         <result column="paperId" property="paperId"></result>
@@ -38,5 +44,8 @@
     <resultMap id="Affiliations" type="com.example.ccf.po.Affiliations">
         <result column="affiliationId" property="affiliationId"></result>
         <result column="name" property="name"></result>
+    </resultMap>
+    <resultMap id="Private_Paper" type="com.example.ccf.vo.Private_paper">
+        <result column="abstract" property="abstracts"></result>
     </resultMap>
 </mapper>

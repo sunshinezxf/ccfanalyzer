@@ -12,19 +12,33 @@
         </foreach>
     </select>
     <select id="get_author"  resultMap="Authors">
-        select distinct author_id as authorId,author as name from SegmentationAuthorInf where paper_id =#{paper_id}
+        select author.author_id as authorId,author as name
+        from paper_author_relation left join author
+        on paper_author_relation.author_id=author.author_id
+        where paper_id=#{paper_id};
     </select>
     <select id="get_affiliation"  resultMap="Affiliations">
-        select distinct affiliation_id as affiliationId, affiliation as name from SegmentationAuthorInf where paper_id =#{paper_id}
+        select  distinct affiliation.affiliation_id as affiliationId, affiliation.affiliation as name
+        from paper_author_relation
+        left join author
+        on paper_author_relation.author_id=author.author_id
+        left join affiliation_author_relation
+        on affiliation_author_relation.author_id=author.author_id
+        left join affiliation
+        on affiliation_author_relation.affiliation_id=affiliation.affiliation_id
+        where paper_id =#{paper_id};
     </select>
     <select id="get_keyword" resultType="string">
         select distinct keyword from SegmentationKeyword where paper_id =#{paper_id}
     </select>
     <select id="author_to_id" resultType="int">
-        select distinct paper_id from SegmentationAuthorInf where author=#{author}
+        select distinct paper_id from paper_author_relation where author_id in
+        (select author_id from author where author=#{author} );
     </select>
     <select id="affiliation_to_id" resultType="int">
-        select distinct(paper_id) from SegmentationAuthorInf where affiliation=#{affiliation}
+        select distinct paper_id from paper_author_relation where author_id in
+        (select author_id from affiliation_author_relation where affiliation_id in
+        (select affiliation_id from affiliation where affiliation.affiliation =#{affiliation}));
     </select>
     <select id="keyword_to_id" resultType="int">
         select distinct(paper_id) from SegmentationKeyword where keyword=#{keyword}
@@ -36,7 +50,7 @@
         </foreach>
     </select>
     <select id="conference_to_id" resultType="int">
-        select paper_if from paper where book_title=#{conference}
+        select paper_id from paper where book_title=#{conference}
     </select>
     <resultMap id="SearchResultForm" type="com.example.ccf.po.SearchResultForm">
         <result column="paperId" property="paperId"></result>

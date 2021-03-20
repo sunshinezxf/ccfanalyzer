@@ -16,6 +16,7 @@ public class SegmentationServiceTest {
     private SegmentationServiceImpl segmentationService;
     @Test
     public  void test1(){
-        //segmentationService.segmentation_keyword(1);
+       // segmentationService.segmentation_keyword(1);
+        //segmentationService.segmentation_title(1);
     }
 }

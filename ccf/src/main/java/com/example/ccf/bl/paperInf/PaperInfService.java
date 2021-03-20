@@ -9,4 +9,5 @@ public interface PaperInfService {
     ResponseVO match_author(String input);
     ResponseVO match_affiliation(String input);
     ResponseVO match_conference(String input);
+    ResponseVO get_private_paper_inf(int paperId,int user_id);
 }

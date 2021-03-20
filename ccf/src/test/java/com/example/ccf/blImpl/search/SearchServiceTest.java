@@ -30,15 +30,15 @@ public class SearchServiceTest {
         List<String> affiliations=new ArrayList<>();
         List<String> keywords=new ArrayList<>();
 //        authors.add("Muyang  Liu");
-//        affiliations.add("University of Electronic Science and Technology of China, China");
-        keywords.add("deep");
-        a.setEndYear(2020);
-        a.setStartYear(2019);
+        //affiliations.add("University of Electronic Science and Technology of China， China");
+        //keywords.add("test");
+        a.setEndYear(0);
+        a.setStartYear(0);
         a.setAuthors(authors);
         a.setAffiliations(affiliations);
         a.setKeywords(keywords);
         a.setIndex(0);
-        a.setConferenceName("");
+        a.setConferenceName("{ISSTA} '20: 29th {ACM} {SIGSOFT} International Symposium on Software Testing and Analysis, Virtual Event, USA, July 18-22, 2020");
         searchService.advancedSearch(a);
     }
 }

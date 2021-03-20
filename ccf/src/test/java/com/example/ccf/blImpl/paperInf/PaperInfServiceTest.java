@@ -27,8 +27,14 @@ public class PaperInfServiceTest {
     }
     @Test
     public void test3(){
-        paperInfService.match_author("Yang");
-        paperInfService.match_affiliation("University of ");
-        paperInfService.match_conference("{ISSTA} '20: 29th {ACM} {SIGSOFT} International Symposium on Software");
+        //paperInfService.match_author("Yang");
+         paperInfService.match_affiliation("Nanjing University, China");
+        //paperInfService.match_conference("{ISSTA} '20: 29th {ACM} {SIGSOFT} International Symposium on Software");
+    }
+    @Test
+    //查看私人文章
+    public void test4(){
+        System.out.println(paperInfService.get_private_paper_inf(1,2).getContent());
+        System.out.println(paperInfService.get_private_paper_inf(1,3).getContent());
     }
 }

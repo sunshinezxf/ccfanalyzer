@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.ccf.data.share.ShareMapper">
+    <select id="find_id" resultType="Integer">
+        select user_id from user where username=#{user_name}
+    </select>
+    <select id="share_right" resultType="int">
+        select count(*) from privatepaper_user_relation where user_id=#{user_id} and private_paper_id=#{paper_id} and  permission=1;
+    </select>
+    <insert id="share_paper" useGeneratedKeys="true">
+        insert into privatepaper_user_relation(user_id,private_paper_id,permission)
+        values(#{user_id},#{paper_id},0)
+    </insert>
+    <select id="receiver_list" resultMap="Paper">
+        select paper_id,title from private_paper where paper_id in
+        (select private_paper_id from  privatepaper_user_relation where user_id=#{user_id} and permission=0)
+    </select>
+    <select id="first_share" resultType="int">
+        select count(*) from privatepaper_user_relation where user_id=#{user_id} and private_paper_id=#{paper_id}
+    </select>
+    <resultMap id="Paper" type="com.example.ccf.po.PaperID">
+        <result column="title" property="title"></result>
+        <result column="paper_id" property="paper_id"></result>
+    </resultMap>
+</mapper>
