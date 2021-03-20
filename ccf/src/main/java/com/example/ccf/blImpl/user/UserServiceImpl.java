@@ -44,10 +44,14 @@ public class UserServiceImpl implements UserService {
         }
     }
     @Override
-    public ResponseVO change_password(int user_id,String password){
+    public ResponseVO change_password(int user_id,String old_password,String new_password){
         String name=userMapper.get_username(user_id);
-        userMapper.change_pass(user_id,md5(password,name));
-        return ResponseVO.buildSuccess("修改成功");
+        if(md5(old_password,name).equals(userMapper.get_pass(name))) {
+            userMapper.change_pass(user_id, md5(new_password, name));
+            return ResponseVO.buildSuccess("修改成功");
+        }
+        return ResponseVO.buildSuccess("旧密码错误。");
+
     }
 
 

@@ -14,13 +14,25 @@ public class CollectServiceImpl implements CollectService {
     private CollectMapper collectMapper;
     @Override
     public ResponseVO collect(int user_id, int paper_id){
-        collectMapper.collect(user_id,paper_id);
-        return  ResponseVO.buildSuccess("收藏成功");
+        int right=collectMapper.if_collect(user_id, paper_id);
+        if(right>=1){
+            return ResponseVO.buildSuccess("你已经收藏该文章。");
+        }
+        else {
+            collectMapper.collect(user_id, paper_id);
+            return ResponseVO.buildSuccess("收藏成功");
+        }
     }
     @Override
     public ResponseVO cancel_collect(int user_id,int paper_id){
-        collectMapper.cancel_collect(user_id, paper_id);
-        return ResponseVO.buildSuccess("取消收藏");
+        int right=collectMapper.if_collect(user_id, paper_id);
+        if(right==0){
+            return ResponseVO.buildSuccess("你未收藏该文章。");
+        }
+        else {
+            collectMapper.cancel_collect(user_id, paper_id);
+            return ResponseVO.buildSuccess("取消收藏");
+        }
     }
     @Override
     public ResponseVO collection_list(int user_id){

@@ -16,6 +16,6 @@ public interface UserService {
      * 更改密码
      * @return
      */
-    ResponseVO change_password(int user_id,String password);
+    ResponseVO change_password(int user_id,String old_password,String new_password);
 
 }

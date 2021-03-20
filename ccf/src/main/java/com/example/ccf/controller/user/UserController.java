@@ -38,7 +38,7 @@ public class UserController {
     }
     @CrossOrigin(origins="*",maxAge=3600)
     @RequestMapping(value ="/change_password",method = RequestMethod.GET)
-    public ResponseVO change_password(int user_id,String password){
-        return  userService.change_password(user_id,password);
+    public ResponseVO change_password(int user_id,String old_password,String new_password){
+        return  userService.change_password(user_id,old_password,new_password);
     }
 }

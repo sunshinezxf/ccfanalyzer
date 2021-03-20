@@ -4,7 +4,6 @@ import com.example.ccf.bl.paper_upload.PaperUploadService;
 import com.example.ccf.data.paper_upload.PaperUploadMapper;
 import com.example.ccf.vo.Private_paper;
 import com.example.ccf.vo.ResponseVO;
-import com.example.ccf.vo.Upload_paper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
