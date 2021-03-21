@@ -1097,11 +1097,11 @@ export default {
   },
   mounted () {
     let id = this.$route.query.authorId
-    this.AuPor.authorId = 1
-    console.log("fsd")
+    this.AuPor.authorId = id
+
     //this.loadTrend()
     this.getAuthorContent()
-    //this.getPapers()
+    this.getPapers()
    // this.loadData()
     this.$store.dispatch('flushFun')
   }
