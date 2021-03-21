@@ -23,7 +23,7 @@ public class CollectController {
     }
     @CrossOrigin(origins="*",maxAge=3600)
     @RequestMapping(value ="/collection/list",method = RequestMethod.GET)
-    public ResponseVO collection_list(int user_id,int paper_id){
+    public ResponseVO collection_list(int user_id){
         return collectService.collection_list(user_id);
     }
 }
