@@ -13,7 +13,7 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
     @Override
     public ResponseVO registerAccount(UserForm userForm){
-        String name=userForm.getUser_name();
+        String name=userForm.getUsername();
         String password=userForm.getPassword();
         String username=userMapper.can_get_username(name);
         if(username!=null){
@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserVO login(UserForm userForm){
-        String name=userForm.getUser_name();
+        String name=userForm.getUsername();
         String password=userForm.getPassword();
         if(md5(password,name).equals(userMapper.get_pass(name))){
             return  userMapper.login(name);

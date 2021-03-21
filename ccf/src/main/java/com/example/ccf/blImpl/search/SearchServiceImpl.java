@@ -30,11 +30,12 @@ public class SearchServiceImpl implements SearchService {
             if(result_n>=1&&result_n>=10*index) {
 //                System.out.println(result_n);
                 List<SearchResultForm> srs=searchMapper.get_Inf(ids);
+                List<SearchResultForm> srs_new=new ArrayList<>();
                 if(result_n>=10*index+10)
                     result_n=10*index+10;
                 for (int i = 10*index; i < result_n; i++) {
                     SearchResultForm s=srs.get(i);
-                    System.out.println(s.getPaperId());
+                   // System.out.println(s.getPaperId());
                     List<Authors> authors=searchMapper.get_author(s.getPaperId());
                     List<Affiliations> affiliations=searchMapper.get_affiliation(s.getPaperId());
                     List<String> keywords=searchMapper.get_keyword(s.getPaperId());
@@ -45,10 +46,11 @@ public class SearchServiceImpl implements SearchService {
                     s.setAffiliations(affiliations);
                     s.setKeywords(keywords);
                     srs.set(i,s);
+                    srs_new.add(srs.get(i));
                 }
                 SearchResultNum r= new SearchResultNum();
                 r.setTotalNum(ids.size());
-                r.setPaperBriefInfoVOList(srs);
+                r.setPaperBriefInfoVOList(srs_new);
                 return ResponseVO.buildSuccess(r);
             }
             else{

@@ -12,12 +12,12 @@ public class CollectController {
     @Autowired
     private CollectService collectService;
     @CrossOrigin(origins="*",maxAge=3600)
-    @RequestMapping(value ="/collection",method = RequestMethod.GET)
+    @RequestMapping(value ="/collection",method = RequestMethod.POST)
     public ResponseVO collect(int user_id,int paper_id){
         return collectService.collect(user_id, paper_id);
     }
     @CrossOrigin(origins="*",maxAge=3600)
-    @RequestMapping(value ="/cancel/collection",method = RequestMethod.GET)
+    @RequestMapping(value ="/delete",method = RequestMethod.POST)
     public ResponseVO cancel_collect(int user_id,int paper_id){
         return collectService.cancel_collect(user_id, paper_id);
     }

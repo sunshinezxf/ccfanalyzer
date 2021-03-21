@@ -11,12 +11,12 @@ public class PaperUploadController {
     @Autowired
     private PaperUploadService paperUploadService;
     @CrossOrigin(origins="*",maxAge=3600)
-    @RequestMapping(value ="/user/paperImport",method = RequestMethod.GET)
+    @RequestMapping(value ="/user/paperImport",method = RequestMethod.POST)
     public ResponseVO user_upload(Private_paper p,int user_id){
         return paperUploadService.private_paper_upload(p,user_id);
     }
     @CrossOrigin(origins="*",maxAge=3600)
-    @RequestMapping(value ="/team/paperImport",method = RequestMethod.GET)
+    @RequestMapping(value ="/team/paperImport",method = RequestMethod.POST)
     public ResponseVO team_upload(Private_paper p,int team_id){
         return paperUploadService.private_paper_upload(p,team_id);
     }

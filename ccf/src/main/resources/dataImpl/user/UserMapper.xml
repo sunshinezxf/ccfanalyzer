@@ -9,7 +9,7 @@
     </select>
     <insert id="user_register" useGeneratedKeys="true">
         insert into user(username,password)
-        values(#{user_name},#{password})
+        values(#{username},#{password})
     </insert>
     <update id="change_pass">
         update user set password=#{password} where user_id=#{user_id}

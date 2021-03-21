@@ -1,15 +1,15 @@
 package com.example.ccf.vo;
 
 public class UserForm {
-    private String user_name;
+    private String username;
     private String password;
 
-    public String getUser_name() {
-        return user_name;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUser_name(String user_name) {
-        this.user_name = user_name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {

@@ -8,15 +8,11 @@
     <delete id="cancel_collect">
         delete from user_like_relation where user_id=#{user_id} and paper_id=#{paper_id}
     </delete>
-    <select id="collection_list" resultMap="Paper">
-        select paper_id,title from paper where paper_id in
-        (select paper_id from user_like_relation where user_id=#{user_id})
+    <select id="collection_list" resultType="Integer">
+        select paper_id from user_like_relation where user_id=#{user_id}
     </select>
     <select id="if_collect" resultType="int">
         select count(*) from user_like_relation where user_id=#{user_id} and paper_id=#{paper_id}
     </select>
-    <resultMap id="Paper" type="com.example.ccf.po.PaperID">
-        <result column="title" property="title"></result>
-        <result column="paper_id" property="paper_id"></result>
-    </resultMap>
+
 </mapper>

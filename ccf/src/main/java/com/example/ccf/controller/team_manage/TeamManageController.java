@@ -12,27 +12,27 @@ public class TeamManageController {
     @Autowired
     private TeamManageService teamManageService;
     @CrossOrigin(origins="*",maxAge=3600)
-    @RequestMapping(value ="/create",method = RequestMethod.GET)
+    @RequestMapping(value ="/create",method = RequestMethod.POST)
     public ResponseVO team_create(int user_id,String team_name){
         return teamManageService.team_create(user_id, team_name);
     }
     @CrossOrigin(origins="*",maxAge=3600)
-    @RequestMapping(value ="/invite",method = RequestMethod.GET)
+    @RequestMapping(value ="/invite",method = RequestMethod.POST)
     public ResponseVO team_invite(int user_id,String invitee,int team_id){
         return teamManageService.team_invite(user_id, invitee, team_id);
     }
     @CrossOrigin(origins="*",maxAge=3600)
-    @RequestMapping(value ="/quit",method = RequestMethod.GET)
+    @RequestMapping(value ="/quit",method = RequestMethod.POST)
     public ResponseVO team_quit(int user_id, int team_id){
         return teamManageService.team_quit(user_id, team_id);
     }
     @CrossOrigin(origins="*",maxAge=3600)
-    @RequestMapping(value ="/delete",method = RequestMethod.GET)
+    @RequestMapping(value ="/delete",method = RequestMethod.POST)
     public ResponseVO team_delete(int user_id,int team_id){
         return teamManageService.team_dismiss(user_id, team_id);
     }
     @CrossOrigin(origins="*",maxAge=3600)
-    @RequestMapping(value ="/memberDelete",method = RequestMethod.GET)
+    @RequestMapping(value ="/memberDelete",method = RequestMethod.POST)
     public ResponseVO team_member_delete(int user_id,String member,int team_id){
         return teamManageService.team_member_quit(user_id, member, team_id);
     }

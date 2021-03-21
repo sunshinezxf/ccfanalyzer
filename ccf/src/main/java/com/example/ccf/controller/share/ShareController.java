@@ -12,7 +12,7 @@ public class ShareController {
     @Autowired
     private ShareService shareService;
     @CrossOrigin(origins="*",maxAge=3600)
-    @RequestMapping(value ="/share",method = RequestMethod.GET)
+    @RequestMapping(value ="/share",method = RequestMethod.POST)
     public ResponseVO user_share(int paper_id,String username,int user_id){
         return shareService.Share_paper(paper_id, username, user_id);
     }

@@ -13,7 +13,7 @@ public class UserController {
     @Autowired
     private UserService userService;
     @CrossOrigin(origins="*",maxAge=3600)
-    @RequestMapping(value ="/login",method = RequestMethod.GET)
+    @RequestMapping(value ="/login",method = RequestMethod.POST)
     public ResponseVO login(@RequestBody UserForm userForm, HttpSession session){
        UserVO userVO= userService.login(userForm);
        if(userVO==null){
@@ -26,18 +26,18 @@ public class UserController {
        }
     }
     @CrossOrigin(origins="*",maxAge=3600)
-    @RequestMapping(value ="/logout",method = RequestMethod.GET)
+    @RequestMapping(value ="/logout",method = RequestMethod.POST)
     public ResponseVO logout(HttpSession session){
         session.removeAttribute("user_inf");
         return ResponseVO.buildSuccess("登出成功。");
     }
     @CrossOrigin(origins="*",maxAge=3600)
-    @RequestMapping(value ="/register",method = RequestMethod.GET)
+    @RequestMapping(value ="/register",method = RequestMethod.POST)
     public ResponseVO register(UserForm userForm){
         return  userService.registerAccount(userForm);
     }
     @CrossOrigin(origins="*",maxAge=3600)
-    @RequestMapping(value ="/change_password",method = RequestMethod.GET)
+    @RequestMapping(value ="/change_password",method = RequestMethod.POST)
     public ResponseVO change_password(int user_id,String old_password,String new_password){
         return  userService.change_password(user_id,old_password,new_password);
     }
