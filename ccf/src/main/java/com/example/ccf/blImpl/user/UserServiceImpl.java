@@ -30,12 +30,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserVO login(UserForm userForm){
         String name=userForm.getUsername();
+        String username=userMapper.can_get_username(name);
+        if(username==null||username.length()==0){
+            return null;
+        }
         String password=userForm.getPassword();
         if(md5(password,name).equals(userMapper.get_pass(name))){
             return  userMapper.login(name);
         }
         else{
-            return new UserVO();
+            return null;
         }
     }
     @Override

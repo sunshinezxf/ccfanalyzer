@@ -22,7 +22,7 @@
     </select>
     <resultMap id="User" type="com.example.ccf.vo.UserVO">
         <result column="user_id" property="id"></result>
-        <result column="username" property="user_name"></result>
+        <result column="username" property="username"></result>
         <result column="password" property="password"></result>
     </resultMap>
 </mapper>

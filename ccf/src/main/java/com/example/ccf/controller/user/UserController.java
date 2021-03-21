@@ -13,8 +13,8 @@ public class UserController {
     @Autowired
     private UserService userService;
     @CrossOrigin(origins="*",maxAge=3600)
-    @RequestMapping(value ="/login",method = RequestMethod.POST)
-    public ResponseVO login(@RequestBody UserForm userForm, HttpSession session){
+    @PostMapping("/login")
+    public ResponseVO login(UserForm userForm, HttpSession session){
        UserVO userVO= userService.login(userForm);
        if(userVO==null){
            return ResponseVO.buildSuccess("用户名或者密码错误");
