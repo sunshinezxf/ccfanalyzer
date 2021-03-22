@@ -2,12 +2,15 @@ package com.example.ccf.blImpl.paper_upload;
 
 import com.example.ccf.bl.paper_upload.PaperUploadService;
 import com.example.ccf.data.paper_upload.PaperUploadMapper;
+import com.example.ccf.vo.Private_Author;
 import com.example.ccf.vo.Private_paper;
 import com.example.ccf.vo.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.regex.Pattern;
 
 @Service
@@ -20,6 +23,7 @@ public class PaperUploadServiceImpl implements PaperUploadService {
         if(result.equals("pass")){
             paperUploadMapper.insert_private_paper(upload_paper);
             int paper_id=upload_paper.getPaper_id();
+            author_insert(paper_id,upload_paper.getAuthors());
             paperUploadMapper.insert_team_paper(team_id,paper_id);
             return ResponseVO.buildSuccess("上传成功！");
         }
@@ -33,6 +37,7 @@ public class PaperUploadServiceImpl implements PaperUploadService {
         if(result.equals("pass")){
             paperUploadMapper.insert_private_paper(upload_paper);
             int paper_id=upload_paper.getPaper_id();
+            author_insert(paper_id,upload_paper.getAuthors());
             paperUploadMapper.insert_user_paper(user_id,paper_id);
             return ResponseVO.buildSuccess("上传成功！");
         }
@@ -40,8 +45,19 @@ public class PaperUploadServiceImpl implements PaperUploadService {
             return ResponseVO.buildSuccess(result);
         }
     }
+    public void author_insert(int paper_id,List<String> authors){
+        List<Private_Author> private_authors=new ArrayList<>();
+        for(int i=0;i<authors.size();i++){
+            Private_Author private_author=new Private_Author();
+            private_author.setPaper_id(paper_id);
+            private_author.setAuthor(authors.get(i));
+            private_authors.add(private_author);
+        }
+        paperUploadMapper.insert_paper_author(private_authors);
+    }
     public String paper_check(Private_paper upload_paper){
         Calendar cal = Calendar.getInstance();
+        List<String> authors=upload_paper.getAuthors();
         String title=upload_paper.getTitle();
         String abs=upload_paper.getAbstracts();
         String doi=upload_paper.getDoi();
@@ -55,6 +71,8 @@ public class PaperUploadServiceImpl implements PaperUploadService {
         String time=upload_paper.getTime();
         String bib_url=upload_paper.getBib_url();
         String bib_source=upload_paper.getBib_source();
+        //作者只允许英文空格和点
+        String author_check="^[A-Za-z .]+$";
         //标题只允许出现两次数字和部分特殊符号
         String title_check="^[A-Za-z-, :.'?]*[0-9]*[A-Za-z-, :.'?]*[0-9]*[A-Za-z-, :.'?]+$";
         //简介允许出现部分特殊符号
@@ -79,6 +97,15 @@ public class PaperUploadServiceImpl implements PaperUploadService {
         String bib_url_check="^https://[\\w/._\\-?]+$";
         //允许一些特殊符号
         String bib_source_check="^[\\w/:. ,\\-]+$";
+        int size=authors.size();
+        if(size==0)
+            return "你需要填写作者名称。";
+        else{
+            for(int i=0;i<size;i++){
+                if(!Pattern.matches(author_check,authors.get(i)))
+                    return "作者名称只能包含英文空格点。";
+            }
+        }
         if(!Pattern.matches(title_check,title))
             return "标题只能包含-, :.'?符号且只能出现两次数字。";
         if(!Pattern.matches(abs_check,abs))
@@ -87,22 +114,52 @@ public class PaperUploadServiceImpl implements PaperUploadService {
             return "需要 数字.数字/字符串 的形式。";
         if(citation>=max_citation||citation<0)
             return "引用数超过上限或者为负数。";
-        if(!Pattern.matches(book_title_check,book_title))
-            return "出版刊物标题允许-, :.'?符号。";
-        if(!Pattern.matches(pages_check,pages))
-            return "页数需要 页数--(-)页数 的形式，并且页数不能超过4位数。";
+        if(book_title==""||book_title==null){
+
+        }
+        else{
+            if(!Pattern.matches(book_title_check,book_title))
+                return "出版刊物标题允许-, :.'?符号。";
+        }
+        if(pages==""||pages==null){
+
+        }
+        else{
+            if(!Pattern.matches(pages_check,pages))
+                return "页数需要 页数--(-)页数 的形式，并且页数不能超过4位数。";
+        }
         if(!Pattern.matches(publisher_check,publisher))
             return "出版商简称需大写且长度不宜过长。";
         if(y<1960||y>now_year)
             return "年份不合法。";
-        if(!Pattern.matches(url_check,url))
-            return "url开头必须为https://doi.org/，必须以doi形式结尾。";
-        if(!Pattern.matches(time_check,time))
-            return "按照周几(简写) 日 月(简写) 年的形式";
-        if(!Pattern.matches(bib_url_check,bib_url))
-            return "必须以https://开头,允许/._-?符号";
-        if(!Pattern.matches(bib_source_check,bib_source))
-            return "允许:. ,-符号";
+        if(url==""||url==null){
+
+        }
+        else{
+            if(!Pattern.matches(url_check,url))
+                return "url开头必须为https://doi.org/，必须以doi形式结尾。";
+        }
+        if (time == null || time == "") {
+
+        }
+        else {
+            if (!Pattern.matches(time_check, time))
+                return "按照周几(简写) 日 月(简写) 年的形式";
+        }
+        if(bib_url==null||bib_url==""){
+
+        }
+        else{
+            if(!Pattern.matches(bib_url_check,bib_url))
+                return "必须以https://开头,允许/._-?符号";
+        }
+        if(bib_source==""||bib_source==null){
+
+        }
+        else{
+            if(!Pattern.matches(bib_source_check,bib_source))
+                return "允许:. ,-符号";
+        }
         return "pass";
     }
 

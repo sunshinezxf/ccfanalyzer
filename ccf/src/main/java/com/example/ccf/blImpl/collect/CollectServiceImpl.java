@@ -40,6 +40,11 @@ public class CollectServiceImpl implements CollectService {
     @Override
     public ResponseVO collection_list(int user_id){
         List<Integer> ids =collectMapper.collection_list(user_id);
+        if(ids.size()==0){
+            SearchResultNum r= new SearchResultNum();
+            r.setTotalNum(0);
+            return ResponseVO.buildSuccess(r);
+        }
         List<SearchResultForm> srs=searchMapper.get_Inf(ids);
         for (int i = 0; i < ids.size(); i++) {
             SearchResultForm s=srs.get(i);

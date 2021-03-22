@@ -13,4 +13,11 @@
         insert into privatepaper_user_relation(user_id,private_paper_id, permission)
         values(#{user_id},#{paper_id},1)
     </insert>
+    <insert id="insert_paper_author" useGeneratedKeys="true" parameterType="java.util.List">
+        insert into private_paper_author_relation(paper_id,author)
+        values
+        <foreach collection="list" item="item" separator="," close=";">
+            (#{item.paper_id},#{item.author})
+        </foreach>
+    </insert>
 </mapper>

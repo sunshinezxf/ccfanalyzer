@@ -2,7 +2,7 @@ package com.example.ccf.blImpl.share;
 
 import com.example.ccf.bl.share.ShareService;
 import com.example.ccf.data.share.ShareMapper;
-import com.example.ccf.po.PaperID;
+import com.example.ccf.po.Private_Paper_Must;
 import com.example.ccf.vo.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,7 +36,19 @@ public class ShareServiceImpl implements ShareService {
     }
     @Override
     public ResponseVO Receiver_list(int user_id){
-        List<PaperID> ps=shareMapper.receiver_list(user_id);
-        return ResponseVO.buildSuccess(ps);
+        List<Private_Paper_Must> ps=shareMapper.receiver_list(user_id);
+        int size=ps.size();
+        if(size==0){
+            return ResponseVO.buildSuccess(ps);
+        }
+        else{
+            for(int i=0;i<size;i++) {
+                Private_Paper_Must p=ps.get(i);
+                p.setAuthors(shareMapper.authors_get(p.getPaper_id()));
+                ps.set(i,p);
+            }
+            return ResponseVO.buildSuccess(ps);
+        }
+
     }
 }

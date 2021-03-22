@@ -1,7 +1,10 @@
 package com.example.ccf.vo;
 
+import java.util.List;
+
 public class Private_paper {
     private int paper_id;
+    private List<String> authors;
     private String title;
     private String abstracts;
     private String doi;
@@ -14,6 +17,14 @@ public class Private_paper {
     private String time;
     private String bib_url;
     private String bib_source;
+
+    public List<String> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(List<String> authors) {
+        this.authors = authors;
+    }
 
     public int getPaper_id() {
         return paper_id;
