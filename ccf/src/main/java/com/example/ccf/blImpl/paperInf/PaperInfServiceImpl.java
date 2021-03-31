@@ -4,6 +4,7 @@ import com.example.ccf.bl.paperInf.PaperInfService;
 import com.example.ccf.data.paperInf.PaperInfMapper;
 import com.example.ccf.data.search.SearchMapper;
 import com.example.ccf.po.*;
+import com.example.ccf.vo.Private_paper;
 import com.example.ccf.vo.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,5 +65,53 @@ public class PaperInfServiceImpl implements PaperInfService {
         refResult.setReferenceCount(num);
         refResult.setReferences(references);
         return ResponseVO.buildSuccess(refResult);
+    }
+    @Override
+    public ResponseVO match_author(String input){
+        List<Authors> r=paperInfMapper.match_author(input);
+//        for(int i=0;i<r.size();i++){
+//            System.out.println(r.get(i).getName());
+//        }
+        return ResponseVO.buildSuccess(r);
+    }
+    @Override
+    public ResponseVO match_affiliation(String input){
+       // System.out.println(input);
+        String l=input.toLowerCase();
+        for(int i=0;i<l.length();i++){
+          if(!(l.charAt(i) >= 'a' && l.charAt(i) <= 'z')){
+              if(l.charAt(i)!=' '){
+                  input=input.substring(0,i)+","+input.substring(i+1,l.length());
+                  break;
+              }
+          }
+         }
+       // System.out.println(input);
+        List<Affiliations> r=paperInfMapper.match_affiliation(input);
+        for(int i=0;i<r.size();i++){
+            System.out.println(r.get(i).getName());
+        }
+        return ResponseVO.buildSuccess(r);
+    }
+    @Override
+    public ResponseVO match_conference(String input){
+        List<String> r=paperInfMapper.match_conference(input);
+//        for(int i=0;i<r.size();i++){
+//            System.out.println(r.get(i));
+//        }
+        return ResponseVO.buildSuccess(r);
+    }
+    @Override
+    public ResponseVO get_private_paper_inf(int paperId,int user_id){
+        int right=paperInfMapper.get_private_paper_right(paperId,user_id);
+        if(right>=1){
+            Private_paper private_paper=paperInfMapper.get_private_paper_inf(paperId);
+            //System.out.println(private_paper.getBook_title());
+            return ResponseVO.buildSuccess(private_paper);
+        }
+        else{
+            return ResponseVO.buildSuccess("你没有权限访问该文章");
+        }
+
     }
 }

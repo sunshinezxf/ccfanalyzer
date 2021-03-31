@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.ccf.data.collect.CollectMapper">
+    <insert id="collect" useGeneratedKeys="true">
+        insert into user_like_relation(user_id,paper_id)
+        values(#{user_id},#{paper_id})
+    </insert>
+    <delete id="cancel_collect">
+        delete from user_like_relation where user_id=#{user_id} and paper_id=#{paper_id}
+    </delete>
+    <select id="collection_list" resultType="Integer">
+        select paper_id from user_like_relation where user_id=#{user_id}
+    </select>
+    <select id="if_collect" resultType="int">
+        select count(*) from user_like_relation where user_id=#{user_id} and paper_id=#{paper_id}
+    </select>
+
+</mapper>

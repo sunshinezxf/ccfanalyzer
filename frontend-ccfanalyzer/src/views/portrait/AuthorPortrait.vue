@@ -310,8 +310,8 @@
 </template>
 
 <script>
-// import {getCommonSearchResult, getAdvancedSearchResult} from '../../api/home/HomePageAPI'
-// import {getAuthorPortrait, getAuthorPaper, getAuthorValue, getAuthorMap, getAuthorTrend} from '../../api/portrait/AuthorPortraitAPI'
+// import {getCommonSearchResult, getAdvancedSearchResult} from '../../api/home/Home'
+import {getAuthorPortrait} from '../../API/Portrait/AuthorPortraitAPIs'
 
 export default {
 
@@ -909,8 +909,10 @@ export default {
     drawPie () {
     },
     getAuthorContent () {
+      console.log(this.AuPor.authorId)
       getAuthorPortrait(this.AuPor.authorId).then((res) => {
-        this.AuPor = res.data
+        this.AuPor = res.content
+
         if (this.AuPor.articleNum > 20) {
           this.paperNum = 20
         } else {
@@ -1095,11 +1097,12 @@ export default {
   },
   mounted () {
     let id = this.$route.query.authorId
-    this.AuPor.authorId = id
-    this.loadTrend()
+    this.AuPor.authorId = 1
+    console.log("fsd")
+    //this.loadTrend()
     this.getAuthorContent()
-    this.getPapers()
-    this.loadData()
+    //this.getPapers()
+   // this.loadData()
     this.$store.dispatch('flushFun')
   }
 }

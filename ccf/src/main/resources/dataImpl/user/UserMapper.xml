@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.ccf.data.user.UserMapper">
+    <select id="can_get_username" resultType="String">
+        select username from user where username=#{username}
+    </select>
+    <select id="get_pass" resultType="String">
+        select password from user where username=#{username}
+    </select>
+    <insert id="user_register" useGeneratedKeys="true">
+        insert into user(username,password)
+        values(#{username},#{password})
+    </insert>
+    <update id="change_pass">
+        update user set password=#{password} where user_id=#{user_id}
+    </update>
+    <select id="login" resultMap="User">
+        select * from user where username=#{username}
+    </select>
+    <select id="get_username" resultType="String">
+        select username from user where user_id =#{id}
+    </select>
+    <resultMap id="User" type="com.example.ccf.vo.UserVO">
+        <result column="user_id" property="id"></result>
+        <result column="username" property="username"></result>
+        <result column="password" property="password"></result>
+    </resultMap>
+</mapper>

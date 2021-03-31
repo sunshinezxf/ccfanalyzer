@@ -1,5 +1,6 @@
 package com.example.ccf.data.paperInf;
 import com.example.ccf.po.*;
+import com.example.ccf.vo.Private_paper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -25,4 +26,34 @@ public interface PaperInfMapper {
      * @return
      */
     String get_Ref(@Param("paper_id") int paper_id);
+    /**
+     * 根据前缀匹配作者
+     * @param input
+     * @return
+     */
+    List<Authors> match_author(@Param("input") String input);
+    /**
+     * 根据前缀匹配会议
+     * @param input
+     * @return
+     */
+    List<String> match_conference(@Param("input") String input);
+    /**
+     * 根据前缀匹配机构
+     * @param input
+     * @return
+     */
+    List<Affiliations> match_affiliation(@Param("input") String input);
+    /**
+     * 查看私人文章
+     * @param
+     * @return
+     */
+    Private_paper get_private_paper_inf(@Param("paper_id") int paper_id);
+    /**
+     * 权限判断
+     * @param
+     * @return
+     */
+   int get_private_paper_right(@Param("paper_id") int paper_id,@Param("user_id") int user_id);
 }
