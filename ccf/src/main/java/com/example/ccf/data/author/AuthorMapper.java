@@ -16,7 +16,14 @@ public interface AuthorMapper {
 
     List<Affiliation> getAuthorAffiliation(@Param("author_id")int author_id);
 
-    // index已经x10 -> offset
+    /**
+     * get Author Papers
+     * index已经x10 -> offset
+     *
+     * @param author_id
+     * @param offset
+     * @return List<Paper>
+     */
     List<Paper> getAuthorPapers(@Param("author_id")int author_id, @Param("offset")int offset);
 
     List<String> getAuthorMainMeeting(@Param("author_id")int author_id);

@@ -15,7 +15,7 @@ public class WarehouseServiceImpl implements WarehouseService {
 
     @Override
     public ResponseVO getTeamPapers() {
-        int userId;
+        int teamId;
 
         return null;
     }

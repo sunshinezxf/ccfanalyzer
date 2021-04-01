@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.ccf.data.warehouse.WarehouseMapper">
+    <select id="getUserPrivatePaper" resultMap="Paper">
+        select *
+        from private_paper pp, privatepaper_user_relation pr
+        where pp.paper_id=pr.private_paper_id and pr.user_id= #{user_id}
+    </select>
+    <select id="getTeamPrivatePaper" resultMap="Paper">
+        select *
+        from private_paper pp, privatepaper_team_relation pr
+        where pp.paper_id=pr.paper_id and pr.team_id= #{team_id}
+    </select>
+    <delete id="deletePrivatePaper">
+        delete
+        from private_paper
+        where paper_id= #{paper_id}
+    </delete>
+    <delete id="deleteUserRelation">
+        delete
+        from privatepaper_user_relation
+        where paper_id= #{paper_id}
+    </delete>
+    <delete id="deleteTeamRelation">
+        delete
+        from privatepaper_team_relation
+        where paper_id= #{paper_id}
+    </delete>
+    <resultMap id="Paper" type="com.example.ccf.po.Paper">
+    </resultMap>
+</mapper>
