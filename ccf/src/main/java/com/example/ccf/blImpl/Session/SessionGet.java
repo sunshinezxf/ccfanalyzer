@@ -1,13 +1,13 @@
 package com.example.ccf.blImpl.Session;
 
 import com.example.ccf.vo.UserVO;
-import org.apache.catalina.User;
+import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
+@Service
 public class SessionGet implements SessionBIService{
     @Override
     public int get_id(String token){

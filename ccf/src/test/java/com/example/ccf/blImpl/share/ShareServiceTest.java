@@ -19,8 +19,7 @@ public class ShareServiceTest {
 //    }
     @Test
     public void share_fail(){
-        System.out.println(shareService.Share_paper(1,"xiaohong",2).getContent());
-        System.out.println(shareService.Share_paper(1,"xiaohong1",3).getContent());
+System.out.println();
     }
 //    @Test
 //    public void show_list(){

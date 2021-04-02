@@ -16,7 +16,7 @@ public class CollectServiceTest {
 //    }
     @Test
     public void collection_list(){
-       collectService.collection_list(2);
+       System.out.println();
     }
 //    @Test
 //    public void cancel_collect(){
