@@ -1,7 +1,9 @@
 package com.example.ccf.blImpl.paper_upload;
 
 import com.example.ccf.bl.paper_upload.PaperUploadService;
+import com.example.ccf.blImpl.Session.SessionBIService;
 import com.example.ccf.data.paper_upload.PaperUploadMapper;
+import com.example.ccf.data.team_manage.TeamManageMapper;
 import com.example.ccf.vo.Private_Author;
 import com.example.ccf.vo.Private_paper;
 import com.example.ccf.vo.ResponseVO;
@@ -17,8 +19,20 @@ import java.util.regex.Pattern;
 public class PaperUploadServiceImpl implements PaperUploadService {
     @Autowired
     private PaperUploadMapper paperUploadMapper;
+    @Autowired
+    private TeamManageMapper teamManageMapper;
+    @Autowired
+    private SessionBIService sessionBIService;
     @Override
-    public ResponseVO team_paper_upload(Private_paper upload_paper, int team_id){
+    public ResponseVO team_paper_upload(Private_paper upload_paper, int team_id,String token){
+        int user_id=sessionBIService.get_id(token);
+        if(user_id==0){
+            return ResponseVO.buildSuccess("该用户未登录");
+        }
+        int right=teamManageMapper.member_if(user_id,team_id);
+        if(right==0){
+            return  ResponseVO.buildSuccess("你不是该团队的成员！");
+        }
         String result=paper_check(upload_paper);
         if(result.equals("pass")){
             paperUploadMapper.insert_private_paper(upload_paper);
@@ -32,7 +46,11 @@ public class PaperUploadServiceImpl implements PaperUploadService {
         }
     }
     @Override
-    public ResponseVO private_paper_upload(Private_paper upload_paper,int user_id){
+    public ResponseVO private_paper_upload(Private_paper upload_paper,String token){
+        int user_id=sessionBIService.get_id(token);
+        if(user_id==0){
+            return ResponseVO.buildSuccess("该用户未登录");
+        }
         String result=paper_check(upload_paper);
         if(result.equals("pass")){
             paperUploadMapper.insert_private_paper(upload_paper);
@@ -40,6 +58,46 @@ public class PaperUploadServiceImpl implements PaperUploadService {
             author_insert(paper_id,upload_paper.getAuthors());
             paperUploadMapper.insert_user_paper(user_id,paper_id);
             return ResponseVO.buildSuccess("上传成功！");
+        }
+        else{
+            return ResponseVO.buildSuccess(result);
+        }
+    }
+    @Override
+    public ResponseVO team_paper_alter(Private_paper upload_paper, int team_id,String token){
+        int user_id=sessionBIService.get_id(token);
+        if(user_id==0){
+            return ResponseVO.buildSuccess("该用户未登录");
+        }
+        int right=teamManageMapper.member_if(user_id,team_id);
+        if(right==0){
+            return  ResponseVO.buildSuccess("你不是该团队的成员！");
+        }
+        String result=paper_check(upload_paper);
+        if(result.equals("pass")){
+            paperUploadMapper.alter_private_paper(upload_paper);
+            int paper_id=upload_paper.getPaper_id();
+            paperUploadMapper.delete_private_paper_authors(paper_id);
+            author_insert(paper_id,upload_paper.getAuthors());
+            return ResponseVO.buildSuccess("修改成功！");
+        }
+        else{
+            return ResponseVO.buildSuccess(result);
+        }
+    }
+    @Override
+    public ResponseVO private_paper_alter(Private_paper upload_paper,String token){
+        int user_id=sessionBIService.get_id(token);
+        if(user_id==0){
+            return ResponseVO.buildSuccess("该用户未登录");
+        }
+        String result=paper_check(upload_paper);
+        if(result.equals("pass")){
+            paperUploadMapper.alter_private_paper(upload_paper);
+            int paper_id=upload_paper.getPaper_id();
+            paperUploadMapper.delete_private_paper_authors(paper_id);
+            author_insert(paper_id,upload_paper.getAuthors());
+            return ResponseVO.buildSuccess("修改成功！");
         }
         else{
             return ResponseVO.buildSuccess(result);

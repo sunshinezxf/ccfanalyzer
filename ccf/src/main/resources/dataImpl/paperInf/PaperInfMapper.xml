@@ -24,6 +24,9 @@
     <select id="get_private_paper_inf" resultMap="Private_Paper">
         select * from  private_paper where  paper_id=#{paper_id}
     </select>
+    <select id="get_private_paper_authors" resultType="String">
+        select author from privatepaper_author_relation where paper_id=#{paper_id}
+    </select>
     <select id="get_private_paper_right" resultType="int">
         select count(*) from privatepaper_user_relation where user_id=#{user_id} and private_paper_id=#{paper_id}
     </select>

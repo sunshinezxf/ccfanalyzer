@@ -106,6 +106,7 @@ public class PaperInfServiceImpl implements PaperInfService {
         int right=paperInfMapper.get_private_paper_right(paperId,user_id);
         if(right>=1){
             Private_paper private_paper=paperInfMapper.get_private_paper_inf(paperId);
+            private_paper.setAuthors(paperInfMapper.get_private_paper_authors(paperId));
             //System.out.println(private_paper.getBook_title());
             return ResponseVO.buildSuccess(private_paper);
         }

@@ -13,12 +13,12 @@ public class ShareController {
     private ShareService shareService;
     @CrossOrigin(origins="*",maxAge=3600)
     @RequestMapping(value ="/share",method = RequestMethod.POST)
-    public ResponseVO user_share(int paper_id,String username,int user_id){
-        return shareService.Share_paper(paper_id, username, user_id);
+    public ResponseVO user_share(int paper_id,String username,String token){
+        return shareService.Share_paper(paper_id, username, token);
     }
     @CrossOrigin(origins="*",maxAge=3600)
     @RequestMapping(value ="/receive/private_paper",method = RequestMethod.GET)
-    public ResponseVO receive_private_paper(int user_id){
-        return shareService.Receiver_list(user_id);
+    public ResponseVO receive_private_paper(String token){
+        return shareService.Receiver_list(token);
     }
 }

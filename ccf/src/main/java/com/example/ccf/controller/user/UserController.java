@@ -20,15 +20,16 @@ public class UserController {
            return ResponseVO.buildSuccess("用户名或者密码错误");
        }
        else{
-           session.setAttribute("user_inf",userVO);
-           session.setMaxInactiveInterval(3600);//session过期时间一小时
-           return ResponseVO.buildSuccess(userVO);
+           String token=userVO.getPassword();
+           session.setAttribute(token,userVO);
+           session.setMaxInactiveInterval(1800);//session过期时间半小时
+           return ResponseVO.buildSuccess(token);
        }
     }
     @CrossOrigin(origins="*",maxAge=3600)
     @RequestMapping(value ="/logout",method = RequestMethod.POST)
-    public ResponseVO logout(HttpSession session){
-        session.removeAttribute("user_inf");
+    public ResponseVO logout(String token,HttpSession session){
+        session.removeAttribute(token);
         return ResponseVO.buildSuccess("登出成功。");
     }
     @CrossOrigin(origins="*",maxAge=3600)
@@ -36,9 +37,5 @@ public class UserController {
     public ResponseVO register(UserForm userForm){
         return  userService.registerAccount(userForm);
     }
-    @CrossOrigin(origins="*",maxAge=3600)
-    @RequestMapping(value ="/change_password",method = RequestMethod.POST)
-    public ResponseVO change_password(int user_id,String old_password,String new_password){
-        return  userService.change_password(user_id,old_password,new_password);
-    }
+
 }

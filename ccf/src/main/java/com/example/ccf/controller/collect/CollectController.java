@@ -13,17 +13,17 @@ public class CollectController {
     private CollectService collectService;
     @CrossOrigin(origins="*",maxAge=3600)
     @RequestMapping(value ="/collection",method = RequestMethod.POST)
-    public ResponseVO collect(int user_id,int paper_id){
-        return collectService.collect(user_id, paper_id);
+    public ResponseVO collect(String token,int paper_id){
+        return collectService.collect(token, paper_id);
     }
     @CrossOrigin(origins="*",maxAge=3600)
     @RequestMapping(value ="/delete",method = RequestMethod.POST)
-    public ResponseVO cancel_collect(int user_id,int paper_id){
-        return collectService.cancel_collect(user_id, paper_id);
+    public ResponseVO cancel_collect(String token,int paper_id){
+        return collectService.cancel_collect(token, paper_id);
     }
     @CrossOrigin(origins="*",maxAge=3600)
     @RequestMapping(value ="/collection/list",method = RequestMethod.GET)
-    public ResponseVO collection_list(int user_id){
-        return collectService.collection_list(user_id);
+    public ResponseVO collection_list(String token){
+        return collectService.collection_list(token);
     }
 }

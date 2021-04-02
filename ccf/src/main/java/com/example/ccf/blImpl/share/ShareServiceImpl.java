@@ -3,6 +3,7 @@ package com.example.ccf.blImpl.share;
 import com.example.ccf.bl.share.ShareService;
 import com.example.ccf.data.share.ShareMapper;
 import com.example.ccf.po.Private_Paper_Must;
+import com.example.ccf.blImpl.Session.SessionBIService;
 import com.example.ccf.vo.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,8 +14,14 @@ import java.util.List;
 public class ShareServiceImpl implements ShareService {
     @Autowired
     private ShareMapper shareMapper;
+    @Autowired
+    private SessionBIService sessionBIService;
     @Override
-    public ResponseVO Share_paper(int paper_id,String receiver_name,int user_id){
+    public ResponseVO Share_paper(int paper_id,String receiver_name,String token){
+        int user_id=sessionBIService.get_id(token);
+        if(user_id==0){
+            return ResponseVO.buildSuccess("该用户未登录");
+        }
         int can_share=shareMapper.share_right(user_id, paper_id);
         if(can_share>=1){
             Integer receiver_id=shareMapper.find_id(receiver_name);
@@ -35,7 +42,11 @@ public class ShareServiceImpl implements ShareService {
 
     }
     @Override
-    public ResponseVO Receiver_list(int user_id){
+    public ResponseVO Receiver_list(String token){
+        int user_id=sessionBIService.get_id(token);
+        if(user_id==0){
+            return ResponseVO.buildSuccess("该用户未登录");
+        }
         List<Private_Paper_Must> ps=shareMapper.receiver_list(user_id);
         int size=ps.size();
         if(size==0){

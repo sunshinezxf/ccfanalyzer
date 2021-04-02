@@ -9,14 +9,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
+import com.example.ccf.blImpl.Session.SessionBIService;
 @Service
 public class CollectServiceImpl implements CollectService {
     @Autowired
     private CollectMapper collectMapper;
     @Autowired
     private SearchMapper searchMapper;
+    @Autowired
+    private SessionBIService sessionBIService;
     @Override
-    public ResponseVO collect(int user_id, int paper_id){
+    public ResponseVO collect(String token, int paper_id){
+        int user_id=sessionBIService.get_id(token);
+        if(user_id==0){
+            return ResponseVO.buildSuccess("该用户未登录");
+        }
         int right=collectMapper.if_collect(user_id, paper_id);
         if(right>=1){
             return ResponseVO.buildSuccess("你已经收藏该文章。");
@@ -27,7 +34,11 @@ public class CollectServiceImpl implements CollectService {
         }
     }
     @Override
-    public ResponseVO cancel_collect(int user_id,int paper_id){
+    public ResponseVO cancel_collect(String token,int paper_id){
+        int user_id=sessionBIService.get_id(token);
+        if(user_id==0){
+            return ResponseVO.buildSuccess("该用户未登录");
+        }
         int right=collectMapper.if_collect(user_id, paper_id);
         if(right==0){
             return ResponseVO.buildSuccess("你未收藏该文章。");
@@ -38,7 +49,11 @@ public class CollectServiceImpl implements CollectService {
         }
     }
     @Override
-    public ResponseVO collection_list(int user_id){
+    public ResponseVO collection_list(String token){
+        int user_id=sessionBIService.get_id(token);
+        if(user_id==0){
+            return ResponseVO.buildSuccess("该用户未登录");
+        }
         List<Integer> ids =collectMapper.collection_list(user_id);
         if(ids.size()==0){
             SearchResultNum r= new SearchResultNum();
