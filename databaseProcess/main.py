@@ -1,3 +1,5 @@
+from __future__ import division
+
 import pymysql
 
 
@@ -41,7 +43,7 @@ def common_process(cursor, connect):
     connect.commit()
 
 
-def author_process(cursor, connect, authors):
+def author_process(sql_cursor, sql_connect, authors):
     get_article_num = '''
     select count(*) from paper_author_relation where author_id = %s
     '''
@@ -54,20 +56,20 @@ def author_process(cursor, connect, authors):
     '''
 
     for author in authors:
-        cursor.execute(get_article_num, author[0])
-        article_num = cursor.fetchone()
+        sql_cursor.execute(get_article_num, author[0])
+        article_num = sql_cursor.fetchone()
         # print('article num = ' + str(article_num[0]))
 
-        cursor.execute(get_article_citation_num, author[0])
-        citation_num = cursor.fetchone()
+        sql_cursor.execute(get_article_citation_num, author[0])
+        citation_num = sql_cursor.fetchone()
         # print('citations = ' + str(citation_num[0]))
 
-        cursor.execute(update_author, (article_num[0], citation_num[0], author[0]))
+        sql_cursor.execute(update_author, (article_num[0], citation_num[0], author[0]))
 
-        connect.commit()
+        sql_connect.commit()
 
 
-def affiliation_process(cursor, connect):
+def affiliation_process(sql_cursor, sql_connect):
     select_all_affiliation = '''select * from affiliation;'''
     get_article_num = '''
     select count(distinct pr.paper_id) from 
@@ -89,25 +91,25 @@ def affiliation_process(cursor, connect):
     where affiliation_id = %s;
     '''
 
-    cursor.execute(select_all_affiliation)
-    affiliations = cursor.fetchall()
+    sql_cursor.execute(select_all_affiliation)
+    affiliations = sql_cursor.fetchall()
 
     for affiliation in affiliations:
-        cursor.execute(get_article_num, affiliation[0])
-        article_num = cursor.fetchone()
+        sql_cursor.execute(get_article_num, affiliation[0])
+        article_num = sql_cursor.fetchone()
 
-        cursor.execute(get_article_citation_num, affiliation[0])
-        article_citation_num = cursor.fetchone()
+        sql_cursor.execute(get_article_citation_num, affiliation[0])
+        article_citation_num = sql_cursor.fetchone()
 
-        cursor.execute(get_author_num, affiliation[0])
-        author_num = cursor.fetchone()
+        sql_cursor.execute(get_author_num, affiliation[0])
+        author_num = sql_cursor.fetchone()
 
-        cursor.execute(update_affiliation, (article_num[0], article_citation_num[0], author_num[0], affiliation[0]))
+        sql_cursor.execute(update_affiliation, (article_num[0], article_citation_num[0], author_num[0], affiliation[0]))
 
-        connect.commit()
+        sql_connect.commit()
 
 
-def meeting_process(cursor, connect):
+def meeting_process(sql_cursor, sql_connect):
     select_all_meeting = '''
     select * from meeting;
     '''
@@ -134,33 +136,116 @@ def meeting_process(cursor, connect):
     where meeting_id = %s;
     '''
 
-    cursor.execute(select_all_meeting)
-    meetings = cursor.fetchall()
+    sql_cursor.execute(select_all_meeting)
+    meetings = sql_cursor.fetchall()
 
     for meeting in meetings:
-        cursor.execute(get_article_num, meeting[0])
-        article_num = cursor.fetchone()
+        sql_cursor.execute(get_article_num, meeting[0])
+        article_num = sql_cursor.fetchone()
 
-        cursor.execute(get_article_citation_num, meeting[0])
-        article_citation_num = cursor.fetchone()
+        sql_cursor.execute(get_article_citation_num, meeting[0])
+        article_citation_num = sql_cursor.fetchone()
 
-        cursor.execute(get_author_num, meeting[0])
-        author_num = cursor.fetchone()
+        sql_cursor.execute(get_author_num, meeting[0])
+        author_num = sql_cursor.fetchone()
 
-        cursor.execute(get_affiliation_num, meeting[0])
-        affiliation_num = cursor.fetchone()
+        sql_cursor.execute(get_affiliation_num, meeting[0])
+        affiliation_num = sql_cursor.fetchone()
 
-        cursor.execute(update_meeting,
-                       (article_num[0], article_citation_num[0], author_num[0], affiliation_num[0], meeting[0]))
+        sql_cursor.execute(update_meeting,
+                           (article_num[0], article_citation_num[0], author_num[0], affiliation_num[0], meeting[0]))
 
-        connect.commit()
+        sql_connect.commit()
+
+
+def author_radar_process(sql_cursor, sql_connect):
+    get_author_num = '''
+    select count(*) from author;
+    '''
+    get_article_num = '''
+    select sum(article_num) from author;
+    '''
+    get_citation_num = '''
+    select sum(article_citation_num) from author;
+    '''
+    get_max_paper_num = '''
+    select max(article_num) from author;
+    '''
+    get_max_citation_num = '''
+    select max(article_citation_num) from author;
+    '''
+
+    update_statistic = '''
+    update statistic 
+    set author_ave_article_num = %s , author_max_article_num = %s , author_ave_citation_num = %s , 
+    author_max_citation_num = %s 
+    where statistic_id = 1;
+    '''
+
+    radar_process(sql_cursor, sql_connect, get_author_num, get_article_num, get_citation_num, get_max_paper_num,
+                  get_max_citation_num, update_statistic)
+
+
+def affiliation_radar_process(sql_cursor, sql_connect):
+    get_affiliation_num = '''
+    select count(*) from affiliation;
+    '''
+    get_article_num = '''
+    select sum(article_num) from affiliation;
+    '''
+    get_citation_num = '''
+    select sum(article_citation_num) from affiliation;
+    '''
+    get_max_paper_num = '''
+    select max(article_num) from affiliation;
+    '''
+    get_max_citation_num = '''
+    select max(article_citation_num) from affiliation;
+    '''
+
+    update_statistic = '''
+    update statistic 
+    set affiliation_ave_article_num = %s , affiliation_max_article_num = %s , affiliation_ave_citation_num = %s , 
+    affiliation_max_citation_num = %s 
+    where statistic_id = 1;
+    '''
+
+    radar_process(sql_cursor, sql_connect, get_affiliation_num, get_article_num, get_citation_num, get_max_paper_num,
+                  get_max_citation_num, update_statistic)
+
+
+def radar_process(sql_cursor, sql_connect, get_num: str, get_article_num: str, get_citation_num: str,
+                  get_max_paper_num: str,
+                  get_max_citation_num: str, update_statistic: str):
+    sql_cursor.execute(get_num)
+    author_num = sql_cursor.fetchone()[0]
+
+    sql_cursor.execute(get_article_num)
+    article_num = sql_cursor.fetchone()[0]
+
+    sql_cursor.execute(get_citation_num)
+    citation_num = sql_cursor.fetchone()[0]
+
+    sql_cursor.execute(get_max_paper_num)
+    max_paper_num = sql_cursor.fetchone()[0]
+
+    sql_cursor.execute(get_max_citation_num)
+    max_citation_num = sql_cursor.fetchone()[0]
+
+    ave_article_num = round(article_num / author_num, 3)
+    ave_citation_num = round(citation_num / author_num, 3)
+
+    sql_cursor.execute(update_statistic,
+                       (ave_article_num, max_paper_num, ave_citation_num, max_citation_num))
+
+    sql_connect.commit()
 
 
 if __name__ == '__main__':
 
     try:
-        connect = pymysql.connect(host='localhost', port=3306, user='root', passwd='RV39LMgnYKvqpZuNW6R4',
-                                  db='ccfdb')
+        connect = pymysql.connect(host='rm-bp1tq50q3oeippagpio.mysql.rds.aliyuncs.com', port=3306, user='admin_1',
+                                  passwd='''7j5Qp6v7dKESl9a41i8v''', db='ccfdb')
         cursor = connect.cursor()
         print('------------------ succeed to connect database ------------------')
 
@@ -172,6 +257,8 @@ if __name__ == '__main__':
         affiliation_process(cursor, connect)
         meeting_process(cursor, connect)
         common_process(cursor, connect)
+        author_radar_process(cursor, connect)
+        affiliation_radar_process(cursor, connect)
 
         cursor.close()
         connect.close()
