@@ -12,6 +12,23 @@ public class Statistic {
 
     private int citation_num;
 
+    private double author_ave_article_num;
+
+    private double author_max_article_num;
+
+    private double author_ave_citation_num;
+
+    private double author_max_citation_num;
+
+    private double affiliation_ave_article_num;
+
+    private double affiliation_max_article_num;
+
+    private double affiliation_ave_citation_num;
+
+    private double affiliation_max_citation_num;
+
+
     public int getAuthor_num() {
         return author_num;
     }
@@ -52,6 +69,70 @@ public class Statistic {
         this.citation_num = citation_num;
     }
 
+    public double getAuthor_ave_article_num() {
+        return author_ave_article_num;
+    }
+
+    public void setAuthor_ave_article_num(double author_ave_article_num) {
+        this.author_ave_article_num = author_ave_article_num;
+    }
+
+    public double getAuthor_max_article_num() {
+        return author_max_article_num;
+    }
+
+    public void setAuthor_max_article_num(double author_max_article_num) {
+        this.author_max_article_num = author_max_article_num;
+    }
+
+    public double getAuthor_ave_citation_num() {
+        return author_ave_citation_num;
+    }
+
+    public void setAuthor_ave_citation_num(double author_ave_citation_num) {
+        this.author_ave_citation_num = author_ave_citation_num;
+    }
+
+    public double getAuthor_max_citation_num() {
+        return author_max_citation_num;
+    }
+
+    public void setAuthor_max_citation_num(double author_max_citation_num) {
+        this.author_max_citation_num = author_max_citation_num;
+    }
+
+    public double getAffiliation_ave_article_num() {
+        return affiliation_ave_article_num;
+    }
+
+    public void setAffiliation_ave_article_num(double affiliation_ave_article_num) {
+        this.affiliation_ave_article_num = affiliation_ave_article_num;
+    }
+
+    public double getAffiliation_max_article_num() {
+        return affiliation_max_article_num;
+    }
+
+    public void setAffiliation_max_article_num(double affiliation_max_article_num) {
+        this.affiliation_max_article_num = affiliation_max_article_num;
+    }
+
+    public double getAffiliation_ave_citation_num() {
+        return affiliation_ave_citation_num;
+    }
+
+    public void setAffiliation_ave_citation_num(double affiliation_ave_citation_num) {
+        this.affiliation_ave_citation_num = affiliation_ave_citation_num;
+    }
+
+    public double getAffiliation_max_citation_num() {
+        return affiliation_max_citation_num;
+    }
+
+    public void setAffiliation_max_citation_num(double affiliation_max_citation_num) {
+        this.affiliation_max_citation_num = affiliation_max_citation_num;
+    }
+
     @Override
     public String toString() {
         return "Statistic{" +
@@ -60,6 +141,14 @@ public class Statistic {
                 ", meeting_num=" + meeting_num +
                 ", paper_num=" + paper_num +
                 ", citation_num=" + citation_num +
+                ", author_ave_article_num=" + author_ave_article_num +
+                ", author_max_article_num=" + author_max_article_num +
+                ", author_ave_citation_num=" + author_ave_citation_num +
+                ", author_max_citation_num=" + author_max_citation_num +
+                ", affiliation_ave_article_num=" + affiliation_ave_article_num +
+                ", affiliation_max_article_num=" + affiliation_max_article_num +
+                ", affiliation_ave_citation_num=" + affiliation_ave_citation_num +
+                ", affiliation_max_citation_num=" + affiliation_max_citation_num +
                 '}';
     }
 }

@@ -5,4 +5,8 @@ import com.example.ccf.vo.ResponseVO;
 public interface StatisticService {
 
     ResponseVO getStatisticData();
+
+    ResponseVO getAuthorRadar();
+
+    ResponseVO getAffiliationRadar();
 }

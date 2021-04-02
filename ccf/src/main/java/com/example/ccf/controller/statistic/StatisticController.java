@@ -24,4 +24,14 @@ public class StatisticController {
     public ResponseVO statistics(){
         return statisticService.getStatisticData();
     }
+
+    @RequestMapping(value = "/getValue/author",method = RequestMethod.GET)
+    public ResponseVO authorRadar(){
+        return statisticService.getAuthorRadar();
+    }
+
+    @RequestMapping(value = "/getValue/affiliation",method = RequestMethod.GET)
+    public ResponseVO affiliationRadar(){
+        return statisticService.getAffiliationRadar();
+    }
 }
