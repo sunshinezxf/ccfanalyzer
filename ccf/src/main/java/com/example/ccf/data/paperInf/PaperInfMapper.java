@@ -56,4 +56,10 @@ public interface PaperInfMapper {
      * @return
      */
    int get_private_paper_right(@Param("paper_id") int paper_id,@Param("user_id") int user_id);
+    /**
+     * 私人作者
+     * @param
+     * @return
+     */
+    List<String> get_private_paper_authors(@Param("paper_id") int paper_id);
 }

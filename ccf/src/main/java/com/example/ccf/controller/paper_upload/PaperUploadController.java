@@ -12,12 +12,22 @@ public class PaperUploadController {
     private PaperUploadService paperUploadService;
     @CrossOrigin(origins="*",maxAge=3600)
     @RequestMapping(value ="/user/paperImport",method = RequestMethod.POST)
-    public ResponseVO user_upload(Private_paper p,int user_id){
-        return paperUploadService.private_paper_upload(p,user_id);
+    public ResponseVO user_upload(Private_paper p,String token){
+        return paperUploadService.private_paper_upload(p,token);
     }
     @CrossOrigin(origins="*",maxAge=3600)
     @RequestMapping(value ="/team/paperImport",method = RequestMethod.POST)
-    public ResponseVO team_upload(Private_paper p,int team_id){
-        return paperUploadService.private_paper_upload(p,team_id);
+    public ResponseVO team_upload(Private_paper p,int team_id,String token){
+        return paperUploadService.team_paper_upload(p,team_id,token);
+    }
+    @CrossOrigin(origins="*",maxAge=3600)
+    @RequestMapping(value ="/user/paperAlter",method = RequestMethod.POST)
+    public ResponseVO user_alter(Private_paper p,String token){
+        return paperUploadService.private_paper_alter(p,token);
+    }
+    @CrossOrigin(origins="*",maxAge=3600)
+    @RequestMapping(value ="/team/paperAlter",method = RequestMethod.POST)
+    public ResponseVO team_alter(Private_paper p,int team_id,String token){
+        return paperUploadService.team_paper_alter(p,team_id,token);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.ccf.blImpl.team_manage;
 
 import com.example.ccf.bl.team_manage.TeamManageService;
+import com.example.ccf.blImpl.Session.SessionBIService;
 import com.example.ccf.data.team_manage.TeamManageMapper;
 import com.example.ccf.po.TeamInf;
 import com.example.ccf.vo.ResponseVO;
@@ -13,8 +14,14 @@ import java.util.List;
 public class TeamManageServiceImpl implements TeamManageService {
     @Autowired
     private TeamManageMapper teamManageMapper;
+    @Autowired
+    private SessionBIService sessionBIService;
     @Override
-    public ResponseVO team_create(int user_id, String team_name){
+    public ResponseVO team_create(String token, String team_name){
+        int user_id=sessionBIService.get_id(token);
+        if(user_id==0){
+            return ResponseVO.buildSuccess("该用户未登录");
+        }
         Integer id=teamManageMapper.find_team_id(team_name);
         if(id==null) {
             teamManageMapper.team_create(user_id, team_name);
@@ -26,7 +33,11 @@ public class TeamManageServiceImpl implements TeamManageService {
         }
     }
     @Override
-    public ResponseVO team_invite(int user_id,String invitee,int team_id){
+    public ResponseVO team_invite(String token,String invitee,int team_id){
+        int user_id=sessionBIService.get_id(token);
+        if(user_id==0){
+            return ResponseVO.buildSuccess("该用户未登录");
+        }
         Integer id=teamManageMapper.find_id(invitee);
         if(id==null){
             return ResponseVO.buildSuccess("邀请对象不存在");
@@ -47,7 +58,11 @@ public class TeamManageServiceImpl implements TeamManageService {
         }
     }
     @Override
-    public ResponseVO team_quit(int user_id, int team_id){
+    public ResponseVO team_quit(String token, int team_id){
+        int user_id=sessionBIService.get_id(token);
+        if(user_id==0){
+            return ResponseVO.buildSuccess("该用户未登录");
+        }
         Integer id=teamManageMapper.member_if(user_id, team_id);
         if(id==0){
             return  ResponseVO.buildSuccess("你不是该团队的成员！");
@@ -55,14 +70,18 @@ public class TeamManageServiceImpl implements TeamManageService {
         else{
             int right=teamManageMapper.right_if(user_id, team_id);
             if(right>=1){
-                return team_dismiss(user_id,team_id);
+                return team_dismiss(token,team_id);
             }
             teamManageMapper.team_quit(user_id, team_id);
             return ResponseVO.buildSuccess("你已经成功退出该团队。");
         }
     }
     @Override
-    public ResponseVO team_dismiss(int user_id,int team_id){
+    public ResponseVO team_dismiss(String token,int team_id){
+        int user_id=sessionBIService.get_id(token);
+        if(user_id==0){
+            return ResponseVO.buildSuccess("该用户未登录");
+        }
         int right=teamManageMapper.right_if(user_id, team_id);
         if(right>=1){
             teamManageMapper.team_dismiss(team_id);
@@ -76,7 +95,11 @@ public class TeamManageServiceImpl implements TeamManageService {
         }
     }
     @Override
-    public ResponseVO team_member_quit(int user_id,String member,int team_id){
+    public ResponseVO team_member_quit(String token,String member,int team_id){
+        int user_id=sessionBIService.get_id(token);
+        if(user_id==0){
+            return ResponseVO.buildSuccess("该用户未登录");
+        }
         int right=teamManageMapper.right_if(user_id, team_id);
         if(right>=1){
             Integer id=teamManageMapper.find_id(member);
@@ -93,7 +116,11 @@ public class TeamManageServiceImpl implements TeamManageService {
         }
     }
     @Override
-    public ResponseVO team_list(int user_id){
+    public ResponseVO team_list(String token){
+        int user_id=sessionBIService.get_id(token);
+        if(user_id==0){
+            return ResponseVO.buildSuccess("该用户未登录");
+        }
         List<TeamInf> teamInf=teamManageMapper.team_list(user_id);
         return ResponseVO.buildSuccess(teamInf);
     }
@@ -103,7 +130,11 @@ public class TeamManageServiceImpl implements TeamManageService {
         return ResponseVO.buildSuccess(members);
     }
     @Override
-    public ResponseVO team_owner_check(int user_id,int team_id){
+    public ResponseVO team_owner_check(String token,int team_id){
+        int user_id=sessionBIService.get_id(token);
+        if(user_id==0){
+            return ResponseVO.buildSuccess("该用户未登录");
+        }
         int right=teamManageMapper.right_if(user_id, team_id);
         if(right>=1){
             return ResponseVO.buildSuccess(1);

@@ -14,10 +14,19 @@
         values(#{user_id},#{paper_id},1)
     </insert>
     <insert id="insert_paper_author" useGeneratedKeys="true" parameterType="java.util.List">
-        insert into private_paper_author_relation(paper_id,author)
+        insert into privatepaper_author_relation(paper_id,author)
         values
         <foreach collection="list" item="item" separator="," close=";">
             (#{item.paper_id},#{item.author})
         </foreach>
     </insert>
+    <delete id="delete_private_paper_authors">
+        delete from privatepaper_author_relation where paper_id=#{paper_id}
+    </delete>
+    <update id="alter_private_paper">
+        update private_paper set title=#{title},abstract=#{abstract},doi=#{doi},citation=#{citation},
+        book_title=#{book_title},pages=#{pages},publisher=#{publisher},year=#{year},url=#{url},
+        time=#{time},bib_url=#{bib_url},bib_source=#{bib_source}
+        where paper_id=#{paper_id}
+    </update>
 </mapper>
