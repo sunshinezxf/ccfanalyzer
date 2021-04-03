@@ -10,6 +10,10 @@ public class AffiliationRadar {
 
     private double maxCitationNum;
 
+    private double aveAuthorNum;
+
+    private double maxAuthorNum;
+
     public double getAveArticleNum() {
         return aveArticleNum;
     }
@@ -42,13 +46,31 @@ public class AffiliationRadar {
         this.maxCitationNum = maxCitationNum;
     }
 
+    public double getAveAuthorNum() {
+        return aveAuthorNum;
+    }
+
+    public void setAveAuthorNum(double aveAuthorNum) {
+        this.aveAuthorNum = aveAuthorNum;
+    }
+
+    public double getMaxAuthorNum() {
+        return maxAuthorNum;
+    }
+
+    public void setMaxAuthorNum(double maxAuthorNum) {
+        this.maxAuthorNum = maxAuthorNum;
+    }
+
     @Override
     public String toString() {
-        return "affiliationRadar{" +
+        return "AffiliationRadar{" +
                 "aveArticleNum=" + aveArticleNum +
                 ", maxArticleNum=" + maxArticleNum +
                 ", aveCitationNum=" + aveCitationNum +
                 ", maxCitationNum=" + maxCitationNum +
+                ", aveAuthorNum=" + aveAuthorNum +
+                ", maxAuthorNum=" + maxAuthorNum +
                 '}';
     }
 }

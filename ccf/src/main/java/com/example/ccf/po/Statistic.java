@@ -28,6 +28,10 @@ public class Statistic {
 
     private double affiliation_max_citation_num;
 
+    private double affiliation_ave_author_num;
+
+    private double affiliation_max_author_num;
+
 
     public int getAuthor_num() {
         return author_num;
@@ -133,6 +137,22 @@ public class Statistic {
         this.affiliation_max_citation_num = affiliation_max_citation_num;
     }
 
+    public double getAffiliation_ave_author_num() {
+        return affiliation_ave_author_num;
+    }
+
+    public void setAffiliation_ave_author_num(double affiliation_ave_author_num) {
+        this.affiliation_ave_author_num = affiliation_ave_author_num;
+    }
+
+    public double getAffiliation_max_author_num() {
+        return affiliation_max_author_num;
+    }
+
+    public void setAffiliation_max_author_num(double affiliation_max_author_num) {
+        this.affiliation_max_author_num = affiliation_max_author_num;
+    }
+
     @Override
     public String toString() {
         return "Statistic{" +
@@ -149,6 +169,8 @@ public class Statistic {
                 ", affiliation_max_article_num=" + affiliation_max_article_num +
                 ", affiliation_ave_citation_num=" + affiliation_ave_citation_num +
                 ", affiliation_max_citation_num=" + affiliation_max_citation_num +
+                ", affiliation_ave_author_num=" + affiliation_ave_author_num +
+                ", affiliation_max_author_num=" + affiliation_max_author_num +
                 '}';
     }
 }

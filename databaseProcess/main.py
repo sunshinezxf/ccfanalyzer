@@ -202,6 +202,12 @@ def affiliation_radar_process(sql_cursor, sql_connect):
     get_max_citation_num = '''
     select max(article_citation_num) from affiliation;
     '''
+    get_author_num = '''
+    select sum(author_num) from affiliation;
+    '''
+    get_max_author = '''
+    select max(author_num) from affiliation;
+    '''
 
     update_statistic = '''
     update statistic 
@@ -209,9 +215,28 @@ def affiliation_radar_process(sql_cursor, sql_connect):
     affiliation_max_citation_num = %s 
     where statistic_id = 1;
     '''
+    update_author = '''
+    update statistic
+    set affiliation_ave_author_num = %s , affiliation_max_author_num = %s 
+    where statistic_id=1;
+    '''
 
     radar_process(sql_cursor, sql_connect, get_affiliation_num, get_article_num, get_citation_num, get_max_paper_num,
                   get_max_citation_num, update_statistic)
+
+    sql_cursor.execute(get_author_num)
+    author_num = sql_cursor.fetchone()[0]
+
+    sql_cursor.execute(get_max_author)
+    max_author_num = sql_cursor.fetchone()[0]
+
+    sql_cursor.execute(get_affiliation_num)
+    affiliation_num = sql_cursor.fetchone()[0]
+    ave_affiliation_author_num = round(author_num / affiliation_num, 3)
+
+    sql_cursor.execute(update_author, (ave_affiliation_author_num, max_author_num))
+
+    sql_connect.commit()
 
 
 def radar_process(sql_cursor, sql_connect, get_num: str, get_article_num: str, get_citation_num: str,

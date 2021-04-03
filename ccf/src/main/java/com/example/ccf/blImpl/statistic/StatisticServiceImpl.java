@@ -58,6 +58,8 @@ public class StatisticServiceImpl implements StatisticService {
         affiliationRadar.setMaxCitationNum(statistic.getAffiliation_max_citation_num());
         affiliationRadar.setAveArticleNum(statistic.getAffiliation_ave_article_num());
         affiliationRadar.setMaxArticleNum(statistic.getAffiliation_max_article_num());
+        affiliationRadar.setAveAuthorNum(statistic.getAffiliation_ave_author_num());
+        affiliationRadar.setMaxAuthorNum(statistic.getAffiliation_max_author_num());
 
         return ResponseVO.buildSuccess(affiliationRadar);
     }
