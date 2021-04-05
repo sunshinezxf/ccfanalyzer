@@ -279,11 +279,22 @@ if __name__ == '__main__':
         authors = cursor.fetchall()
 
         author_process(cursor, connect, authors)
+        print('------------------ succeed to connect author_process ------------------')
+
         affiliation_process(cursor, connect)
+        print('------------------ succeed to connect affiliation_process ------------------')
+
         meeting_process(cursor, connect)
+        print('------------------ succeed to connect meeting_process ------------------')
+
         common_process(cursor, connect)
+        print('------------------ succeed to connect common_process ------------------')
+
         author_radar_process(cursor, connect)
+        print('------------------ succeed to connect author_radar_process ------------------')
+
         affiliation_radar_process(cursor, connect)
+        print('------------------ succeed to connect affiliation_radar_process ------------------')
 
         cursor.close()
         connect.close()
