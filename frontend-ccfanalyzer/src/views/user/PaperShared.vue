@@ -7,12 +7,12 @@
           <div class="grid-content2 bg-purple2" style="color: white;text-align:center">
 
             <el-row>
-                  <span class="avatar-dropdown">
-                    <i class="el-icon-s-home" ></i>
-                    <span class="u" style="font-size: 20px;color: grey;text-align: center">
-                    &nbsp;&nbsp;HomePage &nbsp;
-                 </span>
-                  </span>
+                <span class="avatar-dropdown">
+                  <i class="el-icon-s-home" ></i>
+                  <span class="u" style="font-size: 20px;color: grey;text-align: center">
+                  &nbsp;&nbsp;HomePage &nbsp;
+               </span>
+                </span>
             </el-row>
 
           </div>
@@ -27,16 +27,16 @@
         <el-col :span="3"><div class="grid-content2 bg-purple2" style="color: white;">
           <div v-show="user.login">
             <el-dropdown @command="handleCommand">
-                 <span class="avatar-dropdown">
-                  <!--<el-avatar class="user-avatar" :src="avatar"></el-avatar>-->
-                  <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+               <span class="avatar-dropdown">
+                <!--<el-avatar class="user-avatar" :src="avatar"></el-avatar>-->
+                <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
 
-                 <span class="u" style="font-size: 20px">
-                    &nbsp;&nbsp;{{ user.username }} &nbsp;
-                 </span>
+               <span class="u" style="font-size: 20px">
+                  &nbsp;&nbsp;{{ user.username }} &nbsp;
+               </span>
 
-                   <i class="el-icon-arrow-down el-icon--right"></i>
-                </span>
+                 <i class="el-icon-arrow-down el-icon--right"></i>
+              </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
               </el-dropdown-menu>
@@ -45,15 +45,15 @@
 
           <div v-show="user.logout">
 
-                   <span class="avatar-dropdown">
-                        <!--<el-avatar class="user-avatar" :src="avatar"></el-avatar>-->
-                        <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+                 <span class="avatar-dropdown">
+                      <!--<el-avatar class="user-avatar" :src="avatar"></el-avatar>-->
+                      <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
 
-                       <span class="u" style="font-size: 20px">
-                          &nbsp;&nbsp; Login&nbsp;In&nbsp;&nbsp;
-                       </span>
+                     <span class="u" style="font-size: 20px">
+                        &nbsp;&nbsp; Login&nbsp;In&nbsp;&nbsp;
+                     </span>
 
-                      </span>
+                    </span>
           </div>
         </div>
         </el-col>
@@ -72,8 +72,8 @@
         <el-input style="width: 70%; margin-top: 5%" placeholder="password" v-model="password" show-password></el-input>
       </div>
       <span slot="footer" class="dialog-footer">
-          <el-button style="width: 70%; margin-bottom: 5%; font-size: large" type="primary" @click="dialogVisible = true; login()">LOGIN</el-button>
-        </span>
+        <el-button style="width: 70%; margin-bottom: 5%; font-size: large" type="primary" @click="dialogVisible = true; login()">LOGIN</el-button>
+      </span>
     </el-dialog>
   </el-header>
   <el-container>
@@ -111,49 +111,45 @@
     <el-main class="main">
       <div>
         <br>
-        <h1 style="margin-left: 3%;color:black;">Results: {{paperNum}} Papers</h1>
         <div class="col-md-2 text-center" v-for="item in PaperList" :key="item.title">
           <el-card style="margin-left: 35px; margin-right: 45px;height: 100%">
             <div style="margin-left: 2%;margin-left: 2%">
               <el-link style="font-size: 27px;color: black" @click="getContent(item.paperId)"><strong>{{item.title}}</strong></el-link><br>
               <el-row>
-              <span class="affcon" style="font-size: 17px;color: dimgray">
-                Affiliations:&nbsp;&nbsp;&nbsp;
-                <span  class="divider" v-if="item.affiliations.length==0">None</span>
-              <span  v-for="(aff,index) in item.affiliations" :key="index">
-                <span role="separator" class="divider" v-if="index != 0">,</span>
-                <el-link style="font-size: 17px;color: cornflowerblue;font-style:italic"  :key='aff' @click="searchAffiliationPor(aff.affiliationId)">{{aff.name}}</el-link>
-              </span>
-              </span>
+            <span class="affcon" style="font-size: 17px;color: dimgray">
+              Publisher:&nbsp;&nbsp;&nbsp;
+              <span  class="divider" v-if="item.publisher==0">None</span>
+            <span  v-for="(aff,index) in item.affiliations" :key="index">
+              <span role="separator" class="divider" v-if="index != 0">,</span>
+              <el-link style="font-size: 17px;color: cornflowerblue;font-style:italic"  :key='aff' @click="searchAffiliationPor(aff.affiliationId)">{{aff.name}}</el-link>
+            </span>
+            </span>
               </el-row>
               <el-row>
-              <span class="affcon" style="font-size: 17px;color: dimgray">
-                Authors:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span  class="divider" v-if="item.authors.length==0">None</span>
-              <span v-for="(author,index) in item.authors" :key="index">
-                <span role="separator" class="divider" v-if="index != 0">,</span>
-              <el-link style="font-size: 17px;color: cornflowerblue;font-style:italic" :key="author" @click="searchAuthorPor(author.authorId)">{{author.name}}</el-link>
-              </span>
-              </span>
+            <span class="affcon" style="font-size: 17px;color: dimgray">
+              Authors:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span  class="divider" v-if="item.authors.length==0">None</span>
+            <span v-for="(author,index) in item.authors" :key="index">
+              <span role="separator" class="divider" v-if="index != 0">,</span>
+            <el-link style="font-size: 17px;color: cornflowerblue;font-style:italic" :key="author" >{{author.name}}</el-link>
+            </span>
+            </span>
               </el-row>
-              <span class="sum" style="font-size: 15px;color: dimgray;margin-top: 5px;margin-bottom: 5px" v-if="item.summary" >{{item.summary}}</span>
+              <span class="sum" style="font-size: 15px;color: dimgray;margin-top: 5px;margin-bottom: 5px" v-if="item.abstracts" >{{item.abstracts}}</span>
               <el-row>
-              <span class="affcon" style="font-size: 17px;color: dimgray">
-                Keywords:&nbsp;&nbsp;&nbsp;
-                <span  class="divider" v-if="item.keywords.length==0">None</span>
-              <span v-for="(keyword,index) in item.keywords" :key="index">
-                <span role="separator" class="divider" v-if="index != 0">,</span>
-              <el-link style="font-size: 17px;color: cornflowerblue;font-style:italic" :key="keyword" @click="searchByKeyword(keyword)">{{keyword}}</el-link>
+            <span class="affcon" style="font-size: 17px;color: dimgray">
+              Keywords:&nbsp;&nbsp;&nbsp;
+              <span  class="divider" v-if="item.keywords.length==0">None</span>
+            <span v-for="(keyword,index) in item.keywords" :key="index">
+              <span role="separator" class="divider" v-if="index != 0">,</span>
+            <el-link style="font-size: 17px;color: cornflowerblue;font-style:italic" :key="keyword" @click="searchByKeyword(keyword)">{{keyword}}</el-link>
+            </span>
               </span>
-                </span>
               </el-row>
               <el-row>
                 <span style="font-size: 17px;color: dimgray">Publication:&nbsp;&nbsp;<el-link style="font-size: 17px;color: cornflowerblue;font-style:italic" @click="searchConferencePor(item.publication)">{{item.publication}}</el-link></span><br>
               </el-row>
             </div>
-           <div  style="text-align:right">
-             <el-button type="primary" icon="el-icon-delete" @click="deletePaper(user.id, item.paperId)"></el-button>
-           </div>
           </el-card>
         </div>
         <el-pagination
@@ -171,10 +167,10 @@
 </template>
 
 <script>
-import {getCollections, deleteCollection} from '../../API/User/CollectionAPIs'
+import {SharedPapers} from '../../API/User/PaperSharedAPIs'
 
 export default {
-  name: 'Collections',
+  name: 'PaperShared',
   data () {
     return {
       user: {
@@ -193,35 +189,26 @@ export default {
       paperNum: 8,
       PaperList: [
         {
-          paperId: 0,
+          paper_id: 0,
           title: 'Learning Styles and Inclusion.',
           authors: [{
-            name: 'apple',
-            id: 1
+            name: 'apple'
           }, {
-            name: 'bear',
-            id: 2
+            name: 'bear'
           }],
-          affiliations: [{
-            name: 'NJU',
-            id: 1
-          }, {
-            name: 'ZJU',
-            id: 2
-          }],
-          publication: 'IEEE',
-          summary: 'Learning Models and the Learning Cycle Learning Differences and Learning Styles The Role of the Learning Environment Background to Learning Styles Assessment of Learning Styles Learning Styles Learning and Teaching The Inclusive School Characteristics and Challenges Learning Styles in the Inclusive Context Promoting Effective Learning Learning Styles Strategies and Insights',
-          keywords: ['Educational technology']
+          publisher: 'IEEE',
+          abstracts: 'Learning Models and the Learning Cycle Learning Differences and Learning Styles The Role of the Learning Environment Background to Learning Styles Assessment of Learning Styles Learning Styles Learning and Teaching The Inclusive School Characteristics and Challenges Learning Styles in the Inclusive Context Promoting Effective Learning Learning Styles Strategies and Insights',
+          doi: '',
+          year: ''
         }
       ],
       page: 0
     }
   },
   mounted () {
-    this.user.username = localStorage.getItem('username')
+    this.user.username = this.user.username = localStorage.getItem('username')
     this.user.token = localStorage.getItem('token')
-    console.log(this.user.token)
-    this.getCollections(this.user.token)
+    this.getSharedPaper(this.user.token)
   },
   created () {
     var docHeight = document.documentElement.clientHeight
@@ -233,20 +220,6 @@ export default {
     },
     handleClose (key, keyPath) {
       console.log(key, keyPath)
-    },
-    getCollections (userID) {
-      getCollections(userID).then((res) => {
-        this.PaperList = res.content.paperBriefInfoVOList
-        this.paperNum = res.content.totalNum
-      })
-    },
-    deletePaper (userId, paperId) {
-      deleteCollection(userId, paperId).then((res) => {
-        this.$message.success({
-          message: res.content,
-          center: true
-        })
-      })
     },
     getContent (e) {
       let newpage = this.$router.resolve({
@@ -274,48 +247,53 @@ export default {
         }
       })
       window.open(newpage.href, '_blank')
+    },
+    getSharedPaper (token) {
+      SharedPapers(token).then((res) => {
+        this.PaperList = res.content.Private_Paper_Must
+      })
     }
   }
 }
 </script>
 
 <style scoped>
-  &:last-child {
-     margin-bottom: 0;
-   }
-  .bg-purple2 {
-    background-color: rgba(192, 192, 192, 0.43);
-  }
-  .grid-content2 {
-    min-height: 60px;
-  }
-  .avatar-dropdown {
-    display: flex;
-    align-content: center;
-    align-items: center;
-    justify-content: center;
-    justify-items: center;
-    height: 50px;
-    padding: 0;
-    font-size: 30px;
-  }
-  .clearfix:before,
-  .clearfix:after {
-    display: table;
-    content: "";
-  }
-  .clearfix:after {
-    clear: both
-  }
-  .image {
-    width: 100%;
-    display: block;
-  }
-  .el-select-dropdown__item span{
-    opacity: 80%;
-  }
-  .image {
-    width: 100%;
-    display: block;
-  }
+&:last-child {
+  margin-bottom: 0;
+}
+.bg-purple2 {
+  background-color: rgba(192, 192, 192, 0.43);
+}
+.grid-content2 {
+  min-height: 60px;
+}
+.avatar-dropdown {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+  height: 50px;
+  padding: 0;
+  font-size: 30px;
+}
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+.clearfix:after {
+  clear: both
+}
+.image {
+  width: 100%;
+  display: block;
+}
+.el-select-dropdown__item span{
+  opacity: 80%;
+}
+.image {
+  width: 100%;
+  display: block;
+}
 </style>

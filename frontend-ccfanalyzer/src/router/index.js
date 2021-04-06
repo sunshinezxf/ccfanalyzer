@@ -10,6 +10,7 @@ import Login from '@/views/user/Login'
 import Register from '@/views/user/Register'
 import Collections from '@/views/user/Collections'
 import PersonalWarehouse from '@/views/user/PersonalWarehouse'
+import PaperShared from '@/views/user/PaperShared'
 Vue.use(Router)
 
 export default new Router({
@@ -90,6 +91,14 @@ export default new Router({
       path: '/PersonalWarehouse',
       name: 'PersonalWarehouse',
       component: PersonalWarehouse,
+      meta: {
+        isLogin: true
+      }
+    },
+    {
+      path: '/PaperShared',
+      name: 'PaperShared',
+      component: PaperShared,
       meta: {
         isLogin: true
       }

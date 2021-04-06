@@ -235,18 +235,16 @@ export default {
         console.log(ruleForm.password)
         Login(ruleForm.username, ruleForm.password).then((res) => {
           console.log(res)
-          if (res.content.id !== '-1') {
+          if (res.content !== '用户名或者密码错误') {
             localStorage.setItem('Flag', 'isLogin')
+            localStorage.setItem('token', res.content)
+            localStorage.setItem('username', ruleForm.username)
             this.$message.success({
               message: 'Login Successful',
               center: true
             })
             this.$router.push({
-              name: 'Collections',
-              query: {
-                name: res.content.username,
-                id: res.content.id
-              }
+              name: 'Collections'
             })
           } else {
             this.$message.error({
