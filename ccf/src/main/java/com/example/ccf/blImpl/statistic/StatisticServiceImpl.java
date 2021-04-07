@@ -1,6 +1,9 @@
 package com.example.ccf.blImpl.statistic;
 
 import com.example.ccf.bl.StatisticService;
+import com.example.ccf.blImpl.Session.SessionBIService;
+import com.example.ccf.blImpl.author.AuthorBlService;
+import com.example.ccf.blImpl.relation.RelationBlService;
 import com.example.ccf.data.statistic.StatisticMapper;
 import com.example.ccf.po.Statistic;
 import com.example.ccf.vo.AffiliationRadar;
@@ -10,14 +13,20 @@ import com.example.ccf.vo.StatisticsData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class StatisticServiceImpl implements StatisticService {
 
     private StatisticMapper statisticMapper;
+    private RelationBlService relationBlService;
+    private AuthorBlService authorBlService;
 
     @Autowired
-    public void DI(StatisticMapper statisticMapper){
+    public void DI(StatisticMapper statisticMapper,SessionBIService sessionBIService,AuthorBlService authorBlService,RelationBlService relationBlService){
         this.statisticMapper=statisticMapper;
+        this.authorBlService=authorBlService;
+        this.relationBlService=relationBlService;
     }
 
     @Override
@@ -35,7 +44,8 @@ public class StatisticServiceImpl implements StatisticService {
     }
 
     @Override
-    public ResponseVO getAuthorRadar() {
+    public ResponseVO getAuthorRadar(int authorId) {
+
 
         Statistic statistic=statisticMapper.getStatistic();
         AuthorRadar authorRadar=new AuthorRadar();
@@ -44,6 +54,23 @@ public class StatisticServiceImpl implements StatisticService {
         authorRadar.setMaxCitationNum(statistic.getAuthor_max_citation_num());
         authorRadar.setAveArticleNum(statistic.getAuthor_ave_article_num());
         authorRadar.setMaxArticleNum(statistic.getAuthor_max_article_num());
+
+        authorRadar.setAveAuthorCitation(authorBlService.getAuthorAveCitation(authorId));
+        authorRadar.setMaxAuthorCitation(authorBlService.getMaxAuthorCitation(authorId));
+
+        authorRadar.setAveRelation(relationBlService.getAveRelation(authorId));
+        authorRadar.setMaxRelation(relationBlService.getMaxRelation(authorId));
+
+        List<Integer> yearPaperNum=authorBlService.getPaperNumGroupByYear(authorId);
+        int max=-1;
+        double total=0;
+        for(int i:yearPaperNum){
+            max= Math.max(i, max);
+            total=total+i;
+        }
+
+        authorRadar.setAveYearArticleNum(total/(double) yearPaperNum.size());
+        authorRadar.setMaxYearArticleNum(max);
 
         return ResponseVO.buildSuccess(authorRadar);
     }

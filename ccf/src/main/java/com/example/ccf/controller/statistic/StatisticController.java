@@ -3,10 +3,7 @@ package com.example.ccf.controller.statistic;
 import com.example.ccf.bl.StatisticService;
 import com.example.ccf.vo.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/interests")
@@ -25,9 +22,9 @@ public class StatisticController {
         return statisticService.getStatisticData();
     }
 
-    @RequestMapping(value = "/getValue/author",method = RequestMethod.GET)
-    public ResponseVO authorRadar(){
-        return statisticService.getAuthorRadar();
+    @RequestMapping(value = "/getValue/author/{authorId}",method = RequestMethod.GET)
+    public ResponseVO authorRadar(@PathVariable int authorId){
+        return statisticService.getAuthorRadar(authorId);
     }
 
     @RequestMapping(value = "/getValue/affiliation",method = RequestMethod.GET)

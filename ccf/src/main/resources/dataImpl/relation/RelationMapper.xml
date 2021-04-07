@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.ccf.data.relation.RelationMapper">
+    <select id="getRelations" resultMap="AuthorRelation">
+        select * from author_relation
+        where author_one_id = #{author_id} or author_two_id = #{author_id}
+    </select>
+    <select id="getMaxCoopRelation" resultType="int">
+        select max(coop_time) from author_relation
+        where author_one_id = #{author_id} or author_two_id = #{author_id}
+    </select>
+    <resultMap id="AuthorRelation" type="com.example.ccf.po.AuthorRelation">
+    </resultMap>
+</mapper>

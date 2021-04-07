@@ -22,6 +22,17 @@
         where p.paper_id=pr.paper_id and pr.author_id= #{author_id}
         group by p.book_title order by count desc limit 0,5;
     </select>
+    <select id="getMaxAuthorCitation" resultType="int">
+        select max(p.citation)
+        from paper p, paper_author_relation pr
+        where p.paper_id= pr.paper_id and pr.author_id = #{author_id}
+    </select>
+    <select id="getPaperNumGroupByYear" resultMap="Integer">
+        select count(p.paper_id)
+        from paper p, paper_author_relation pr
+        where p.paper_id=pr.paper_id and pr.author_id = #{author_id}
+        group by p.year;
+    </select>
     <resultMap id="Affiliation" type="com.example.ccf.po.Affiliation">
         <result column="affiliation_id" property="affiliation_id"></result>
         <result column="affiliation" property="affiliation"></result>
@@ -30,6 +41,8 @@
         <result column="author_num" property="author_num"></result>
     </resultMap>
     <resultMap id="Paper" type="com.example.ccf.po.Paper">
+    </resultMap>
+    <resultMap id="Integer" type="java.lang.Integer">
     </resultMap>
     <resultMap id="String" type="java.lang.String">
     </resultMap>

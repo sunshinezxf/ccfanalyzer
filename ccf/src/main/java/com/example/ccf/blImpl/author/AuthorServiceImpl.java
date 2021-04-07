@@ -68,4 +68,21 @@ public class AuthorServiceImpl implements AuthorService,AuthorBlService {
 
         return affiliationOmits;
     }
+
+    @Override
+    public double getAuthorAveCitation(int authorId) {
+        Author author=authorMapper.getAuthorById(authorId);
+        return ((double) author.getArticle_citation_num())/((double) author.getArticle_num());
+    }
+
+    @Override
+    public int getMaxAuthorCitation(int authorId) {
+
+        return authorMapper.getMaxAuthorCitation(authorId);
+    }
+
+    @Override
+    public List<Integer> getPaperNumGroupByYear(int authorId) {
+        return authorMapper.getPaperNumGroupByYear(authorId);
+    }
 }

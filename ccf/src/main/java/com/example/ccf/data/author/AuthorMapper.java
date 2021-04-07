@@ -27,4 +27,8 @@ public interface AuthorMapper {
     List<Paper> getAuthorPapers(@Param("author_id")int author_id, @Param("offset")int offset);
 
     List<String> getAuthorMainMeeting(@Param("author_id")int author_id);
+
+    int getMaxAuthorCitation(@Param("author_id")int author_id);
+
+    List<Integer> getPaperNumGroupByYear(@Param("author_id")int author_id);
 }

@@ -7,4 +7,10 @@ import java.util.List;
 public interface AuthorBlService {
 
     List<AffiliationOmit> getAuthorAffiliation(int authorId);
+
+    double getAuthorAveCitation(int authorId);
+
+    int getMaxAuthorCitation(int authorId);
+
+    List<Integer> getPaperNumGroupByYear(int authorId);
 }

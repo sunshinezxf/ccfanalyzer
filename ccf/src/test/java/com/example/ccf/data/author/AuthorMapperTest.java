@@ -59,4 +59,13 @@ public class AuthorMapperTest {
         List<String> meetings=authorMapper.getAuthorMainMeeting(1);
         logger.info(meetings.toString());
     }
+
+    @Test
+    public void getPaperNumGroupByYear(){
+        List<Integer> paperNum=authorMapper.getPaperNumGroupByYear(1);
+        logger.info(paperNum.toString());
+        paperNum=authorMapper.getPaperNumGroupByYear(8);
+        logger.info(paperNum.toString());
+
+    }
 }
