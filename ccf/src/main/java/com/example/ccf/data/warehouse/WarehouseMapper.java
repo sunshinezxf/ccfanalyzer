@@ -1,9 +1,11 @@
 package com.example.ccf.data.warehouse;
 
 import com.example.ccf.po.Paper;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
+@Mapper
 public interface WarehouseMapper {
 
     /**
@@ -45,4 +47,12 @@ public interface WarehouseMapper {
      * @return void
      */
     void deleteTeamRelation(@Param("paper_id")int paper_id);
+
+    /**
+     * get Private Paper authors by paperId
+     *
+     * @param paper_id
+     * @return List<Paper>
+     */
+    List<String> getPrivatePaperAuthors(@Param("paper_id")int paper_id);
 }

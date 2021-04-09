@@ -155,4 +155,9 @@ public class TeamManageServiceImpl implements TeamManageService,TeamManageBlServ
         }
     }
 
+    // TODO
+    @Override
+    public boolean isInTeam(int userId, int teamId) {
+        return false;
+    }
 }
