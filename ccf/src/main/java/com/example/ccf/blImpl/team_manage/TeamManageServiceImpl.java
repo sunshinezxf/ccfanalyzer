@@ -144,10 +144,15 @@ public class TeamManageServiceImpl implements TeamManageService,TeamManageBlServ
         }
     }
 
-    // TODO
     @Override
-    public boolean isOwner(int userId, int teamId) {
-        return false;
+    public boolean isOwner(int user_id, int team_id) {
+        int right=teamManageMapper.right_if(user_id, team_id);
+        if(right>=1){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
 }
