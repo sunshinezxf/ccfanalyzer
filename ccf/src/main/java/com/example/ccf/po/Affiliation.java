@@ -12,6 +12,14 @@ public class Affiliation {
 
     private int author_num;
 
+    private double ave_affiliation_citation;
+
+    private int max_affiliation_citation;
+
+    private double ave_affiliation_article;
+
+    private int max_affiliation_article;
+
     public int getAffiliation_id() {
         return affiliation_id;
     }
@@ -52,6 +60,38 @@ public class Affiliation {
         this.author_num = author_num;
     }
 
+    public double getAve_affiliation_citation() {
+        return ave_affiliation_citation;
+    }
+
+    public void setAve_affiliation_citation(double ave_affiliation_citation) {
+        this.ave_affiliation_citation = ave_affiliation_citation;
+    }
+
+    public int getMax_affiliation_citation() {
+        return max_affiliation_citation;
+    }
+
+    public void setMax_affiliation_citation(int max_affiliation_citation) {
+        this.max_affiliation_citation = max_affiliation_citation;
+    }
+
+    public double getAve_affiliation_article() {
+        return ave_affiliation_article;
+    }
+
+    public void setAve_affiliation_article(double ave_affiliation_article) {
+        this.ave_affiliation_article = ave_affiliation_article;
+    }
+
+    public int getMax_affiliation_article() {
+        return max_affiliation_article;
+    }
+
+    public void setMax_affiliation_article(int max_affiliation_article) {
+        this.max_affiliation_article = max_affiliation_article;
+    }
+
     @Override
     public String toString() {
         return "Affiliation{" +
@@ -60,6 +100,10 @@ public class Affiliation {
                 ", article_num=" + article_num +
                 ", article_citation_num=" + article_citation_num +
                 ", author_num=" + author_num +
+                ", ave_affiliation_citation=" + ave_affiliation_citation +
+                ", max_affiliation_citation=" + max_affiliation_citation +
+                ", ave_affiliation_article=" + ave_affiliation_article +
+                ", max_affiliation_article=" + max_affiliation_article +
                 '}';
     }
 }

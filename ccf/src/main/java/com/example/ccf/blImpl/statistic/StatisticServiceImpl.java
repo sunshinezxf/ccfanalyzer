@@ -2,6 +2,7 @@ package com.example.ccf.blImpl.statistic;
 
 import com.example.ccf.bl.StatisticService;
 import com.example.ccf.blImpl.Session.SessionBIService;
+import com.example.ccf.blImpl.affiliation.AffiliationBlService;
 import com.example.ccf.blImpl.author.AuthorBlService;
 import com.example.ccf.blImpl.relation.RelationBlService;
 import com.example.ccf.data.statistic.StatisticMapper;
@@ -21,12 +22,15 @@ public class StatisticServiceImpl implements StatisticService {
     private StatisticMapper statisticMapper;
     private RelationBlService relationBlService;
     private AuthorBlService authorBlService;
+    private AffiliationBlService affiliationBlService;
 
     @Autowired
-    public void DI(StatisticMapper statisticMapper,SessionBIService sessionBIService,AuthorBlService authorBlService,RelationBlService relationBlService){
+    public void DI(StatisticMapper statisticMapper,SessionBIService sessionBIService,AuthorBlService authorBlService,
+                   RelationBlService relationBlService,AffiliationBlService affiliationBlService){
         this.statisticMapper=statisticMapper;
         this.authorBlService=authorBlService;
         this.relationBlService=relationBlService;
+        this.affiliationBlService=affiliationBlService;
     }
 
     @Override
@@ -76,7 +80,7 @@ public class StatisticServiceImpl implements StatisticService {
     }
 
     @Override
-    public ResponseVO getAffiliationRadar() {
+    public ResponseVO getAffiliationRadar(int affiliationId) {
 
         Statistic statistic=statisticMapper.getStatistic();
         AffiliationRadar affiliationRadar=new AffiliationRadar();
@@ -87,6 +91,11 @@ public class StatisticServiceImpl implements StatisticService {
         affiliationRadar.setMaxArticleNum(statistic.getAffiliation_max_article_num());
         affiliationRadar.setAveAuthorNum(statistic.getAffiliation_ave_author_num());
         affiliationRadar.setMaxAuthorNum(statistic.getAffiliation_max_author_num());
+
+        affiliationRadar.setAveAffiliationCitationNum(affiliationBlService.getAveAffiliationCitationNum(affiliationId));
+        affiliationRadar.setMaxAffiliationCitationNum(affiliationBlService.getMaxAffiliationCitationNum(affiliationId));
+        affiliationRadar.setAveAffiliationArticleNum(affiliationBlService.getAveAffiliationArticleNum(affiliationId));
+        affiliationRadar.setMaxAffiliationArticleNum(affiliationBlService.getMaxAffiliationArticleNum(affiliationId));
 
         return ResponseVO.buildSuccess(affiliationRadar);
     }

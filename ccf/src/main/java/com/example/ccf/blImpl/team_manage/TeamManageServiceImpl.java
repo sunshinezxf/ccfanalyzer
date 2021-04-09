@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class TeamManageServiceImpl implements TeamManageService {
+public class TeamManageServiceImpl implements TeamManageService,TeamManageBlService {
     @Autowired
     private TeamManageMapper teamManageMapper;
     @Autowired
@@ -143,4 +143,11 @@ public class TeamManageServiceImpl implements TeamManageService {
             return ResponseVO.buildSuccess(0);
         }
     }
+
+    // TODO
+    @Override
+    public boolean isOwner(int userId, int teamId) {
+        return false;
+    }
+
 }

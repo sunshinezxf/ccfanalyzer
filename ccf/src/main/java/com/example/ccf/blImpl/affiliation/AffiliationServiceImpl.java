@@ -14,7 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Service
-public class AffiliationServiceImpl implements AffiliationService {
+public class AffiliationServiceImpl implements AffiliationService,AffiliationBlService {
 
     private AffiliationMapper affiliationMapper;
     private PaperBlService paperBlService;
@@ -70,5 +70,29 @@ public class AffiliationServiceImpl implements AffiliationService {
         }
 
         return ResponseVO.buildSuccess(authors);
+    }
+
+    @Override
+    public double getAveAffiliationCitationNum(int affiliationId) {
+        Affiliation affiliation=affiliationMapper.getAffiliationById(affiliationId);
+        return affiliation.getAve_affiliation_citation();
+    }
+
+    @Override
+    public int getMaxAffiliationCitationNum(int affiliationId) {
+        Affiliation affiliation=affiliationMapper.getAffiliationById(affiliationId);
+        return affiliation.getMax_affiliation_citation();
+    }
+
+    @Override
+    public double getAveAffiliationArticleNum(int affiliationId) {
+        Affiliation affiliation=affiliationMapper.getAffiliationById(affiliationId);
+        return affiliation.getAve_affiliation_article();
+    }
+
+    @Override
+    public int getMaxAffiliationArticleNum(int affiliationId) {
+        Affiliation affiliation=affiliationMapper.getAffiliationById(affiliationId);
+        return affiliation.getMax_affiliation_article();
     }
 }

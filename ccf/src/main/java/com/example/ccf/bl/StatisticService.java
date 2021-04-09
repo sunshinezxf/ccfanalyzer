@@ -6,7 +6,7 @@ public interface StatisticService {
 
     ResponseVO getStatisticData();
 
-    ResponseVO getAuthorRadar(int author_id);
+    ResponseVO getAuthorRadar(int authorId);
 
-    ResponseVO getAffiliationRadar();
+    ResponseVO getAffiliationRadar(int affiliationId);
 }

@@ -85,9 +85,30 @@ def affiliation_process(sql_cursor, sql_connect):
     select count(distinct author_id) from affiliation_author_relation 
     where affiliation_id = %s;
     '''
+    get_author_avg_citation = '''
+    select avg(a.article_citation_num) 
+    from author a, affiliation_author_relation ar 
+    where ar.author_id=a.author_id and ar.affiliation_id= %s;
+    '''
+    get_max_affiliation_citation = '''
+    select max(a.article_citation_num) 
+    from author a, affiliation_author_relation ar 
+    where ar.author_id=a.author_id and ar.affiliation_id= %s;
+    '''
+    get_ave_affiliation_article = '''
+    select avg(a.article_num) 
+    from author a, affiliation_author_relation ar 
+    where ar.author_id=a.author_id and ar.affiliation_id= %s;
+    '''
+    get_max_affiliation_article = '''
+    select max(a.article_num) 
+    from author a, affiliation_author_relation ar 
+    where ar.author_id=a.author_id and ar.affiliation_id= %s;
+    '''
     update_affiliation = '''
     update affiliation 
-    set article_num = %s , article_citation_num = %s  , author_num = %s
+    set article_num = %s , article_citation_num = %s  , author_num = %s , ave_affiliation_citation = %s, 
+    max_affiliation_citation = %s , ave_affiliation_article = %s, max_affiliation_article = %s 
     where affiliation_id = %s;
     '''
 
@@ -95,16 +116,19 @@ def affiliation_process(sql_cursor, sql_connect):
     affiliations = sql_cursor.fetchall()
 
     for affiliation in affiliations:
-        sql_cursor.execute(get_article_num, affiliation[0])
-        article_num = sql_cursor.fetchone()
-
-        sql_cursor.execute(get_article_citation_num, affiliation[0])
-        article_citation_num = sql_cursor.fetchone()
-
-        sql_cursor.execute(get_author_num, affiliation[0])
-        author_num = sql_cursor.fetchone()
-
-        sql_cursor.execute(update_affiliation, (article_num[0], article_citation_num[0], author_num[0], affiliation[0]))
+        sql_cursor.execute(update_affiliation, (get_first_query_value(sql_cursor, get_article_num, affiliation[0]),
+                                                get_first_query_value(sql_cursor, get_article_citation_num,
+                                                                      affiliation[0]),
+                                                get_first_query_value(sql_cursor, get_author_num, affiliation[0]),
+                                                get_first_query_value(sql_cursor, get_author_avg_citation,
+                                                                      affiliation[0]),
+                                                get_first_query_value(sql_cursor, get_max_affiliation_citation,
+                                                                      affiliation[0]),
+                                                get_first_query_value(sql_cursor, get_ave_affiliation_article,
+                                                                      affiliation[0]),
+                                                get_first_query_value(sql_cursor, get_max_affiliation_article,
+                                                                      affiliation[0]),
+                                                affiliation[0]))
 
         sql_connect.commit()
 
@@ -140,20 +164,12 @@ def meeting_process(sql_cursor, sql_connect):
     meetings = sql_cursor.fetchall()
 
     for meeting in meetings:
-        sql_cursor.execute(get_article_num, meeting[0])
-        article_num = sql_cursor.fetchone()
-
-        sql_cursor.execute(get_article_citation_num, meeting[0])
-        article_citation_num = sql_cursor.fetchone()
-
-        sql_cursor.execute(get_author_num, meeting[0])
-        author_num = sql_cursor.fetchone()
-
-        sql_cursor.execute(get_affiliation_num, meeting[0])
-        affiliation_num = sql_cursor.fetchone()
-
         sql_cursor.execute(update_meeting,
-                           (article_num[0], article_citation_num[0], author_num[0], affiliation_num[0], meeting[0]))
+                           (get_first_query_value(sql_cursor, get_article_num, meeting[0]),
+                            get_first_query_value(sql_cursor, get_article_citation_num, meeting[0]),
+                            get_first_query_value(sql_cursor, get_article_num, meeting[0]),
+                            get_first_query_value(sql_cursor, get_affiliation_num, meeting[0]),
+                            meeting[0]))
 
         sql_connect.commit()
 
@@ -264,6 +280,11 @@ def radar_process(sql_cursor, sql_connect, get_num: str, get_article_num: str, g
                        (ave_article_num, max_paper_num, ave_citation_num, max_citation_num))
 
     sql_connect.commit()
+
+
+def get_first_query_value(sql_cursor, query, value):
+    sql_cursor.execute(query, value)
+    return sql_cursor.fetchone()[0]
 
 
 if __name__ == '__main__':

@@ -27,8 +27,8 @@ public class StatisticController {
         return statisticService.getAuthorRadar(authorId);
     }
 
-    @RequestMapping(value = "/getValue/affiliation",method = RequestMethod.GET)
-    public ResponseVO affiliationRadar(){
-        return statisticService.getAffiliationRadar();
+    @RequestMapping(value = "/getValue/affiliation/{affiliationId}",method = RequestMethod.GET)
+    public ResponseVO affiliationRadar(@PathVariable int affiliationId){
+        return statisticService.getAffiliationRadar(affiliationId);
     }
 }

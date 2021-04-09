@@ -18,12 +18,12 @@ public class TeamWarehouseController {
     }
 
     @RequestMapping(value = "/papers",method = RequestMethod.GET)
-    public ResponseVO getPapers(){
-        return warehouseService.getPrivatePapers();
+    public ResponseVO getPapers(String token){
+        return warehouseService.getPrivatePapers(token);
     }
 
     @RequestMapping(value = "/delete/{paperId}",method = RequestMethod.GET)
-    public ResponseVO deletePaper(@PathVariable int paperId){
-        return warehouseService.deletePaper(paperId);
+    public ResponseVO deletePaper(@PathVariable int paperId,String token){
+        return warehouseService.deletePaper(paperId,token);
     }
 }

@@ -6,7 +6,6 @@ import com.example.ccf.po.Paper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
 @Mapper

@@ -4,9 +4,9 @@ import com.example.ccf.vo.ResponseVO;
 
 public interface WarehouseService {
 
-    ResponseVO getPrivatePapers();
+    ResponseVO getPrivatePapers(String token);
 
-    ResponseVO getTeamPapers();
+    ResponseVO getTeamPapers(String token);
 
-    ResponseVO deletePaper(int privatePaperId);
+    ResponseVO deletePaper(int privatePaperId,String token);
 }
