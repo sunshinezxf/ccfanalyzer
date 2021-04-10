@@ -8,5 +8,7 @@ public interface WarehouseService {
 
     ResponseVO getTeamPapers(String token,int teamId);
 
-    ResponseVO deletePaper(int privatePaperId,String token);
+    ResponseVO deleteTeamPaper(int privatePaperId,String token);
+
+    ResponseVO deletePrivatePaper(int privatePaperId,String token);
 }

@@ -26,6 +26,25 @@
         from privatepaper_team_relation
         where paper_id= #{paper_id}
     </delete>
+    <select id="getPrivatePaperAuthors" resultMap="String">
+        select author
+        from privatepaper_author_relation
+        where paper_id= #{paper_id};
+    </select>
+    <select id="getPaperTeam" resultMap="Integer">
+        select team_id
+        from privatepaper_team_relation
+        where paper_id= #{paper_id}
+    </select>
+    <select id="getPaperOwner" resultMap="Integer">
+        select user_id
+        from privatepaper_user_relation
+        where private_paper_id= #{paper_id} and permission = 1;
+    </select>
     <resultMap id="Paper" type="com.example.ccf.po.Paper">
+    </resultMap>
+    <resultMap id="String" type="java.lang.String">
+    </resultMap>
+    <resultMap id="Integer" type="java.lang.Integer">
     </resultMap>
 </mapper>

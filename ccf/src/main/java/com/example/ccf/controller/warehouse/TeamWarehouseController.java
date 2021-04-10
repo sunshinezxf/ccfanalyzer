@@ -24,6 +24,6 @@ public class TeamWarehouseController {
 
     @RequestMapping(value = "/delete/{paperId}",method = RequestMethod.GET)
     public ResponseVO deletePaper(@PathVariable int paperId,String token){
-        return warehouseService.deletePaper(paperId,token);
+        return warehouseService.deleteTeamPaper(paperId,token);
     }
 }

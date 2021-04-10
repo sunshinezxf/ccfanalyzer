@@ -24,6 +24,6 @@ public class PrivateWarehouseController {
 
     @RequestMapping(value = "/delete/{paperId}",method = RequestMethod.GET)
     public ResponseVO deletePaper(@PathVariable int paperId,String token){
-        return warehouseService.deletePaper(paperId,token);
+        return warehouseService.deletePrivatePaper(paperId,token);
     }
 }

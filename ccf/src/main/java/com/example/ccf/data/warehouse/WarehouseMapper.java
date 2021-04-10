@@ -55,4 +55,20 @@ public interface WarehouseMapper {
      * @return List<Paper>
      */
     List<String> getPrivatePaperAuthors(@Param("paper_id")int paper_id);
+
+    /**
+     * get Private Paper team
+     *
+     * @param paper_id
+     * @return int
+     */
+    int getPaperTeam(@Param("paper_id")int paper_id);
+
+    /**
+     * get Private Paper owner
+     *
+     * @param paper_id
+     * @return int
+     */
+    int getPaperOwner(@Param("paper_id")int paper_id);
 }
