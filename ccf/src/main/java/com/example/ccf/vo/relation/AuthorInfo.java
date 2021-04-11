@@ -24,7 +24,7 @@ public class AuthorInfo {
 
     @Override
     public String toString() {
-        return "Author{" +
+        return "AuthorInfo{" +
                 "value=" + value +
                 ", name='" + name + '\'' +
                 '}';

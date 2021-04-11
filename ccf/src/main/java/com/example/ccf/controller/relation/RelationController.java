@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/relation_map")
+@RequestMapping("/relationMap")
 @CrossOrigin
 public class RelationController {
 
@@ -18,7 +18,7 @@ public class RelationController {
     }
 
     @RequestMapping(value = "/author/single/{authorId}",method = RequestMethod.GET)
-    public ResponseVO authorPortrait(@PathVariable int authorId){
+    public ResponseVO authorRelation(@PathVariable int authorId){
         return relationService.getAuthorRelations(authorId);
     }
 }

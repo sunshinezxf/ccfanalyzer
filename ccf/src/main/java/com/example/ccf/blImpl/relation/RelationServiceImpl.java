@@ -51,15 +51,18 @@ public class RelationServiceImpl implements RelationService,RelationBlService{
 
                 connection.setTarget(authorBlService.getAuthorName(authorRelation.getAuthor_two_id()));
                 targetAuthorInfo.setName(authorBlService.getAuthorName(authorRelation.getAuthor_two_id()));
+                targetAuthorInfo.setValue(authorBlService.getAuthorValue(authorRelation.getAuthor_two_id()));
             }else {
 
                 connection.setTarget(authorBlService.getAuthorName(authorRelation.getAuthor_one_id()));
                 targetAuthorInfo.setName(authorBlService.getAuthorName(authorRelation.getAuthor_one_id()));
+                targetAuthorInfo.setValue(authorBlService.getAuthorValue(authorRelation.getAuthor_one_id()));
             }
 
 
             connection.setSource(authorBlService.getAuthorName(authorId));
             connections.add(connection);
+            authors.add(targetAuthorInfo);
         }
 
         authorRelationPortrait.setAuthors(authors);

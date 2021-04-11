@@ -27,7 +27,7 @@ public class AuthorRelationPortrait {
     @Override
     public String toString() {
         return "AuthorRelationPortrait{" +
-                "author=" + authors +
+                "authors=" + authors +
                 ", connections=" + connections +
                 '}';
     }

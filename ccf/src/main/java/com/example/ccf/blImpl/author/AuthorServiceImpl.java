@@ -89,7 +89,7 @@ public class AuthorServiceImpl implements AuthorService,AuthorBlService {
     @Override
     public int getAuthorValue(int authorId) {
         Author author=authorMapper.getAuthorById(authorId);
-        double article_citation=Math.log(author.getArticle_citation_num());
+        double article_citation=Math.log(author.getArticle_citation_num()+1);
         double article_num=Math.log(author.getArticle_num());
 
         return (int)(article_citation+article_num);
