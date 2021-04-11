@@ -13,4 +13,8 @@ public interface AuthorBlService {
     int getMaxAuthorCitation(int authorId);
 
     List<Integer> getPaperNumGroupByYear(int authorId);
+
+    int getAuthorValue(int authorId);
+
+    String getAuthorName(int authorId);
 }

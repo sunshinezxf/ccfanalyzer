@@ -85,4 +85,19 @@ public class AuthorServiceImpl implements AuthorService,AuthorBlService {
     public List<Integer> getPaperNumGroupByYear(int authorId) {
         return authorMapper.getPaperNumGroupByYear(authorId);
     }
+
+    @Override
+    public int getAuthorValue(int authorId) {
+        Author author=authorMapper.getAuthorById(authorId);
+        double article_citation=Math.log(author.getArticle_citation_num());
+        double article_num=Math.log(author.getArticle_num());
+
+        return (int)(article_citation+article_num);
+    }
+
+    @Override
+    public String getAuthorName(int authorId) {
+        Author author=authorMapper.getAuthorById(authorId);
+        return author.getAuthor();
+    }
 }
