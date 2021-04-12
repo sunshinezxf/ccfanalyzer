@@ -233,7 +233,12 @@ export default {
       } else {
         console.log(ruleForm.username)
         console.log(ruleForm.password)
-        Login(ruleForm.username, ruleForm.password).then((res) => {
+        Login(
+          {
+            username: ruleForm.username,
+            password: ruleForm.password
+          }
+        ).then((res) => {
           console.log(res)
           if (res.content !== '用户名或者密码错误') {
             localStorage.setItem('Flag', 'isLogin')
