@@ -89,7 +89,7 @@
           active-text-color="#ffd04b"
           :router="true"
           :span="2" :style="containerHeight">
-          <el-menu-item index="/UserPage">
+          <el-menu-item index="/MyTeams">
             <i class="el-icon-menu"></i>
             <span slot="title">我的团队</span>
           </el-menu-item>

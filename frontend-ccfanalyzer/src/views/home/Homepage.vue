@@ -1254,6 +1254,7 @@ export default {
         let total = 0
         getAdvancedSearchResult(this.advSearchForm).then(res => {
           console.log(this.advSearchForm)
+          this.advSearchForm.keywords.push(this.searchConference)
           if (res.success ) {
             paperList = res.content.paperBriefInfoVOList
             total = res.content.totalNum
@@ -1334,7 +1335,8 @@ export default {
       }
     },
     handleSelect3(item) {
-      console.log(this.searchContexts)
+      this.searchConference = item.name
+
     },
   },
   mounted: function () {

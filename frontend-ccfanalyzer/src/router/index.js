@@ -11,6 +11,8 @@ import Register from '@/views/user/Register'
 import Collections from '@/views/user/Collections'
 import PersonalWarehouse from '@/views/user/PersonalWarehouse'
 import PaperShared from '@/views/user/PaperShared'
+import MyTeams from '@/views/user/MyTeams'
+import TeamDetails from '@/views/user/TeamDetails'
 Vue.use(Router)
 
 export default new Router({
@@ -99,6 +101,22 @@ export default new Router({
       path: '/PaperShared',
       name: 'PaperShared',
       component: PaperShared,
+      meta: {
+        isLogin: true
+      }
+    },
+    {
+      path: '/MyTeams',
+      name: 'MyTeams',
+      component: MyTeams,
+      meta: {
+        isLogin: true
+      }
+    },
+    {
+      path: '/TeamDetails',
+      name: 'TeamDetails',
+      component: TeamDetails,
       meta: {
         isLogin: true
       }

@@ -109,7 +109,53 @@
         </el-col>
       </el-aside>
       <el-main class="main">
+        <el-breadcrumb separator="/" style="font-size: 32px">
+          <el-breadcrumb-item :to="{ path: '/MyTeams' }">MyTeams</el-breadcrumb-item>
+          <el-breadcrumb-item><a href="/">Team1</a></el-breadcrumb-item>
+          <el-button  plain style="float:right;width: 200px;font-size: 15px" @click="drawer = true" >修改成员</el-button>
+          <el-button  plain style="float:right;width: 100px;margin-right: 30px;font-size: 15px"  type="danger" :disabled="!isOwner" @click="open2">删除团队</el-button>
+          <el-button  plain style="float:right;width: 100px;margin-right: 30px;font-size: 15px"  type="info" @click="open">退出团队</el-button>
+        </el-breadcrumb>
+        <el-divider></el-divider>
         <div>
+          <el-drawer
+            append-to-body="true"
+            style="margin-top: 8%"
+            title="全部成员"
+            :modal="false"
+            :visible.sync="drawer"
+            :direction="direction"
+            :before-close="handleClose">
+            <el-row style="text-align: center">
+              <el-col :span="4" >
+                <el-button type="primary" circle><span style="font-size: 10px">&nbsp;+&nbsp;</span></el-button>
+              </el-col>
+              <el-col :span="20">
+              <el-input v-model="input" placeholder="addMember" style="width: 80%"></el-input>
+              </el-col>
+            </el-row>
+
+            <el-divider></el-divider>
+            <el-table
+              :data="tableData"
+              stripe
+              style="width: 100%">
+              <el-span :span="6">
+
+              <el-table-column
+                prop="name"
+                label="姓名">
+              </el-table-column>
+              </el-span>
+              <el-table-column
+                prop="actions"
+                label="操作">
+                <template slot-scope="scope">
+                  <el-button type="text" :disabled="!isOwner">移出</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-drawer>
           <br>
           <h1 style="margin-left: 3%;color:black;">{{paperNum}} Papers</h1>
           <div style="text-align:right">
@@ -141,8 +187,8 @@
                   <el-input v-model="form.publisher" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="url" :label-width="formLabelWidth">
-                <el-input v-model="form.url" autocomplete="off"></el-input>
-              </el-form-item>
+                  <el-input v-model="form.url" autocomplete="off"></el-input>
+                </el-form-item>
                 <el-form-item label="出版时间" :label-width="formLabelWidth">
                   <el-input v-model="form.time" autocomplete="off"></el-input>
                 </el-form-item>
@@ -247,6 +293,7 @@
               </div>
             </el-card>
           </div>
+
         </div>
       </el-main>
     </el-container>
@@ -254,139 +301,234 @@
 </template>
 
 <script>
-import {PaperUpload, PaperShare, PaperUpdate} from '../../API/User/PersonalWarehouseAPIs'
-
-export default {
-  name: 'PersonalWarehouse',
-  data () {
-    return {
-      user: {
-        login: true,
-        logout: false,
-        username: 'yry',
+  import {PaperUpload, PaperShare, PaperUpdate} from '../../API/User/PersonalWarehouseAPIs'
+  import {TeamMemberQuit,TeamDelete,getTeamOwner,getTeamList} from '../../API/User/TeamAPIs'
+  export default {
+    name: 'PersonalWarehouse',
+    data () {
+      return {
+        isOwner:false,
+        team_id:1,
+        tableData: [{
+          name: '王小虎',
+        }, {
+          date: '2016-05-04',
+          name: '王小虎',
+          province: '上海',
+          city: '普陀区',
+          address: '上海市普陀区金沙江路 1517 弄',
+          zip: 200333
+        }, {
+          date: '2016-05-01',
+          name: '王小虎',
+          province: '上海',
+          city: '普陀区',
+          address: '上海市普陀区金沙江路 1519 弄',
+          zip: 200333
+        }, {
+          date: '2016-05-03',
+          name: '王小虎',
+          province: '上海',
+          city: '普陀区',
+          address: '上海市普陀区金沙江路 1516 弄',
+          zip: 200333
+        }],
+        drawer: false,
+        direction: 'rtl',
+        user: {
+          login: true,
+          logout: false,
+          username: 'yry',
+          password: '',
+          id: '',
+          token: ''
+        },
+        username: '',
         password: '',
-        id: '',
-        token: ''
+        containerHeight: {
+          height: ''
+        },
+        paperNum: 8,
+        PaperList: [
+          {
+            paperId: 0,
+            title: 'Learning Styles and Inclusion.',
+            authors: [{
+              name: 'apple',
+              id: 1
+            }, {
+              name: 'bear',
+              id: 2
+            }],
+            affiliations: [{
+              name: 'NJU',
+              id: 1
+            }, {
+              name: 'ZJU',
+              id: 2
+            }],
+            publication: 'IEEE',
+            summary: 'Learning Models and the Learning Cycle Learning Differences and Learning Styles The Role of the Learning Environment Background to Learning Styles Assessment of Learning Styles Learning Styles Learning and Teaching The Inclusive School Characteristics and Challenges Learning Styles in the Inclusive Context Promoting Effective Learning Learning Styles Strategies and Insights',
+            keywords: ['Educational technology']
+          }
+        ],
+        dialogFormVisible: false,
+        form: {
+          title: '',
+          abstracts: '',
+          doi: '',
+          citation: '',
+          book_title: '',
+          paperPages: '',
+          years: '',
+          publisher: '',
+          url: '',
+          time: ''
+        },
+        formLabelWidth: '120px',
+        shareForm: {
+          name: ''
+        },
+        dialogForm1Visible: false,
+        dialogForm2Visible: false
+      }
+    },
+    mounted () {
+      this.user.username = this.user.username = localStorage.getItem('username')
+      this.user.token = localStorage.getItem('token')
+      this.isOwnerAble(this.user.token ,this.team_id)
+      this.getMemberLists(this.team_id)
+
+    },
+    created () {
+      var docHeight = document.documentElement.clientHeight
+      this.containerHeight.height = docHeight - 40 + 'px'
+    },
+    methods: {
+      isOwnerAble(userID,teamID) {
+        getTeamOwner(userID,teamID).then((res) => {
+          if(res.content===1){
+            this.isOwner=true
+          }else{
+            this.isOwner=false
+          }
+        }).catch(error => console.log(error))
       },
-      username: '',
-      password: '',
-      containerHeight: {
-        height: ''
+      getMemberLists(team_id) {
+        getTeamList(team_id).then((res) => {
+          if(res.content===1){
+            this.isOwner=true
+          }else{
+            this.isOwner=false
+          }
+        }).catch(error => console.log(error))
       },
-      paperNum: 8,
-      PaperList: [
-        {
-          paperId: 0,
-          title: 'Learning Styles and Inclusion.',
-          authors: [{
-            name: 'apple',
-            id: 1
-          }, {
-            name: 'bear',
-            id: 2
-          }],
-          affiliations: [{
-            name: 'NJU',
-            id: 1
-          }, {
-            name: 'ZJU',
-            id: 2
-          }],
-          publication: 'IEEE',
-          summary: 'Learning Models and the Learning Cycle Learning Differences and Learning Styles The Role of the Learning Environment Background to Learning Styles Assessment of Learning Styles Learning Styles Learning and Teaching The Inclusive School Characteristics and Challenges Learning Styles in the Inclusive Context Promoting Effective Learning Learning Styles Strategies and Insights',
-          keywords: ['Educational technology']
-        }
-      ],
-      dialogFormVisible: false,
-      form: {
-        title: '',
-        abstracts: '',
-        doi: '',
-        citation: '',
-        book_title: '',
-        paperPages: '',
-        years: '',
-        publisher: '',
-        url: '',
-        time: ''
+      open() {
+        this.$confirm('此操作将退出团队1, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+            TeamMemberQuit(this.user.token, this.team_id).then((res) => {
+              this.$message({
+                type: 'success',
+                message: '退出成功!'
+              });
+            }).catch(error => console.log(error))
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消退出'
+          });
+        });
       },
-      formLabelWidth: '120px',
-      shareForm: {
-        name: ''
+      open2() {
+        this.$confirm('此操作将删除团队1，包括所有数据, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          TeamDelete(this.user.token, this.team_id).then((res) => {
+            this.$message({
+              type: 'success',
+              message: '退出成功!'
+            });
+          }).catch(error => console.log(error))
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消退出'
+          });
+        });
       },
-      dialogForm1Visible: false,
-      dialogForm2Visible: false
-    }
-  },
-  mounted () {
-    this.user.username = this.user.username = localStorage.getItem('username')
-    this.user.token = localStorage.getItem('token')
-  },
-  created () {
-    var docHeight = document.documentElement.clientHeight
-    this.containerHeight.height = docHeight - 40 + 'px'
-  },
-  methods: {
-    handleOpen (key, keyPath) {
-      console.log(key, keyPath)
-    },
-    handleClose (key, keyPath) {
-      console.log(key, keyPath)
-    },
-    getContent (e) {
-      let newpage = this.$router.resolve({
-        name: 'PaperDetail',
-        query: {
-          paperId: e
-        }
-      })
-      window.open(newpage.href, '_blank')
-    },
-    searchAffiliationPor (affiliationId) {
-      let newpage = this.$router.resolve({
-        name: 'AffiliationPortrait',
-        query: {
-          affiliationId: affiliationId
-        }
-      })
-      window.open(newpage.href, '_blank')
-    },
-    searchAuthorPor (authorId) {
-      let newpage = this.$router.resolve({
-        name: 'AuthorPortrait',
-        query: {
-          authorId: authorId
-        }
-      })
-      window.open(newpage.href, '_blank')
-    },
-    Upload (token, Form) {
-      console.log(Form)
-      PaperUpload(token, Form).then((res) => {
-        this.$message.success({
-          message: 'Upload Successful',
-          center: true
+      handleClick(row) {
+        console.log(row);
+      },
+      handleClose(done) {
+        this.$confirm('确认关闭？')
+          .then(_ => {
+            done();
+          })
+          .catch(_ => {});
+      },
+      handleOpen (key, keyPath) {
+        console.log(key, keyPath)
+      },
+
+      getContent (e) {
+        let newpage = this.$router.resolve({
+          name: 'PaperDetail',
+          query: {
+            paperId: e
+          }
         })
-      })
-    },
-    SharePapers (token, paperId, username) {
-      PaperShare(token, paperId, username).then((res) => {
-        this.$message.success({
-          message: 'Share Successful',
-          center: true
+        window.open(newpage.href, '_blank')
+      },
+      searchAffiliationPor (affiliationId) {
+        let newpage = this.$router.resolve({
+          name: 'AffiliationPortrait',
+          query: {
+            affiliationId: affiliationId
+          }
         })
-      })
-    },
-    UpdatePaper (token, Form) {
-      PaperUpdate(token, Form).then((res) => {
-        this.$message.success({
-          message: 'Update Successful',
-          center: true
+        window.open(newpage.href, '_blank')
+      },
+      searchAuthorPor (authorId) {
+        let newpage = this.$router.resolve({
+          name: 'AuthorPortrait',
+          query: {
+            authorId: authorId
+          }
         })
-      })
+        window.open(newpage.href, '_blank')
+      },
+      Upload (token, Form) {
+        console.log(Form)
+        PaperUpload(token, Form).then((res) => {
+          this.$message.success({
+            message: 'Upload Successful',
+            center: true
+          })
+        })
+      },
+      SharePapers (token, paperId, username) {
+        PaperShare(token, paperId, username).then((res) => {
+          this.$message.success({
+            message: 'Share Successful',
+            center: true
+          })
+        })
+      },
+      UpdatePaper (token, Form) {
+        PaperUpdate(token, Form).then((res) => {
+          this.$message.success({
+            message: 'Update Successful',
+            center: true
+          })
+        })
+      }
     }
   }
-}
 </script>
 
 <style scoped>
@@ -428,4 +570,5 @@ export default {
     width: 100%;
     display: block;
   }
+
 </style>
