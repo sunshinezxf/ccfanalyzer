@@ -17,9 +17,9 @@ public class PrivateWarehouseController {
         this.warehouseService=warehouseService;
     }
 
-    @RequestMapping(value = "/papers/{teamId}",method = RequestMethod.GET)
-    public ResponseVO getPapers(@PathVariable int teamId,String token){
-        return warehouseService.getTeamPapers(token,teamId);
+    @RequestMapping(value = "/papers",method = RequestMethod.GET)
+    public ResponseVO getPapers(String token){
+        return warehouseService.getPrivatePapers(token);
     }
 
     @RequestMapping(value = "/delete/{paperId}",method = RequestMethod.GET)
