@@ -9,7 +9,6 @@ import com.example.ccf.vo.Private_paper;
 import com.example.ccf.vo.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,7 +29,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     @Override
     public ResponseVO getPrivatePapers(String token) {
 
-        int userId=sessionBIService.get_id(token);;
+        int userId=sessionBIService.get_id(token);
         if(userId==0){
             return ResponseVO.buildSuccess("该用户未登录");
         }
@@ -42,7 +41,8 @@ public class WarehouseServiceImpl implements WarehouseService {
 
     @Override
     public ResponseVO getTeamPapers(String token,int teamId) {
-        int userId=sessionBIService.get_id(token);;
+
+        int userId=sessionBIService.get_id(token);
         if(userId==0){
             return ResponseVO.buildSuccess("该用户未登录");
         }
@@ -55,9 +55,46 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
 
     @Override
-    public ResponseVO deletePaper(int privatePaperId,String token) {
-        int userId;
-        return null;
+    public ResponseVO deleteTeamPaper(int privatePaperId, String token) {
+
+        int userId=sessionBIService.get_id(token);
+        if(userId==0){
+            return ResponseVO.buildSuccess("该用户未登录");
+        }
+
+        int teamId=warehouseMapper.getPaperTeam(privatePaperId);
+        if(teamManageBlService.isOwner(userId,teamId)){
+
+            warehouseMapper.deletePrivatePaper(privatePaperId);
+            warehouseMapper.deleteTeamRelation(privatePaperId);
+
+            return ResponseVO.buildSuccess("删除成功");
+        }else {
+            return ResponseVO.buildSuccess("没有删除权限");
+        }
+
+    }
+
+    @Override
+    public ResponseVO deletePrivatePaper(int privatePaperId, String token) {
+
+        int userId=sessionBIService.get_id(token);
+        if(userId==0){
+            return ResponseVO.buildSuccess("该用户未登录");
+        }
+
+        int ownerId=warehouseMapper.getPaperOwner(privatePaperId);
+
+        if(ownerId==userId){
+
+            warehouseMapper.deletePrivatePaper(privatePaperId);
+            warehouseMapper.deleteUserRelation(privatePaperId);
+
+            return ResponseVO.buildSuccess("删除成功");
+        }else {
+
+            return ResponseVO.buildSuccess("没有删除权限");
+        }
     }
 
     private List<Private_paper> privatePaperFactory(List<Paper> papers){
