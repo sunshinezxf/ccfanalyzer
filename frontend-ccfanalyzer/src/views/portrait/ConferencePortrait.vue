@@ -537,7 +537,7 @@ export default {
     drawPie () {
     },
     getConferenceContent () {
-      this.loading_chart = true
+      this.loading_chart = false
       getConferencePortrait(this.ConferencePor.name).then((res) => {
         this.ConferencePor = res.data
         if (this.ConferencePor.articleNum > 20) {
@@ -565,11 +565,11 @@ export default {
     }
   },
   mounted () {
-    // let name = this.$route.query.name
-    // this.ConferencePor.name = name
-    // this.getConferenceContent()
-    // this.getPapers()
-    // this.$store.dispatch('flushFun')
+    let name = this.$route.query.name
+    this.ConferencePor.name = name
+    this.getConferenceContent()
+    this.getPapers()
+    this.$store.dispatch('flushFun')
   }
 }
 </script>

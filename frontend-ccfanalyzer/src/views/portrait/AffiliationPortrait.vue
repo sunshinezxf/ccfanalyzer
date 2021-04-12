@@ -6,93 +6,13 @@
        style="overflow: hidden" >
     <el-container >
       <div id="link"></div>
-      <el-header class="headerr" :style ="this.$store.state.background" height="230px">
-        <div style="margin-left: -19px;margin-right: -19px;text-align:center">
-          <el-row style="margin-bottom: 1%">
-            <el-col :span="4">
-              <div class="grid-content2 bg-purple2" style="color: white;text-align:center">
-
-                <el-row>
-                  <span class="avatar-dropdown">
-                    <i class="el-icon-s-home" ></i>
-                    <span class="u" style="font-size: 20px;color: grey;text-align: center">
-                    &nbsp;&nbsp;HomePage &nbsp;
-                 </span>
-                  </span>
-                </el-row>
-
-              </div>
-            </el-col>
-
-            <el-col :span="17">
-              <div class="grid-content2 bg-purple2" style="color: white;">
-
-                <el-row style="margin-bottom: -8%"></el-row>
-              </div>
-            </el-col>
-            <el-col :span="3"><div class="grid-content2 bg-purple2" style="color: white;">
-              <div v-show="user.login">
-                <el-dropdown @command="handleCommand">
-                 <span class="avatar-dropdown">
-                  <!--<el-avatar class="user-avatar" :src="avatar"></el-avatar>-->
-                  <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-
-
-                 <span class="u" style="font-size: 20px">
-                    &nbsp;&nbsp;{{ user.username }} &nbsp;
-                 </span>
-
-
-                   <i class="el-icon-arrow-down el-icon--right"></i>
-                </span>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
-              </div>
-
-              <div v-show="user.logout">
-
-                   <span class="avatar-dropdown">
-                        <!--<el-avatar class="user-avatar" :src="avatar"></el-avatar>-->
-                        <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-
-
-                       <span class="u" style="font-size: 20px">
-                          &nbsp;&nbsp; Login&nbsp;In&nbsp;&nbsp;
-                       </span>
-
-                      </span>
-              </div>
-            </div>
-            </el-col>
-          </el-row>
-        </div>
-
-        <el-dialog
-          title="Administrator Login"
-          :visible.sync="dialogVisible"
-          width="30%"
-          center>
-          <div style="text-align:center">
-            <el-input style="width: 70%" placeholder="username" v-model="username" clearable></el-input>
-          </div>
-          <div style="text-align:center">
-            <el-input style="width: 70%; margin-top: 5%" placeholder="password" v-model="password" show-password></el-input>
-          </div>
-          <span slot="footer" class="dialog-footer">
-          <el-button style="width: 70%; margin-bottom: 5%; font-size: large" type="primary" @click="dialogVisible = false; login()">LOGIN</el-button>
-        </span>
-        </el-dialog>
-
-
-
+      <el-header class="headerr" :style ="this.$store.state.background" height="150px">
         <el-row>
-          <el-col :span="4">
+          <el-col :span="5">
             <el-row>
-              <div class="OASIS" id="OASIS" style="font-weight:bold;color:white;font-size: 40px;text-align:center;margin-top: 12%"
+              <div class="OASIS" id="OASIS" style="font-weight:bold;color:white;font-size: 70px;text-align:center;margin-top: 4%"
                    @mouseenter="highlight" @mouseout="redoHightLight" @click="toHomepage">
-                CCF ANALYZER
+                OASIS
               </div>
             </el-row>
             <!--<el-row><div class="OASIS" style="color:white;font-size: 17px;text-align:center; ">-->
@@ -100,7 +20,7 @@
             <!--</div>-->
             <!--</el-row>-->
           </el-col>
-          <el-col :span="20">
+          <el-col :span="19">
             <!--普通搜索-->
             <div style="text-align: center;">
               <el-select v-model="commonSearchTypeValue" clearable placeholder="All" style="opacity:80%; width: 10%">
@@ -115,8 +35,6 @@
                 style="opacity:80%;width:50%; justify-content: center;;margin-top: 4%"
                 placeholder="Enter something..."
                 v-model="commonInput"
-                :disabled="searching"
-                @keyup.enter.native="commonSearch"
                 clearable>
               </el-input>
 
@@ -125,7 +43,6 @@
             </div>
           </el-col>
         </el-row>
-
       </el-header>
       <el-main >
         <el-row>
@@ -186,10 +103,10 @@
             <h1 style="margin-left: 3%;color:black;">Popular Papers({{paperNum}})</h1>
             <br>
 
-            <div class="col-md-2 text-center" v-for="item in PaperList" :key="item.title">
+            <div class="col-md-2 text-center" v-for="item in PaperList" :key="item.title" v-if="showData">
               <el-card style=" height: 100%">
                 <div style="margin-left: 2%;margin-left: 2%">
-                  <el-link style="font-size: 27px;color: black" @click="getContent(item.id)"><strong>{{item.name}}</strong></el-link><br>
+                  <el-link style="font-size: 27px;color: black" @click="getContent(item.id)"><strong>{{item.title}}</strong></el-link><br>
                   <el-row>
               <span class="affcon" style="font-size: 17px;color: dimgray">
                 Affiliations:&nbsp;&nbsp;&nbsp;
@@ -210,7 +127,7 @@
               </span>
               </span>
                   </el-row>
-                  <span class="sum" style="font-size: 15px;color: dimgray;margin-top: 5px;margin-bottom: 5px" v-if="item.summary" >{{item.summary}}</span>
+                  <span class="sum" style="font-size: 15px;color: dimgray;margin-top: 5px;margin-bottom: 5px" v-if="item.abstract" >{{item.abstract}}</span>
                   <el-row>
               <span class="affcon" style="font-size: 17px;color: dimgray">
                 Keywords:&nbsp;&nbsp;&nbsp;
@@ -258,7 +175,7 @@
                   <el-row style="font-size: 18px">
                     <el-col :span="4" style="text-align: left">Rank</el-col>
                     <el-col :span="6" >Name</el-col>
-                    <el-col :span="12" style="text-align: right">Activeness</el-col>
+                    <el-col :span="12" style="text-align: right">AffiliationArticleNum</el-col>
                   </el-row>
                 </div>
                 <br><br>
@@ -280,7 +197,7 @@
                       </el-tooltip>
                     </el-col>
                     <el-col :span="3" style="text-align: right; ">
-                      <span style="float: right">{{item.activeness.toFixed(2)}}</span>
+                      <span style="float: right">{{item.AffiliationArticleNum.toFixed(2)}}</span>
                     </el-col>
                   </el-row>
                   <div>
@@ -299,58 +216,56 @@
 </template>
 
 <script>
- import {getCommonSearchResult, getAdvancedSearchResult} from '../../API/Home/HomePageAPIs'
- import {getAffiliationPortrait, getAffiliationPaper, getAffiliationValue} from '../../API/Portrait/AffiliationPortraitAPIs'
+import {
+  getCommonSearchResult, getAdvancedSearchResult
+} from '../../API/Home/HomePageAPIs'
+import {
+  getAffiliationPaper, getAffiliationPortrait, getAffiliationValue
+} from '../../API/Portrait/AffiliationPortraitAPIs'
 
 export default {
 
   data () {
     return {
-      user:{
-        login: true,
-        logout: false,
-        username: 'yry',
-        password: '',
-      },
-      dialogVisible: false,
+      showData: false,
       loading_chart: false,
       searching: false,
       aveAuthorNum: 0,
       maxAuthorNum: 0,
       aveArticleNum: 0,
       maxArticleNum: 0,
-      aveHIndex: 0,
-      maxHIndex: 0,
+      aveAffiliationCitationNum: 0,
+      maxAffiliationCitationNum: 0,
       aveCitationNum: 0,
       maxCitationNum: 0,
-      aveActiveness: 0,
-      maxActiveness: 0,
+      aveAffiliationArticleNum: 0,
+      maxAffiliationArticleNum: 0,
       AffPor: {
-        // affiliationId: 1,
-        // name: 'Nanjing University',
-        // researchDirections: [{
-        //   id: 1,
-        //   name: 'aa',
-        //   citationCnt: 1
-        // }],
-        // Authors: [
-        //   {
-        //     id: 1,
-        //     name: 'John',
-        //     activeness: 1.0
-        //   }, {
-        //     id: 1,
-        //     name: 'John',
-        //     activeness: 1.0
-        //   }
-        // ],
-        // conferences: ['IEEE', 'IEEE'],
-        // articleNum: 671,
-        // articleCitationNum: 10,
-        // hIndex: 1.0,
-        // researchDiversityIndex: 1.0,
-        // activeness: 1.0,
-        // authorNum: 1
+        affiliationId: 1,
+        name: 'Nanjing University',
+        researchDirections: [{
+          id: 1,
+          name: 'aa',
+          citationCnt: 1
+        }],
+        Authors: [
+          {
+            id: 1,
+            name: 'John',
+            AffiliationArticleNum: 1.0
+          }, {
+            id: 1,
+            name: 'John',
+            AffiliationArticleNum: 1.0
+          }
+        ],
+        conferences: ['IEEE', 'IEEE'],
+        articleNum: 671,
+        articleCitationNum: 10,
+        AffiliationCitationNum: 1.0,
+        researchDiversityIndex: 1.0,
+        AffiliationArticleNum: 1.0,
+        authorNum: 1
       },
       commonSearchTypeValue: '',
       paperNum: 1,
@@ -395,18 +310,39 @@ export default {
         authors: [{
           id: 1,
           name: 'zjh',
-          activeness: 1.0
+          AffiliationArticleNum: 1.0
         }],
         affiliations: [{
           id: 1,
           name: 'NJU'
         }],
         publication: 'IEEE',
-        summary: 'Learning Models and the Learning Cycle Learning Differences and Learning Styles The Role of the Learning Environment Background to Learning Styles Assessment of Learning Styles Learning Styles Learning and Teaching The Inclusive School Characteristics and Challenges Learning Styles in the Inclusive Context Promoting Effective Learning Learning Styles Strategies and Insights',
+        abstract: 'Learning Models and the Learning Cycle Learning Differences and Learning Styles The Role of the Learning Environment Background to Learning Styles Assessment of Learning Styles Learning Styles Learning and Teaching The Inclusive School Characteristics and Challenges Learning Styles in the Inclusive Context Promoting Effective Learning Learning Styles Strategies and Insights',
         keywords: ['Educational technology'],
         citationCnt: 0
       }]
     }
+  },
+  watch: {
+    PaperList: function () {
+      this.$nextTick(function () {
+
+      })
+    }
+  },
+  mounted () {
+    var _this = this
+    let id = this.$route.query.affiliationId
+    this.AffPor.affiliationrId = id
+    this.getAffiliationContent()
+    getAffiliationPaper(this.AffPor.affiliationrId, 0).then((res) => {
+      _this.PaperList = JSON.parse(JSON.stringify(res.content))
+      _this.loading_chart = false
+      _this.showData = true
+    })
+    console.log(this.loading_chart)
+    // this.getPapers()
+    this.$store.dispatch('flushFun')
   },
   methods: {
     commonSearch () {
@@ -605,33 +541,41 @@ export default {
     getAffiliationContent () {
       this.loading_chart = true
       getAffiliationPortrait(this.AffPor.affiliationrId).then((res) => {
-        this.AffPor = res.data
+        this.AffPor = res.content
         if (this.AffPor.articleNum > 20) {
           this.paperNum = 20
         } else {
           this.paperNum = this.AffPor.articleNum
         }
-        this.getValue()
+        this.getValue(this.AffPor.affiliationrId)
       })
+      console.log(this.AffPor)
     },
-    getPapers () {
+    /* getPapers () {
       getAffiliationPaper(this.AffPor.affiliationrId, 0).then((res) => {
-        this.PaperList = res.data
+        this.PaperList = JSON.parse(JSON.stringify(res.content))
+        console.log(this.PaperList)
         this.loading_chart = false
+        this.showData = true
+        this.$forceUpdate()
       })
-    },
-    getValue () {
-      getAffiliationValue().then((res) => {
+      this.$forceUpdate()
+      console.log(this.PaperList)
+    }, */
+    getValue (affiliationrId) {
+      getAffiliationValue(affiliationrId).then((res) => {
+        console.log('1111112')
+        console.log(res.data)
         this.aveArticleNum = res.data.aveArticleNum
         this.maxArticleNum = res.data.maxArticleNum
         this.aveCitationNum = res.data.aveCitationNum
         this.maxCitationNum = res.data.maxCitationNum
-        this.aveHIndex = res.data.aveHIndex
-        this.maxHIndex = res.data.maxHIndex
         this.aveAuthorNum = res.data.aveAuthorNum
         this.maxAuthorNum = res.data.maxAuthorNum
-        this.aveActiveness = res.data.aveActiveness
-        this.maxActiveness = res.data.maxActiveness
+        this.aveAffiliationCitationNum = res.data.aveAffiliationCitationNum
+        this.maxAffiliationCitationNum = res.data.maxAffiliationCitationNum
+        this.aveAffiliationArticleNum = res.data.aveAffiliationArticleNum
+        this.maxAffiliationArticleNum = res.data.maxAffiliationArticleNum
         this.makeChart()
       })
     },
@@ -685,7 +629,7 @@ export default {
               },
               {
                 text: 'H-Index',
-                max: this.maxHIndex,
+                max: this.maxAffiliationCitationNum,
                 min: 0
               },
               {
@@ -694,8 +638,8 @@ export default {
                 min: 0
               },
               {
-                text: 'Activeness',
-                max: this.maxActiveness,
+                text: 'AffiliationArticleNum',
+                max: this.maxAffiliationArticleNum,
                 min: 0
               }
             ]
@@ -708,10 +652,10 @@ export default {
             type: 'radar',
             data: [
               {
-                value: [this.AffPor.articleNum, this.AffPor.articleCitationNum, this.AffPor.hIndex.toFixed(2), this.AffPor.authorNum, this.AffPor.activeness.toFixed(2)],
+                value: [this.AffPor.articleNum, this.AffPor.articleCitationNum, this.AffPor.AffiliationCitationNum.toFixed(2), this.AffPor.authorNum, this.AffPor.AffiliationArticleNum.toFixed(2)],
                 name: 'Statistics'
               }, {
-                value: [this.aveArticleNum.toFixed(2), this.aveCitationNum.toFixed(2), this.aveHIndex.toFixed(2), this.aveAuthorNum.toFixed(2), this.aveActiveness.toFixed(2)],
+                value: [this.aveArticleNum.toFixed(2), this.aveCitationNum.toFixed(2), this.aveAffiliationCitationNum.toFixed(2), this.aveAuthorNum.toFixed(2), this.aveAffiliationArticleNum.toFixed(2)],
                 name: 'avg'
               }
             ]
@@ -751,13 +695,6 @@ export default {
     redoHightLight () {
       document.getElementById('OASIS').style.fontSize = '70px'
     }
-  },
-  mounted () {
-    // let id = this.$route.query.affiliationId
-    // this.AffPor.affiliationrId = id
-    // this.getAffiliationContent()
-    // this.getPapers()
-    // this.$store.dispatch('flushFun')
   }
 }
 </script>
@@ -806,21 +743,5 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  .bg-purple2 {
-    background-color: rgba(255,255,255,0.8);
-  }
-  .grid-content2 {
-    min-height: 60px;
-  }
-  .avatar-dropdown {
-    display: flex;
-    align-content: center;
-    align-items: center;
-    justify-content: center;
-    justify-items: center;
-    height: 50px;
-    padding: 0;
-    font-size: 30px;
-  }
-</style>
 
+</style>

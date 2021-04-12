@@ -311,7 +311,7 @@
 
 <script>
 import {getCommonSearchResult, getAdvancedSearchResult} from '../../API/Home/HomePageAPIs'
-import {getAuthorPortrait} from '../../API/Portrait/AuthorPortraitAPIs'
+import {getAuthorPortrait, getAuthorMap, getAuthorValue, getAuthorPaper} from '../../API/Portrait/AuthorPortraitAPIs'
 
 export default {
 
@@ -385,12 +385,12 @@ export default {
       maxArticleNum: 0,
       aveCitationNum: 0,
       maxCitationNum: 0,
-      aveHIndex: 0,
-      maxHIndex: 0,
-      aveDiversityIndex: 0,
-      maxDiversityIndex: 0,
-      aveActiveness: 0,
-      maxActiveness: 0,
+      aveAuthorCitation: 0,
+      maxAuthorCitation: 0,
+      aveRelation: 0,
+      maxRelation: 0,
+      aveYearArticleNum: 0,
+      maxYearArticleNum: 0,
 
       AuPor: {
         // authorId: 1,
@@ -417,9 +417,9 @@ export default {
         // conferences: ['IEEE', 'IEEE'],
         // articleNum: 671,
         // articleCitationNum: 3,
-        // hIndex: 1,
-        // researchDiversityIndex: 1,
-        // activeness: 1
+        // AuthorCitation: 1,
+        // researchRelation: 1,
+        // YearArticleNum: 1
       },
       commonSearchTypeValue: '',
       paperNum: 1,
@@ -464,7 +464,7 @@ export default {
         authors: [{
           id: 1,
           name: 'zjh',
-          activeness: 1.0
+          YearArticleNum: 1.0
         }],
         affiliations: [{
           id: 1,
@@ -923,21 +923,21 @@ export default {
     getPapers () {
       getAuthorPaper(this.AuPor.authorId, 0).then((res) => {
         this.PaperList = res.data
-        this.getValue()
+        this.getValue(this.AuPor.authorId)
       })
     },
-    getValue () {
-      getAuthorValue().then((res) => {
+    getValue (authorId) {
+      getAuthorValue(authorId).then((res) => {
         this.aveArticleNum = res.data.aveArticleNum
         this.maxArticleNum = res.data.maxArticleNum
         this.aveCitationNum = res.data.aveCitationNum
         this.maxCitationNum = res.data.maxCitationNum
-        this.aveHIndex = res.data.aveHIndex
-        this.maxHIndex = res.data.maxHIndex
-        this.aveDiversityIndex = res.data.aveDiversityIndex
-        this.maxDiversityIndex = res.data.maxDiversityIndex
-        this.aveActiveness = res.data.aveActiveness
-        this.maxActiveness = res.data.maxActiveness
+        this.aveAuthorCitation = res.data.aveAuthorCitation
+        this.maxAuthorCitation = res.data.maxAuthorCitation
+        this.aveRelation = res.data.aveRelation
+        this.maxRelation = res.data.maxRelation
+        this.aveYearArticleNum = res.data.aveYearArticleNum
+        this.maxYearArticleNum = res.data.maxYearArticleNum
         this.makeChart()
       })
     },
@@ -990,17 +990,17 @@ export default {
               },
               {
                 text: 'H-Index',
-                max: this.maxHIndex,
+                max: this.maxAuthorCitation,
                 min: 0
               },
               {
                 text: 'Diversity Index',
-                max: this.maxDiversityIndex,
+                max: this.maxRelation,
                 min: 0
               },
               {
-                text: 'Activeness',
-                max: this.maxActiveness,
+                text: 'YearArticleNum',
+                max: this.maxYearArticleNum,
                 min: 0
               }
             ]
@@ -1013,10 +1013,10 @@ export default {
             type: 'radar',
             data: [
               {
-                value: [this.AuPor.articleNum, this.AuPor.articleCitationNum, this.AuPor.hIndex.toFixed(2), this.AuPor.researchDiversityIndex.toFixed(2), this.AuPor.activeness.toFixed(2)],
+                value: [this.AuPor.articleNum, this.AuPor.articleCitationNum, this.AuPor.AuthorCitation.toFixed(2), this.AuPor.researchRelation.toFixed(2), this.AuPor.YearArticleNum.toFixed(2)],
                 name: 'Statistics'
               }, {
-                value: [this.aveArticleNum.toFixed(2), this.aveCitationNum.toFixed(2), this.aveHIndex.toFixed(2), this.aveDiversityIndex.toFixed(2), this.aveActiveness.toFixed(2)],
+                value: [this.aveArticleNum.toFixed(2), this.aveCitationNum.toFixed(2), this.aveAuthorCitation.toFixed(2), this.aveRelation.toFixed(2), this.aveYearArticleNum.toFixed(2)],
                 name: 'avg'
               }
             ]
@@ -1098,11 +1098,8 @@ export default {
   mounted () {
     let id = this.$route.query.authorId
     this.AuPor.authorId = id
-
-    //this.loadTrend()
     this.getAuthorContent()
     this.getPapers()
-   // this.loadData()
     this.$store.dispatch('flushFun')
   }
 }

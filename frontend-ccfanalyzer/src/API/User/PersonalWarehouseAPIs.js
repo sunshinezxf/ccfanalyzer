@@ -16,3 +16,8 @@ export const PaperShare = (token, paperId, username) => {
 export const PaperUpdate = (token, params) => {
   return axios.post('/user/paperAlter?token=' + token + '&Private_paper=' + params).then(res => res.data)
 }
+
+// 获取私人文章
+export const PaperInfo = (token) => {
+  return axios.get('/warehouse/private/papers?token=' + token).then(res => res.data)
+}
