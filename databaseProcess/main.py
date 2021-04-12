@@ -290,8 +290,8 @@ def get_first_query_value(sql_cursor, query, value):
 if __name__ == '__main__':
 
     try:
-        connect = pymysql.connect(host='rm-bp1tq50q3oeippagpio.mysql.rds.aliyuncs.com', port=3306, user='admin_1',
-                                  passwd='''7j5Qp6v7dKESl9a41i8v''', db='ccfdb')
+        connect = pymysql.connect(host='localhost', port=3306, user='root',
+                                  passwd='''RV39LMgnYKvqpZuNW6R4''', db='ccfdb')
         cursor = connect.cursor()
         print('------------------ succeed to connect database ------------------')
 
@@ -299,23 +299,23 @@ if __name__ == '__main__':
         cursor.execute(select_all_author)
         authors = cursor.fetchall()
 
-        author_process(cursor, connect, authors)
-        print('------------------ succeed to connect author_process ------------------')
-
-        affiliation_process(cursor, connect)
-        print('------------------ succeed to connect affiliation_process ------------------')
-
-        meeting_process(cursor, connect)
-        print('------------------ succeed to connect meeting_process ------------------')
-
-        common_process(cursor, connect)
-        print('------------------ succeed to connect common_process ------------------')
-
-        author_radar_process(cursor, connect)
-        print('------------------ succeed to connect author_radar_process ------------------')
-
-        affiliation_radar_process(cursor, connect)
-        print('------------------ succeed to connect affiliation_radar_process ------------------')
+        # author_process(cursor, connect, authors)
+        # print('------------------ succeed to connect author_process ------------------')
+        # 
+        # affiliation_process(cursor, connect)
+        # print('------------------ succeed to connect affiliation_process ------------------')
+        # 
+        # meeting_process(cursor, connect)
+        # print('------------------ succeed to connect meeting_process ------------------')
+        # 
+        # common_process(cursor, connect)
+        # print('------------------ succeed to connect common_process ------------------')
+        # 
+        # author_radar_process(cursor, connect)
+        # print('------------------ succeed to connect author_radar_process ------------------')
+        # 
+        # affiliation_radar_process(cursor, connect)
+        # print('------------------ succeed to connect affiliation_radar_process ------------------')
 
         cursor.close()
         connect.close()

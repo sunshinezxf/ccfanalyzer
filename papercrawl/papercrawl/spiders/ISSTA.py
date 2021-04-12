@@ -2,7 +2,7 @@
 import re
 import scrapy
 
-from papercrawl.items import PaperItem, MeetingItem
+from papercrawl.items import PaperItem, MeetingItem, OmitMeetingItem
 
 
 class IsstaSpider(scrapy.Spider):
@@ -19,8 +19,8 @@ class IsstaSpider(scrapy.Spider):
         view_hrefs = response.xpath('//*[@class="entry editor toc"]/nav/ul/li[1]/div[1]/a/@href').getall()
         for view_href in view_hrefs:
             # 用return测试单个会议
-            # yield scrapy.Request(url=view_href, callback=self.view_parse)
-            return scrapy.Request(url=view_href, callback=self.view_parse)
+            yield scrapy.Request(url=view_href, callback=self.view_parse)
+            # return scrapy.Request(url=view_href, callback=self.view_parse)
 
     def view_parse(self, response):
 
@@ -34,7 +34,7 @@ class IsstaSpider(scrapy.Spider):
             # 用break测试单个文章
             yield scrapy.Request(url=paper_record_href[index], callback=self.paper_record_parse,
                                  cb_kwargs=dict(view_url=paper_view_href[index]))
-            # break
+        # break
 
     def meeting_parse(self, response):
         detail_meeting_info = response.xpath('//*[@id="bibtex-section"]/pre/text()').get()
@@ -44,25 +44,118 @@ class IsstaSpider(scrapy.Spider):
         text = '{' + text[2]
         text = re.sub(r'\s+', ' ', text)
 
-        match = re.match(
-            r'{ editor = {(.*?)}, title = {(.*?)}, publisher = {(.*?)}, year = {(.*?)}, url = {(.*?)}, doi = {(.*?)}, '
-            r'isbn = {(.*?)}, timestamp = {(.*?)}, biburl = {(.*?)}, bibsource = {(.*?)} }', text)
-
         meeting = MeetingItem()
-        meeting['editor'] = match.group(1)
-        meeting['title'] = match.group(2)
-        meeting['publisher'] = match.group(3)
-        meeting['year'] = match.group(4)
-        meeting['url'] = match.group(5)
-        meeting['doi'] = match.group(6)
-        meeting['isbn'] = match.group(7)
-        meeting['timestamp'] = match.group(8)
-        meeting['bib_url'] = match.group(9)
-        meeting['bib_source'] = match.group(10)
+        match = re.match(r'.*?editor = {(.*?)}.*?', text)
+        if match is not None:
+            meeting['editor'] = match.group(1)
+        else:
+            meeting['editor'] = ''
 
-        self.meeting_count = self.meeting_count + 1
-        self.logger.info('crawl ' + str(self.meeting_count) + ' meetings')
+        match = re.match(r'.*?title = {(.*?)}.*?', text)
+        if match is not None:
+            meeting['title'] = match.group(1)
+        else:
+            meeting['title'] = ''
+
+        match = re.match(r'.*?publisher = {(.*?)}.*?', text)
+        if match is not None:
+            meeting['publisher'] = match.group(1)
+        else:
+            meeting['publisher'] = ''
+
+        match = re.match(r'.*?year = {(.*?)}.*?', text)
+        if match is not None:
+            meeting['year'] = match.group(1)
+        else:
+            meeting['year'] = ''
+
+        match = re.match(r'.*?url = {(.*?)}.*?', text)
+        if match is not None:
+            meeting['url'] = match.group(1)
+
+        else:
+            meeting['url'] = ''
+
+        match = re.match(r'.*?doi = {(.*?)}.*?', text)
+        if match is not None:
+            meeting['doi'] = match.group(1)
+
+        else:
+            meeting['doi'] = ''
+
+        match = re.match(r'.*?isbn = {(.*?)}.*?', text)
+        if match is not None:
+            meeting['isbn'] = match.group(1)
+        else:
+            meeting['isbn'] = ''
+
+        match = re.match(r'.*?timestamp = {(.*?)}.*?', text)
+        if match is not None:
+            meeting['timestamp'] = match.group(1)
+        else:
+            meeting['timestamp'] = ''
+
+        match = re.match(r'.*?biburl = {(.*?)}.*?', text)
+        if match is not None:
+            meeting['bib_url'] = match.group(1)
+        else:
+            meeting['bib_url'] = ''
+
+        match = re.match(r'.*?bibsource = {(.*?)}.*?', text)
+        if match is not None:
+            meeting['bib_source'] = match.group(1)
+
+        else:
+            meeting['bib_source'] = ''
+
         return meeting
+
+        # match = re.match(
+        #     r'{ editor = {(.*?)}, title = {(.*?)}, publisher = {(.*?)}, year = {(.*?)}, url = {(.*?)}, doi = {(.*?)}, '
+        #     r'isbn = {(.*?)}, timestamp = {(.*?)}, biburl = {(.*?)}, bibsource = {(.*?)} }',
+        #     text)
+        # if match is None:
+        #
+        #     match = re.match(
+        #         r'{ editor = {(.*?)}, title = {(.*?)}, publisher = {(.*?)}, year = {(.*?)}, isbn = {(.*?)}, '
+        #         'timestamp = {(.*?)}, biburl = {(.*?)}, bibsource = {(.*?)} }',
+        #         text)
+        #
+        #     if match is None:
+        #
+        #         match = re.match(
+        #             r'{ editor = {(.*?)}, title = {(.*?)}, series = {(.*?)}, volume = {(.*?)}, year = {(.*?)}, '
+        #             'url = {(.*?)}, doi = {(.*?)}, timestamp = {(.*?), biburl = {(.*?)}, bibsource = {(.*?)}} }',
+        #             text)
+        #
+        #     else:
+        #         meeting = OmitMeetingItem()
+        #         meeting['editor'] = match.group(1)
+        #         meeting['title'] = match.group(2)
+        #         meeting['publisher'] = match.group(3)
+        #         meeting['year'] = match.group(4)
+        #         meeting['isbn'] = match.group(5)
+        #         meeting['timestamp'] = match.group(6)
+        #         meeting['bib_url'] = match.group(7)
+        #         meeting['bib_source'] = match.group(8)
+        #
+        # else:
+        #
+        #     meeting = MeetingItem()
+        #     meeting['editor'] = match.group(1)
+        #     meeting['title'] = match.group(2)
+        #     meeting['publisher'] = match.group(3)
+        #     meeting['year'] = match.group(4)
+        #     meeting['url'] = match.group(5)
+        #     meeting['doi'] = match.group(6)
+        #     meeting['isbn'] = match.group(7)
+        #     meeting['timestamp'] = match.group(8)
+        #     meeting['bib_url'] = match.group(9)
+        #     meeting['bib_source'] = match.group(10)
+        #
+        # self.meeting_count = self.meeting_count + 1
+        # self.logger.info('crawl ' + str(self.meeting_count) + ' meetings')
+        # return meeting
 
     def paper_record_parse(self, response, view_url):
         detail_paper_info = response.xpath('//*[@id="bibtex-section"]/pre/text()').get()
@@ -71,23 +164,90 @@ class IsstaSpider(scrapy.Spider):
         text = '{' + text[2]
         text = re.sub(r'\s+', ' ', text)
 
-        match = re.match(
-            r'{ author = {(.*?)}, editor = {(.*?)}, title = {(.*?)}, booktitle = {(.*?)}, pages = {(.*?)}, '
-            r'publisher = {(.*?)}, year = {(.*?)}, url = {(.*?)}, doi = {(.*?)}, timestamp = {(.*?)}, '
-            r'biburl = {(.*?)}, bibsource = {(.*?)} }', text)
-
         paper = PaperItem()
-        paper['editor'] = match.group(2)
-        paper['title'] = match.group(3)
-        paper['book_title'] = match.group(4)
-        paper['pages'] = match.group(5)
-        paper['publisher'] = match.group(6)
-        paper['year'] = match.group(7)
-        paper['url'] = match.group(8)
-        paper['doi'] = match.group(9)
-        paper['timestamp'] = match.group(10)
-        paper['bib_url'] = match.group(11)
-        paper['bib_source'] = match.group(12)
+
+        match = re.match(r'.*?title = {(.*?)}.*?', text)
+        if match is not None:
+            paper['title'] = match.group(1)
+
+        else:
+            paper['title'] = ''
+
+        match = re.match(r'.*?booktitle = {(.*?)}.*?', text)
+        if match is not None:
+            paper['book_title'] = match.group(1)
+
+        else:
+            paper['book_title'] = ''
+
+        match = re.match(r'.*?pages = {(.*?)}.*?', text)
+        if match is not None:
+            paper['pages'] = match.group(1)
+
+        else:
+            paper['pages'] = ''
+
+        match = re.match(r'.*?publisher = {(.*?)}.*?', text)
+        if match is not None:
+            paper['publisher'] = match.group(1)
+
+        else:
+            paper['publisher'] = ''
+
+        match = re.match(r'.*?year = {(.*?)}.*?', text)
+        if match is not None:
+            paper['year'] = match.group(1)
+
+        else:
+            paper['year'] = ''
+
+        match = re.match(r'.*?url = {(.*?)}.*?', text)
+        if match is not None:
+            paper['url'] = match.group(1)
+
+        else:
+            paper['url'] = ''
+
+        match = re.match(r'.*?doi = {(.*?)}.*?', text)
+        if match is not None:
+            paper['doi'] = match.group(1)
+
+        else:
+            paper['doi'] = ''
+
+        match = re.match(r'.*?timestamp = {(.*?)}.*?', text)
+        if match is not None:
+            paper['timestamp'] = match.group(1)
+
+        else:
+            paper['timestamp'] = ''
+
+        match = re.match(r'.*?biburl = {(.*?)}.*?', text)
+        if match is not None:
+            paper['bib_url'] = match.group(1)
+
+        else:
+            paper['bib_url'] = ''
+
+        match = re.match(r'.*?bibsource = {(.*?)}.*?', text)
+        if match is not None:
+            paper['bib_source'] = match.group(1)
+
+        else:
+            paper['bib_source'] = ''
+
+        # paper = PaperItem()
+        # paper['editor'] = match.group(2)
+        # paper['title'] = match.group(3)
+        # paper['book_title'] = match.group(4)
+        # paper['pages'] = match.group(5)
+        # paper['publisher'] = match.group(6)
+        # paper['year'] = match.group(7)
+        # paper['url'] = match.group(8)
+        # paper['doi'] = match.group(9)
+        # paper['timestamp'] = match.group(10)
+        # paper['bib_url'] = match.group(11)
+        # paper['bib_source'] = match.group(12)
 
         return scrapy.Request(url=view_url, callback=self.paper_view_parse, cb_kwargs=dict(paper_item=paper))
 
