@@ -69,7 +69,7 @@
 <script>
 import {getAdvancedSearchResult, getCommonSearchResult} from '../../API/Home/HomePageAPIs'
 import {Login} from '../../API/User/LoginAPIs'
-
+import Qs from 'qs'
 export default {
   name: 'Login',
   data () {
@@ -231,14 +231,7 @@ export default {
           center: true
         })
       } else {
-        console.log(ruleForm.username)
-        console.log(ruleForm.password)
-        Login(
-          {
-            username: ruleForm.username,
-            password: ruleForm.password
-          }
-        ).then((res) => {
+        Login(Qs.stringify(ruleForm)).then((res) => {
           console.log(res)
           if (res.content !== '用户名或者密码错误') {
             localStorage.setItem('Flag', 'isLogin')

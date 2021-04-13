@@ -236,6 +236,7 @@ export default {
     },
     getCollections (userID) {
       getCollections(userID).then((res) => {
+        console.log(res)
         this.PaperList = res.content.paperBriefInfoVOList
         this.paperNum = res.content.totalNum
       })

@@ -927,17 +927,19 @@ export default {
       })
     },
     getValue (authorId) {
+      console.log(authorId)
       getAuthorValue(authorId).then((res) => {
-        this.aveArticleNum = res.data.aveArticleNum
-        this.maxArticleNum = res.data.maxArticleNum
-        this.aveCitationNum = res.data.aveCitationNum
-        this.maxCitationNum = res.data.maxCitationNum
-        this.aveAuthorCitation = res.data.aveAuthorCitation
-        this.maxAuthorCitation = res.data.maxAuthorCitation
-        this.aveRelation = res.data.aveRelation
-        this.maxRelation = res.data.maxRelation
-        this.aveYearArticleNum = res.data.aveYearArticleNum
-        this.maxYearArticleNum = res.data.maxYearArticleNum
+        console.log(res)
+        this.aveArticleNum = res.content.aveArticleNum
+        this.maxArticleNum = res.content.maxArticleNum
+        this.aveCitationNum = res.content.aveCitationNum
+        this.maxCitationNum = res.content.maxCitationNum
+        this.aveAuthorCitation = res.content.aveAuthorCitation
+        this.maxAuthorCitation = res.content.maxAuthorCitation
+        this.aveRelation = res.content.aveRelation
+        this.maxRelation = res.content.maxRelation
+        this.aveYearArticleNum = res.content.aveYearArticleNum
+        this.maxYearArticleNum = res.content.maxYearArticleNum
         this.makeChart()
       })
     },
@@ -1013,10 +1015,10 @@ export default {
             type: 'radar',
             data: [
               {
-                value: [this.AuPor.articleNum, this.AuPor.articleCitationNum, this.AuPor.AuthorCitation.toFixed(2), this.AuPor.researchRelation.toFixed(2), this.AuPor.YearArticleNum.toFixed(2)],
+                value: [this.AuPor.articleNum, this.AuPor.articleCitationNum, this.AuPor.AuthorCitation, this.AuPor.researchRelation, this.AuPor.YearArticleNum],
                 name: 'Statistics'
               }, {
-                value: [this.aveArticleNum.toFixed(2), this.aveCitationNum.toFixed(2), this.aveAuthorCitation.toFixed(2), this.aveRelation.toFixed(2), this.aveYearArticleNum.toFixed(2)],
+                value: [this.aveArticleNum, this.aveCitationNum, this.aveAuthorCitation, this.aveRelation, this.aveYearArticleNum],
                 name: 'avg'
               }
             ]

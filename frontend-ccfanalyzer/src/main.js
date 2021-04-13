@@ -13,10 +13,13 @@ import locale from 'element-ui/lib/locale/lang/en'
 import 'view-design/dist/styles/iview.css'
 import VueRouter from 'vue-router'
 import router from './router'
+import * as echarts from 'echarts'
 
+import axios from 'axios'
+axios.defaults.withCredentials = true
 
 Vue.config.productionTip = false
-
+Vue.prototype.$echarts = echarts
 const routerPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push (location) {
   return routerPush.call(this, location).catch(error => error)

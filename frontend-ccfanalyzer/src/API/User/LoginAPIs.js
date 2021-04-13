@@ -1,8 +1,8 @@
 import axios from 'axios'
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
 axios.defaults.baseURL = 'http://47.97.228.185:8080'
-
+axios.defaults.withCredentials = true
 // 用户登录
-export const Login = (params) => {
-  return axios.post('/user/login', params).then(res => res.data)
+export const Login = (userForm) => {
+  return axios.post('/user/login', userForm).then(res => res.data)
 }
