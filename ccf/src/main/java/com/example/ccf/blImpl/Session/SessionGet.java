@@ -33,6 +33,7 @@ public class SessionGet implements SessionBIService{
     public UserVO get_user(String token){
         HttpServletRequest httpServletRequest=getRequest();
         HttpSession session=httpServletRequest.getSession();
+//        System.out.println(session.getId());
         UserVO userForm=(UserVO) session.getAttribute(token);
         return userForm;
 

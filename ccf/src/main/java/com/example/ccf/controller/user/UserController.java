@@ -20,6 +20,7 @@ public class UserController {
            return ResponseVO.buildSuccess("用户名或者密码错误");
        }
        else{
+//           System.out.println(session.getId());
            String token=userVO.getPassword();
            session.setAttribute(token,userVO);
            session.setMaxInactiveInterval(1800);//session过期时间半小时
