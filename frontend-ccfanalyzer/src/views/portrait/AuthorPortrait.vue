@@ -233,7 +233,7 @@
 
               <el-card style=" margin-right: 45px;height: 100%">
                 <div style="margin-left: 2%;margin-left: 2%">
-                  <el-link style="font-size: 27px;color: black" @click="getContent(item.id)"><strong>{{item.name}}</strong></el-link><br>
+                  <el-link style="font-size: 27px;color: black" @click="getContent(item.paperId)"><strong>{{item.title}}</strong></el-link><br>
                   <el-row >
               <span  style="font-size: 17px;color: dimgray">
                 <el-col span="2">
@@ -241,10 +241,10 @@
                 </el-col>
                 <el-col span="22">
                   <span class="affcon">
-                <span  class="divider" v-if="item.affiliations.length==0">None</span>
-              <span  v-for="(aff,index) in item.affiliations" :key="index">
+                <span  class="divider" v-if="item.authors.length==0">None</span>
+              <span  v-for="(aff,index) in item.authors" :key="index">
                 <span role="separator" class="divider" v-if="index != 0">,</span>
-                <el-link style="font-size: 17px;color: cornflowerblue;font-style:italic"  :key='aff' @click="searchAffiliationPor(aff.id)">{{aff.name}}</el-link></span>
+                <el-link style="font-size: 17px;color: cornflowerblue;font-style:italic"  :key='aff' @click="searchAffiliationPor(aff.affiliations[0].id)">{{aff.affiliations[0].name}}</el-link></span>
               </span></el-col>
               </span>
                   </el-row>
@@ -262,7 +262,7 @@
               </span></span></el-col>
               </span>
                   </el-row>
-                  <span class="sum" style="font-size: 15px;color: dimgray;margin-top: 5px;margin-bottom: 5px" v-if="item.summary" >{{item.summary}}</span>
+                  <span class="sum" style="font-size: 15px;color: dimgray;margin-top: 5px;margin-bottom: 5px" v-if="item.abstract" >{{item.abstract}}</span>
                   <el-row>
               <span  style="font-size: 17px;color: dimgray">
                 <el-col :span="2">
@@ -464,14 +464,13 @@ export default {
         authors: [{
           id: 1,
           name: 'zjh',
-          YearArticleNum: 1.0
-        }],
-        affiliations: [{
-          id: 1,
-          name: 'NJU'
+          affiliations: [{
+            id: 1,
+            name: 'NJU'
+          }]
         }],
         publication: 'IEEE',
-        summary: 'Learning Models and the Learning Cycle Learning Differences and Learning Styles The Role of the Learning Environment Background to Learning Styles Assessment of Learning Styles Learning Styles Learning and Teaching The Inclusive School Characteristics and Challenges Learning Styles in the Inclusive Context Promoting Effective Learning Learning Styles Strategies and Insights',
+        abstract: 'Learning Models and the Learning Cycle Learning Differences and Learning Styles The Role of the Learning Environment Background to Learning Styles Assessment of Learning Styles Learning Styles Learning and Teaching The Inclusive School Characteristics and Challenges Learning Styles in the Inclusive Context Promoting Effective Learning Learning Styles Strategies and Insights',
         keywords: ['Educational technology'],
         citationCnt: 0
       }],
@@ -544,29 +543,23 @@ export default {
   },
   methods: {
     loadChartData () {
+      console.log('11111111')
       var nodes = []
       var links = []
       this.loading_chart = true
       getAuthorMap(this.AuPor.authorId).then(res => {
-        if (res.status.code === '0000') {
-          nodes = res.data.authors
-          links = res.data.connections
-          for (var i = 0; i < nodes.length; i++) {
-            nodes[i].symbolSize = nodes[i].value - 40 > 0 ? nodes[i].value - 40 : 20
-            nodes[i].category = i % (this.categories.length)
-            nodes[i].label = {
-              show: nodes[i].symbolSize > 0
-            }
+        console.log(res)
+        nodes = res.content.authors
+        links = res.content.connections
+        for (var i = 0; i < nodes.length; i++) {
+          nodes[i].symbolSize = nodes[i].value - 40 > 0 ? nodes[i].value - 40 : 20
+          nodes[i].category = i % (this.categories.length)
+          nodes[i].label = {
+            show: nodes[i].symbolSize > 0
           }
-          this.drawChart(nodes, links)
-          this.loading_chart = false
-        } else {
-          this.$message.error({
-            message: res.status.msg,
-            center: true
-          })
-          this.loading_chart = false
         }
+        this.drawChart(nodes, links)
+        this.loading_chart = false
       }).catch(error => {
         console.log(error)
         this.loading_chart = false
@@ -902,14 +895,13 @@ export default {
     handleCurrentChange (val) {
       this.page = val - 1
       getAuthorPaper(this.AuPor.authorId, this.page).then((res) => {
-        this.PaperList = res.data
+        this.PaperList = res.content
       })
       document.querySelector('#link').scrollIntoView(true)
     },
     drawPie () {
     },
     getAuthorContent () {
-      console.log(this.AuPor.authorId)
       getAuthorPortrait(this.AuPor.authorId).then((res) => {
         this.AuPor = res.content
 
@@ -922,14 +914,13 @@ export default {
     },
     getPapers () {
       getAuthorPaper(this.AuPor.authorId, 0).then((res) => {
-        this.PaperList = res.data
+        this.PaperList = res.content
+        console.log(this.PaperList[0].authors[0].affiliations[0].name)
         this.getValue(this.AuPor.authorId)
       })
     },
     getValue (authorId) {
-      console.log(authorId)
       getAuthorValue(authorId).then((res) => {
-        console.log(res)
         this.aveArticleNum = res.content.aveArticleNum
         this.maxArticleNum = res.content.maxArticleNum
         this.aveCitationNum = res.content.aveCitationNum
@@ -991,12 +982,12 @@ export default {
                 min: 0
               },
               {
-                text: 'H-Index',
+                text: 'AuthorCitation',
                 max: this.maxAuthorCitation,
                 min: 0
               },
               {
-                text: 'Diversity Index',
+                text: 'Relation',
                 max: this.maxRelation,
                 min: 0
               },
@@ -1102,6 +1093,7 @@ export default {
     this.AuPor.authorId = id
     this.getAuthorContent()
     this.getPapers()
+    this.loadChartData()
     this.$store.dispatch('flushFun')
   }
 }

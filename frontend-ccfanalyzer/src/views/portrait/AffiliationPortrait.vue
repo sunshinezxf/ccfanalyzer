@@ -100,20 +100,20 @@
               </el-row>
             </el-card>
             <br>
-            <h1 style="margin-left: 3%;color:black;">Popular Papers({{paperNum}})</h1>
+            <h1 style="margin-left: 3%;color:black;">Popular Papers</h1>
             <br>
 
             <div class="col-md-2 text-center" v-for="item in PaperList" :key="item.title" v-if="showData">
               <el-card style=" height: 100%">
                 <div style="margin-left: 2%;margin-left: 2%">
-                  <el-link style="font-size: 27px;color: black" @click="getContent(item.id)"><strong>{{item.title}}</strong></el-link><br>
+                  <el-link style="font-size: 27px;color: black" @click="getContent(item.paperId)"><strong>{{item.title}}</strong></el-link><br>
                   <el-row>
               <span class="affcon" style="font-size: 17px;color: dimgray">
                 Affiliations:&nbsp;&nbsp;&nbsp;
-                <span  class="divider" v-if="item.affiliations.length==0">None</span>
-              <span  v-for="(aff,index) in item.affiliations" :key="index">
+                <span  class="divider" v-if="item.authors.length==0">None</span>
+              <span  v-for="(aff,index) in item.authors" :key="index">
                 <span role="separator" class="divider" v-if="index != 0">,</span>
-                <el-link style="font-size: 17px;color: cornflowerblue;font-style:italic"  :key='aff' @click="searchAffiliationPor(aff.id)">{{aff.name}}</el-link>
+                <el-link style="font-size: 17px;color: cornflowerblue;font-style:italic"  :key='aff' @click="searchAffiliationPor(aff.affiliations[0].id)">{{aff.affiliations[0].name}}</el-link>
               </span>
               </span>
                   </el-row>
@@ -301,7 +301,6 @@ export default {
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover'
       },
-
       PaperList: [{
         id: 2,
         name: 'a',
@@ -310,11 +309,10 @@ export default {
         authors: [{
           id: 1,
           name: 'zjh',
-          AffiliationArticleNum: 1.0
-        }],
-        affiliations: [{
-          id: 1,
-          name: 'NJU'
+          affiliations: [{
+            id: 1,
+            name: 'NJU'
+          }]
         }],
         publication: 'IEEE',
         abstract: 'Learning Models and the Learning Cycle Learning Differences and Learning Styles The Role of the Learning Environment Background to Learning Styles Assessment of Learning Styles Learning Styles Learning and Teaching The Inclusive School Characteristics and Challenges Learning Styles in the Inclusive Context Promoting Effective Learning Learning Styles Strategies and Insights',
@@ -331,17 +329,11 @@ export default {
     }
   },
   mounted () {
-    var _this = this
     let id = this.$route.query.affiliationId
     this.AffPor.affiliationrId = id
     this.getAffiliationContent()
-    getAffiliationPaper(this.AffPor.affiliationrId, 0).then((res) => {
-      _this.PaperList = JSON.parse(JSON.stringify(res.content))
-      _this.loading_chart = false
-      _this.showData = true
-    })
-    console.log(this.loading_chart)
-    // this.getPapers()
+    this.getValue(id)
+    this.getPapers()
     this.$store.dispatch('flushFun')
   },
   methods: {
@@ -539,7 +531,7 @@ export default {
     drawPie () {
     },
     getAffiliationContent () {
-      this.loading_chart = true
+      this.loading_chart = false
       getAffiliationPortrait(this.AffPor.affiliationrId).then((res) => {
         this.AffPor = res.content
         if (this.AffPor.articleNum > 20) {
@@ -547,35 +539,32 @@ export default {
         } else {
           this.paperNum = this.AffPor.articleNum
         }
-        this.getValue(this.AffPor.affiliationrId)
       })
-      console.log(this.AffPor)
     },
-    /* getPapers () {
+    getPapers () {
       getAffiliationPaper(this.AffPor.affiliationrId, 0).then((res) => {
         this.PaperList = JSON.parse(JSON.stringify(res.content))
-        console.log(this.PaperList)
         this.loading_chart = false
         this.showData = true
         this.$forceUpdate()
       })
       this.$forceUpdate()
-      console.log(this.PaperList)
-    }, */
-    getValue (affiliationrId) {
-      getAffiliationValue(affiliationrId).then((res) => {
+    },
+    getValue (affiliationId) {
+      console.log('1111111')
+      getAffiliationValue(affiliationId).then((res) => {
         console.log('1111112')
-        console.log(res.data)
-        this.aveArticleNum = res.data.aveArticleNum
-        this.maxArticleNum = res.data.maxArticleNum
-        this.aveCitationNum = res.data.aveCitationNum
-        this.maxCitationNum = res.data.maxCitationNum
-        this.aveAuthorNum = res.data.aveAuthorNum
-        this.maxAuthorNum = res.data.maxAuthorNum
-        this.aveAffiliationCitationNum = res.data.aveAffiliationCitationNum
-        this.maxAffiliationCitationNum = res.data.maxAffiliationCitationNum
-        this.aveAffiliationArticleNum = res.data.aveAffiliationArticleNum
-        this.maxAffiliationArticleNum = res.data.maxAffiliationArticleNum
+        console.log(res.content.aveArticleNum)
+        this.aveArticleNum = res.content.aveArticleNum
+        this.maxArticleNum = res.content.maxArticleNum
+        this.aveCitationNum = res.content.aveCitationNum
+        this.maxCitationNum = res.content.maxCitationNum
+        this.aveAuthorNum = res.content.aveAuthorNum
+        this.maxAuthorNum = res.content.maxAuthorNum
+        this.aveAffiliationCitationNum = res.content.aveAffiliationCitationNum
+        this.maxAffiliationCitationNum = res.content.maxAffiliationCitationNum
+        this.aveAffiliationArticleNum = res.content.aveAffiliationArticleNum
+        this.maxAffiliationArticleNum = res.content.maxAffiliationArticleNum
         this.makeChart()
       })
     },
@@ -628,7 +617,7 @@ export default {
                 min: 0
               },
               {
-                text: 'H-Index',
+                text: 'AffiliationCitationNum',
                 max: this.maxAffiliationCitationNum,
                 min: 0
               },

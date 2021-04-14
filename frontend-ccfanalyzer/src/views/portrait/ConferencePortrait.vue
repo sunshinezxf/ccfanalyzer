@@ -539,6 +539,7 @@ export default {
     getConferenceContent () {
       this.loading_chart = false
       getConferencePortrait(this.ConferencePor.name).then((res) => {
+        console.log(res)
         this.ConferencePor = res.data
         if (this.ConferencePor.articleNum > 20) {
           this.paperNum = 20
