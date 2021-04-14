@@ -25,9 +25,7 @@ class PapercrawlPipeline(object):
             self.paper_insert(item)
         elif isinstance(item, MeetingItem):
             self.meeting_insert(item)
-        elif isinstance(item, OmitMeetingItem):
-            self.omit_meeting_insert(item)
-        pass
+        # pass
 
     def paper_insert(self, paper):
 
@@ -104,45 +102,45 @@ class PapercrawlPipeline(object):
             print('------------------------------------ paper insert failed ------------------------------------')
             print(e)
 
-            for i in range(0, len(authors)):
-                try:
-                    self.cursor.execute(query_author, authors[i])
-                    author_query = self.cursor.fetchone()
+        for i in range(0, len(authors)):
+            try:
+                self.cursor.execute(query_author, authors[i])
+                author_query = self.cursor.fetchone()
 
-                    if author_query is not None:
-                        author_id = author_query[0]
+                if author_query is not None:
+                    author_id = author_query[0]
+
+                else:
+                    self.cursor.execute(insert_author, authors[i])
+                    author_id = self.cursor.lastrowid
+
+                author_ids.append(author_id)
+                self.cursor.execute(insert_author_paper_relation, (paper_id, author_id))
+
+            except Exception as e:
+                print('------------------------- author insert failed ------------------------')
+                print(e)
+
+            affiliations = author_affiliations[i].split(' / ')
+            for affiliation in affiliations:
+                try:
+                    new_affiliation = affiliation.replace('，', ',')
+                    self.cursor.execute(query_affiliation, new_affiliation)
+                    affiliation_query = self.cursor.fetchone()
+
+                    if affiliation_query is not None:
+                        affiliation_id = affiliation_query[0]
 
                     else:
-                        self.cursor.execute(insert_author, authors[i])
-                        author_id = self.cursor.lastrowid
+                        self.cursor.execute(insert_affiliation, new_affiliation)
+                        affiliation_id = self.cursor.lastrowid
 
-                    author_ids.append(author_id)
-                    self.cursor.execute(insert_author_paper_relation, (paper_id, author_id))
+                    self.cursor.execute(insert_affiliation_relation, (author_id, affiliation_id))
+                    self.connect.commit()
 
                 except Exception as e:
-                    print('------------------------- author insert failed ------------------------')
+                    print('------------------------- affiliation insert failed ------------------------')
                     print(e)
-
-                affiliations = author_affiliations[i].split(' / ')
-                for affiliation in affiliations:
-                    try:
-                        new_affiliation = affiliation.replace('，', ',')
-                        self.cursor.execute(query_affiliation, new_affiliation)
-                        affiliation_query = self.cursor.fetchone()
-
-                        if affiliation_query is not None:
-                            affiliation_id = affiliation_query[0]
-
-                        else:
-                            self.cursor.execute(insert_affiliation, new_affiliation)
-                            affiliation_id = self.cursor.lastrowid
-
-                        self.cursor.execute(insert_affiliation_relation, (author_id, affiliation_id))
-                    except Exception as e:
-                        print('------------------------- affiliation insert failed ------------------------')
-                        print(e)
-
-            self.connect.commit()
 
         try:
             for keyword in keywords:

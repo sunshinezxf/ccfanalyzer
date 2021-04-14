@@ -14,7 +14,15 @@ BOT_NAME = 'papercrawl'
 SPIDER_MODULES = ['papercrawl.spiders']
 NEWSPIDER_MODULE = 'papercrawl.spiders'
 
-
+# PROXIES = [[
+#     '49.75.59.242:3128',
+#     '116.17.102.215:3128',
+#     '114.238.151.103:9999',
+#     '59.37.18.243:3128',
+#     '111.56.101.65:3128',
+#     '183.213.26.12:3128',
+#     '49.89.67.7:9999'
+# ]]
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)' \
              ' Chrome/89.0.4389.114 Safari/537.36 Edg/89.0.774.75'
@@ -23,7 +31,7 @@ USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 ROBOTSTXT_OBEY = True
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-CONCURRENT_REQUESTS = 8
+CONCURRENT_REQUESTS = 2
 
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
