@@ -43,21 +43,69 @@ class FseSpider(scrapy.Spider):
         text = '{' + text[2]
         text = re.sub(r'\s+', ' ', text)
 
-        match = re.match(
-            r'{ editor = {(.*?)}, title = {(.*?)}, publisher = {(.*?)}, year = {(.*?)}, url = {(.*?)}, doi = {(.*?)}, '
-            r'isbn = {(.*?)}, timestamp = {(.*?)}, biburl = {(.*?)}, bibsource = {(.*?)} }', text)
-
         meeting = MeetingItem()
-        meeting['editor'] = match.group(1)
-        meeting['title'] = match.group(2)
-        meeting['publisher'] = match.group(3)
-        meeting['year'] = match.group(4)
-        meeting['url'] = match.group(5)
-        meeting['doi'] = match.group(6)
-        meeting['isbn'] = match.group(7)
-        meeting['timestamp'] = match.group(8)
-        meeting['bib_url'] = match.group(9)
-        meeting['bib_source'] = match.group(10)
+        match = re.match(r'.*?editor = {(.*?)},.*?', text)
+        if match is not None:
+            meeting['editor'] = match.group(1)
+        else:
+            meeting['editor'] = ''
+
+        match = re.match(r'.*?title = {(.*?)},.*?', text)
+        if match is not None:
+            meeting['title'] = match.group(1)
+        else:
+            meeting['title'] = ''
+
+        match = re.match(r'.*?publisher = {(.*?)},.*?', text)
+        if match is not None:
+            meeting['publisher'] = match.group(1)
+        else:
+            meeting['publisher'] = ''
+
+        match = re.match(r'.*?year = {(.*?)},.*?', text)
+        if match is not None:
+            meeting['year'] = match.group(1)
+        else:
+            meeting['year'] = ''
+
+        match = re.match(r'.*?url = {(.*?)},.*?', text)
+        if match is not None:
+            meeting['url'] = match.group(1)
+
+        else:
+            meeting['url'] = ''
+
+        match = re.match(r'.*?doi = {(.*?)}.*?', text)
+        if match is not None:
+            meeting['doi'] = match.group(1)
+
+        else:
+            meeting['doi'] = ''
+
+        match = re.match(r'.*?isbn = {(.*?)},.*?', text)
+        if match is not None:
+            meeting['isbn'] = match.group(1)
+        else:
+            meeting['isbn'] = ''
+
+        match = re.match(r'.*?timestamp = {(.*?)},.*?', text)
+        if match is not None:
+            meeting['timestamp'] = match.group(1)
+        else:
+            meeting['timestamp'] = ''
+
+        match = re.match(r'.*?biburl = {(.*?)},.*?', text)
+        if match is not None:
+            meeting['bib_url'] = match.group(1)
+        else:
+            meeting['bib_url'] = ''
+
+        match = re.match(r'.*?bibsource = {(.*?)}.*?', text)
+        if match is not None:
+            meeting['bib_source'] = match.group(1)
+
+        else:
+            meeting['bib_source'] = ''
 
         self.meeting_count = self.meeting_count + 1
         self.logger.info('crawl ' + str(self.meeting_count) + ' meetings')
@@ -70,23 +118,77 @@ class FseSpider(scrapy.Spider):
         text = '{' + text[2]
         text = re.sub(r'\s+', ' ', text)
 
-        match = re.match(
-            r'{ author = {(.*?)}, editor = {(.*?)}, title = {(.*?)}, booktitle = {(.*?)}, pages = {(.*?)}, '
-            r'publisher = {(.*?)}, year = {(.*?)}, url = {(.*?)}, doi = {(.*?)}, timestamp = {(.*?)}, '
-            r'biburl = {(.*?)}, bibsource = {(.*?)} }', text)
-
         paper = PaperItem()
-        paper['editor'] = match.group(2)
-        paper['title'] = match.group(3)
-        paper['book_title'] = match.group(4)
-        paper['pages'] = match.group(5)
-        paper['publisher'] = match.group(6)
-        paper['year'] = match.group(7)
-        paper['url'] = match.group(8)
-        paper['doi'] = match.group(9)
-        paper['timestamp'] = match.group(10)
-        paper['bib_url'] = match.group(11)
-        paper['bib_source'] = match.group(12)
+
+        match = re.match(r'.*?title = {(.*?)},.*?', text)
+        if match is not None:
+            paper['title'] = match.group(1)
+
+        else:
+            paper['title'] = ''
+
+        match = re.match(r'.*?booktitle = {(.*?)},.*?', text)
+        if match is not None:
+            paper['book_title'] = match.group(1)
+
+        else:
+            paper['book_title'] = ''
+
+        match = re.match(r'.*?pages = {(.*?)},.*?', text)
+        if match is not None:
+            paper['pages'] = match.group(1)
+
+        else:
+            paper['pages'] = ''
+
+        match = re.match(r'.*?publisher = {(.*?)},.*?', text)
+        if match is not None:
+            paper['publisher'] = match.group(1)
+
+        else:
+            paper['publisher'] = ''
+
+        match = re.match(r'.*?year = {(.*?)},.*?', text)
+        if match is not None:
+            paper['year'] = match.group(1)
+
+        else:
+            paper['year'] = ''
+
+        match = re.match(r'.*?url = {(.*?)},.*?', text)
+        if match is not None:
+            paper['url'] = match.group(1)
+
+        else:
+            paper['url'] = ''
+
+        match = re.match(r'.*?doi = {(.*?)},.*?', text)
+        if match is not None:
+            paper['doi'] = match.group(1)
+
+        else:
+            paper['doi'] = ''
+
+        match = re.match(r'.*?timestamp = {(.*?)},.*?', text)
+        if match is not None:
+            paper['timestamp'] = match.group(1)
+
+        else:
+            paper['timestamp'] = ''
+
+        match = re.match(r'.*?biburl = {(.*?)},.*?', text)
+        if match is not None:
+            paper['bib_url'] = match.group(1)
+
+        else:
+            paper['bib_url'] = ''
+
+        match = re.match(r'.*?bibsource = {(.*?)}.*?', text)
+        if match is not None:
+            paper['bib_source'] = match.group(1)
+
+        else:
+            paper['bib_source'] = ''
 
         return scrapy.Request(url=view_url, callback=self.paper_view_parse, cb_kwargs=dict(paper_item=paper))
 
@@ -128,6 +230,8 @@ class FseSpider(scrapy.Spider):
         paper_item['keywords'] = keywords
         paper_item['authors'] = authors
         paper_item['author_affiliations'] = affiliations
+
+        self.logger.info(paper_item)
 
         self.paper_count = self.paper_count + 1
         self.logger.info('crawl ' + str(self.paper_count) + ' papers')

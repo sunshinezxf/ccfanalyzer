@@ -108,54 +108,9 @@ class IsstaSpider(scrapy.Spider):
         else:
             meeting['bib_source'] = ''
 
+        self.meeting_count = self.meeting_count + 1
+        self.logger.info('crawl ' + str(self.meeting_count) + ' meetings')
         return meeting
-
-        # match = re.match(
-        #     r'{ editor = {(.*?)}, title = {(.*?)}, publisher = {(.*?)}, year = {(.*?)}, url = {(.*?)}, doi = {(.*?)}, '
-        #     r'isbn = {(.*?)}, timestamp = {(.*?)}, biburl = {(.*?)}, bibsource = {(.*?)} }',
-        #     text)
-        # if match is None:
-        #
-        #     match = re.match(
-        #         r'{ editor = {(.*?)}, title = {(.*?)}, publisher = {(.*?)}, year = {(.*?)}, isbn = {(.*?)}, '
-        #         'timestamp = {(.*?)}, biburl = {(.*?)}, bibsource = {(.*?)} }',
-        #         text)
-        #
-        #     if match is None:
-        #
-        #         match = re.match(
-        #             r'{ editor = {(.*?)}, title = {(.*?)}, series = {(.*?)}, volume = {(.*?)}, year = {(.*?)}, '
-        #             'url = {(.*?)}, doi = {(.*?)}, timestamp = {(.*?), biburl = {(.*?)}, bibsource = {(.*?)}} }',
-        #             text)
-        #
-        #     else:
-        #         meeting = OmitMeetingItem()
-        #         meeting['editor'] = match.group(1)
-        #         meeting['title'] = match.group(2)
-        #         meeting['publisher'] = match.group(3)
-        #         meeting['year'] = match.group(4)
-        #         meeting['isbn'] = match.group(5)
-        #         meeting['timestamp'] = match.group(6)
-        #         meeting['bib_url'] = match.group(7)
-        #         meeting['bib_source'] = match.group(8)
-        #
-        # else:
-        #
-        #     meeting = MeetingItem()
-        #     meeting['editor'] = match.group(1)
-        #     meeting['title'] = match.group(2)
-        #     meeting['publisher'] = match.group(3)
-        #     meeting['year'] = match.group(4)
-        #     meeting['url'] = match.group(5)
-        #     meeting['doi'] = match.group(6)
-        #     meeting['isbn'] = match.group(7)
-        #     meeting['timestamp'] = match.group(8)
-        #     meeting['bib_url'] = match.group(9)
-        #     meeting['bib_source'] = match.group(10)
-        #
-        # self.meeting_count = self.meeting_count + 1
-        # self.logger.info('crawl ' + str(self.meeting_count) + ' meetings')
-        # return meeting
 
     def paper_record_parse(self, response, view_url):
         detail_paper_info = response.xpath('//*[@id="bibtex-section"]/pre/text()').get()
