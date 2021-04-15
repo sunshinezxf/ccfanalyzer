@@ -290,8 +290,12 @@ def get_first_query_value(sql_cursor, query, value):
 if __name__ == '__main__':
 
     try:
-        connect = pymysql.connect(host='rm-bp1tq50q3oeippagpio.mysql.rds.aliyuncs.com', port=3306, user='admin_1',
-                                  passwd='''7j5Qp6v7dKESl9a41i8v''', db='ccfdb')
+        # connect = pymysql.connect(host='localhost', port=3306, user='root',
+        #                           passwd='''RV39LMgnYKvqpZuNW6R4''', db='ccfdb')
+
+        connect = pymysql.connect(host='localhost', port=3306, user='root',
+                                  passwd='''RV39LMgnYKvqpZuNW6R4''', db='ccfdb')
+
         cursor = connect.cursor()
         print('------------------ succeed to connect database ------------------')
 

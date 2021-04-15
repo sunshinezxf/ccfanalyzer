@@ -40,3 +40,25 @@ class MeetingItem(Item):
     timestamp = Field()
     bib_url = Field()
     bib_source = Field()
+
+
+class OmitMeetingItem(Item):
+    editor = Field()
+    title = Field()
+    publisher = Field()
+    year = Field()
+    isbn = Field()
+    timestamp = Field()
+    bib_url = Field()
+    bib_source = Field()
+
+
+class OmitMeetingItem1(Item):
+    editor = Field()
+    title = Field()
+    year = Field()
+    url = Field()
+    timestamp = Field()
+    doi = Field()
+    bib_url = Field()
+    bib_source = Field()
