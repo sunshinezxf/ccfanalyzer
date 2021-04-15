@@ -24,3 +24,5 @@ hs_err_pid*
 papercrawl/papercrawl/spiders/__pycache__
 papercrawl/.idea
 papercrawl/papercrawl/__pycache__
+databaseProcess/.idea/misc.xml
+databaseProcess/.idea/databaseProcess.iml
