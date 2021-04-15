@@ -6,6 +6,13 @@ import PaperDetail from '@/views/search/PaperDetail'
 import AuthorPortrait from '@/views/portrait/AuthorPortrait'
 import AffiliationPortrait from '@/views/portrait/AffiliationPortrait'
 import ConferencePortrait from '@/views/portrait/ConferencePortrait'
+import Login from '@/views/user/Login'
+import Register from '@/views/user/Register'
+import Collections from '@/views/user/Collections'
+import PersonalWarehouse from '@/views/user/PersonalWarehouse'
+import PaperShared from '@/views/user/PaperShared'
+import MyTeams from '@/views/user/MyTeams'
+import TeamDetails from '@/views/user/TeamDetails'
 Vue.use(Router)
 
 export default new Router({
@@ -56,6 +63,62 @@ export default new Router({
       component: ConferencePortrait,
       meta: {
         isLogin: false
+      }
+    },
+    {
+      path: '/Login',
+      name: 'Login',
+      component: Login,
+      meta: {
+        isLogin: false
+      }
+    },
+    {
+      path: '/Register',
+      name: 'Register',
+      component: Register,
+      meta: {
+        isLogin: false
+      }
+    },
+    {
+      path: '/Collections',
+      name: 'Collections',
+      component: Collections,
+      meta: {
+        isLogin: true
+      }
+    },
+    {
+      path: '/PersonalWarehouse',
+      name: 'PersonalWarehouse',
+      component: PersonalWarehouse,
+      meta: {
+        isLogin: true
+      }
+    },
+    {
+      path: '/PaperShared',
+      name: 'PaperShared',
+      component: PaperShared,
+      meta: {
+        isLogin: true
+      }
+    },
+    {
+      path: '/MyTeams',
+      name: 'MyTeams',
+      component: MyTeams,
+      meta: {
+        isLogin: true
+      }
+    },
+    {
+      path: '/TeamDetails',
+      name: 'TeamDetails',
+      component: TeamDetails,
+      meta: {
+        isLogin: true
       }
     }
   ]

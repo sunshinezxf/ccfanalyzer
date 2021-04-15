@@ -37,11 +37,9 @@
                   <!--<el-avatar class="user-avatar" :src="avatar"></el-avatar>-->
                   <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
 
-
                  <span class="u" style="font-size: 20px">
                     &nbsp;&nbsp;{{ user.username }} &nbsp;
                  </span>
-
 
                    <i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
@@ -56,7 +54,6 @@
                    <span class="avatar-dropdown">
                         <!--<el-avatar class="user-avatar" :src="avatar"></el-avatar>-->
                         <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-
 
                        <span class="u" style="font-size: 20px">
                           &nbsp;&nbsp; Login&nbsp;In&nbsp;&nbsp;
@@ -84,8 +81,6 @@
           <el-button style="width: 70%; margin-bottom: 5%; font-size: large" type="primary" @click="dialogVisible = false; login()">LOGIN</el-button>
         </span>
         </el-dialog>
-
-
 
         <el-row>
           <el-col :span="4">
@@ -273,18 +268,18 @@
 </template>
 
 <script>
-// import {getCommonSearchResult, getAdvancedSearchResult} from '../../api/home/Home'
-// import {getConferencePaper, getConferencePortrait} from '../../api/portrait/ConferencePortraitAPI'
+import {getCommonSearchResult, getAdvancedSearchResult} from '../../API/Home/HomePageAPIs'
+import {getConferencePaper, getConferencePortrait} from '../../API/Portrait/ConferencePortraitAPIs'
 
 export default {
 
   data () {
     return {
-      user:{
+      user: {
         login: true,
         logout: false,
         username: 'yry',
-        password: '',
+        password: ''
       },
       dialogVisible: false,
       loading_chart: false,
@@ -542,8 +537,9 @@ export default {
     drawPie () {
     },
     getConferenceContent () {
-      this.loading_chart = true
+      this.loading_chart = false
       getConferencePortrait(this.ConferencePor.name).then((res) => {
+        console.log(res)
         this.ConferencePor = res.data
         if (this.ConferencePor.articleNum > 20) {
           this.paperNum = 20
@@ -570,11 +566,11 @@ export default {
     }
   },
   mounted () {
-    // let name = this.$route.query.name
-    // this.ConferencePor.name = name
-    // this.getConferenceContent()
-    // this.getPapers()
-    // this.$store.dispatch('flushFun')
+    let name = this.$route.query.name
+    this.ConferencePor.name = name
+    this.getConferenceContent()
+    this.getPapers()
+    this.$store.dispatch('flushFun')
   }
 }
 </script>

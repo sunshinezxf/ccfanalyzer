@@ -233,7 +233,7 @@
 
               <el-card style=" margin-right: 45px;height: 100%">
                 <div style="margin-left: 2%;margin-left: 2%">
-                  <el-link style="font-size: 27px;color: black" @click="getContent(item.id)"><strong>{{item.name}}</strong></el-link><br>
+                  <el-link style="font-size: 27px;color: black" @click="getContent(item.paperId)"><strong>{{item.title}}</strong></el-link><br>
                   <el-row >
               <span  style="font-size: 17px;color: dimgray">
                 <el-col span="2">
@@ -241,10 +241,10 @@
                 </el-col>
                 <el-col span="22">
                   <span class="affcon">
-                <span  class="divider" v-if="item.affiliations.length==0">None</span>
-              <span  v-for="(aff,index) in item.affiliations" :key="index">
+                <span  class="divider" v-if="item.authors.length==0">None</span>
+              <span  v-for="(aff,index) in item.authors" :key="index">
                 <span role="separator" class="divider" v-if="index != 0">,</span>
-                <el-link style="font-size: 17px;color: cornflowerblue;font-style:italic"  :key='aff' @click="searchAffiliationPor(aff.id)">{{aff.name}}</el-link></span>
+                <el-link style="font-size: 17px;color: cornflowerblue;font-style:italic"  :key='aff' @click="searchAffiliationPor(aff.affiliations[0].id)">{{aff.affiliations[0].name}}</el-link></span>
               </span></el-col>
               </span>
                   </el-row>
@@ -262,7 +262,7 @@
               </span></span></el-col>
               </span>
                   </el-row>
-                  <span class="sum" style="font-size: 15px;color: dimgray;margin-top: 5px;margin-bottom: 5px" v-if="item.summary" >{{item.summary}}</span>
+                  <span class="sum" style="font-size: 15px;color: dimgray;margin-top: 5px;margin-bottom: 5px" v-if="item.abstract" >{{item.abstract}}</span>
                   <el-row>
               <span  style="font-size: 17px;color: dimgray">
                 <el-col :span="2">
@@ -310,8 +310,8 @@
 </template>
 
 <script>
-// import {getCommonSearchResult, getAdvancedSearchResult} from '../../api/home/Home'
-import {getAuthorPortrait} from '../../API/Portrait/AuthorPortraitAPIs'
+import {getCommonSearchResult, getAdvancedSearchResult} from '../../API/Home/HomePageAPIs'
+import {getAuthorPortrait, getAuthorMap, getAuthorValue, getAuthorPaper} from '../../API/Portrait/AuthorPortraitAPIs'
 
 export default {
 
@@ -385,12 +385,12 @@ export default {
       maxArticleNum: 0,
       aveCitationNum: 0,
       maxCitationNum: 0,
-      aveHIndex: 0,
-      maxHIndex: 0,
-      aveDiversityIndex: 0,
-      maxDiversityIndex: 0,
-      aveActiveness: 0,
-      maxActiveness: 0,
+      aveAuthorCitation: 0,
+      maxAuthorCitation: 0,
+      aveRelation: 0,
+      maxRelation: 0,
+      aveYearArticleNum: 0,
+      maxYearArticleNum: 0,
 
       AuPor: {
         // authorId: 1,
@@ -417,9 +417,9 @@ export default {
         // conferences: ['IEEE', 'IEEE'],
         // articleNum: 671,
         // articleCitationNum: 3,
-        // hIndex: 1,
-        // researchDiversityIndex: 1,
-        // activeness: 1
+        // AuthorCitation: 1,
+        // researchRelation: 1,
+        // YearArticleNum: 1
       },
       commonSearchTypeValue: '',
       paperNum: 1,
@@ -464,14 +464,13 @@ export default {
         authors: [{
           id: 1,
           name: 'zjh',
-          activeness: 1.0
-        }],
-        affiliations: [{
-          id: 1,
-          name: 'NJU'
+          affiliations: [{
+            id: 1,
+            name: 'NJU'
+          }]
         }],
         publication: 'IEEE',
-        summary: 'Learning Models and the Learning Cycle Learning Differences and Learning Styles The Role of the Learning Environment Background to Learning Styles Assessment of Learning Styles Learning Styles Learning and Teaching The Inclusive School Characteristics and Challenges Learning Styles in the Inclusive Context Promoting Effective Learning Learning Styles Strategies and Insights',
+        abstract: 'Learning Models and the Learning Cycle Learning Differences and Learning Styles The Role of the Learning Environment Background to Learning Styles Assessment of Learning Styles Learning Styles Learning and Teaching The Inclusive School Characteristics and Challenges Learning Styles in the Inclusive Context Promoting Effective Learning Learning Styles Strategies and Insights',
         keywords: ['Educational technology'],
         citationCnt: 0
       }],
@@ -544,29 +543,23 @@ export default {
   },
   methods: {
     loadChartData () {
+      console.log('11111111')
       var nodes = []
       var links = []
       this.loading_chart = true
       getAuthorMap(this.AuPor.authorId).then(res => {
-        if (res.status.code === '0000') {
-          nodes = res.data.authors
-          links = res.data.connections
-          for (var i = 0; i < nodes.length; i++) {
-            nodes[i].symbolSize = nodes[i].value - 40 > 0 ? nodes[i].value - 40 : 20
-            nodes[i].category = i % (this.categories.length)
-            nodes[i].label = {
-              show: nodes[i].symbolSize > 0
-            }
+        console.log(res)
+        nodes = res.content.authors
+        links = res.content.connections
+        for (var i = 0; i < nodes.length; i++) {
+          nodes[i].symbolSize = nodes[i].value - 40 > 0 ? nodes[i].value - 40 : 20
+          nodes[i].category = i % (this.categories.length)
+          nodes[i].label = {
+            show: nodes[i].symbolSize > 0
           }
-          this.drawChart(nodes, links)
-          this.loading_chart = false
-        } else {
-          this.$message.error({
-            message: res.status.msg,
-            center: true
-          })
-          this.loading_chart = false
         }
+        this.drawChart(nodes, links)
+        this.loading_chart = false
       }).catch(error => {
         console.log(error)
         this.loading_chart = false
@@ -902,14 +895,13 @@ export default {
     handleCurrentChange (val) {
       this.page = val - 1
       getAuthorPaper(this.AuPor.authorId, this.page).then((res) => {
-        this.PaperList = res.data
+        this.PaperList = res.content
       })
       document.querySelector('#link').scrollIntoView(true)
     },
     drawPie () {
     },
     getAuthorContent () {
-      console.log(this.AuPor.authorId)
       getAuthorPortrait(this.AuPor.authorId).then((res) => {
         this.AuPor = res.content
 
@@ -922,22 +914,23 @@ export default {
     },
     getPapers () {
       getAuthorPaper(this.AuPor.authorId, 0).then((res) => {
-        this.PaperList = res.data
-        this.getValue()
+        this.PaperList = res.content
+        console.log(this.PaperList[0].authors[0].affiliations[0].name)
+        this.getValue(this.AuPor.authorId)
       })
     },
-    getValue () {
-      getAuthorValue().then((res) => {
-        this.aveArticleNum = res.data.aveArticleNum
-        this.maxArticleNum = res.data.maxArticleNum
-        this.aveCitationNum = res.data.aveCitationNum
-        this.maxCitationNum = res.data.maxCitationNum
-        this.aveHIndex = res.data.aveHIndex
-        this.maxHIndex = res.data.maxHIndex
-        this.aveDiversityIndex = res.data.aveDiversityIndex
-        this.maxDiversityIndex = res.data.maxDiversityIndex
-        this.aveActiveness = res.data.aveActiveness
-        this.maxActiveness = res.data.maxActiveness
+    getValue (authorId) {
+      getAuthorValue(authorId).then((res) => {
+        this.aveArticleNum = res.content.aveArticleNum
+        this.maxArticleNum = res.content.maxArticleNum
+        this.aveCitationNum = res.content.aveCitationNum
+        this.maxCitationNum = res.content.maxCitationNum
+        this.aveAuthorCitation = res.content.aveAuthorCitation
+        this.maxAuthorCitation = res.content.maxAuthorCitation
+        this.aveRelation = res.content.aveRelation
+        this.maxRelation = res.content.maxRelation
+        this.aveYearArticleNum = res.content.aveYearArticleNum
+        this.maxYearArticleNum = res.content.maxYearArticleNum
         this.makeChart()
       })
     },
@@ -989,18 +982,18 @@ export default {
                 min: 0
               },
               {
-                text: 'H-Index',
-                max: this.maxHIndex,
+                text: 'AuthorCitation',
+                max: this.maxAuthorCitation,
                 min: 0
               },
               {
-                text: 'Diversity Index',
-                max: this.maxDiversityIndex,
+                text: 'Relation',
+                max: this.maxRelation,
                 min: 0
               },
               {
-                text: 'Activeness',
-                max: this.maxActiveness,
+                text: 'YearArticleNum',
+                max: this.maxYearArticleNum,
                 min: 0
               }
             ]
@@ -1013,10 +1006,10 @@ export default {
             type: 'radar',
             data: [
               {
-                value: [this.AuPor.articleNum, this.AuPor.articleCitationNum, this.AuPor.hIndex.toFixed(2), this.AuPor.researchDiversityIndex.toFixed(2), this.AuPor.activeness.toFixed(2)],
+                value: [this.AuPor.articleNum, this.AuPor.articleCitationNum, this.AuPor.AuthorCitation, this.AuPor.researchRelation, this.AuPor.YearArticleNum],
                 name: 'Statistics'
               }, {
-                value: [this.aveArticleNum.toFixed(2), this.aveCitationNum.toFixed(2), this.aveHIndex.toFixed(2), this.aveDiversityIndex.toFixed(2), this.aveActiveness.toFixed(2)],
+                value: [this.aveArticleNum, this.aveCitationNum, this.aveAuthorCitation, this.aveRelation, this.aveYearArticleNum],
                 name: 'avg'
               }
             ]
@@ -1097,12 +1090,10 @@ export default {
   },
   mounted () {
     let id = this.$route.query.authorId
-    this.AuPor.authorId = 1
-    console.log("fsd")
-    //this.loadTrend()
+    this.AuPor.authorId = id
     this.getAuthorContent()
-    //this.getPapers()
-   // this.loadData()
+    this.getPapers()
+    this.loadChartData()
     this.$store.dispatch('flushFun')
   }
 }
