@@ -200,7 +200,7 @@ class IsstaSpider(scrapy.Spider):
 
         for i in range(0, len(keywords)):
             match = re.match(r'.*/(.*)\?.*', keywords[i])
-            keywords[i] = match.group(1)
+            keywords[i] = match.group(1).replace('\\', '').replace('{', '').replace('}', '')
         raw_abstract = response.xpath('//*[@class="abstractSection abstractInFull"]/p/text()').getall()
         abstract = '\n'.join(str(i) for i in raw_abstract)
 

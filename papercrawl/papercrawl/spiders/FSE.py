@@ -18,8 +18,8 @@ class FseSpider(scrapy.Spider):
         view_hrefs = response.xpath('//*[@class="entry editor toc"]/nav/ul/li[1]/div[1]/a/@href').getall()
         for view_href in view_hrefs:
             # 用return测试单个会议
-            # yield scrapy.Request(url=view_href, callback=self.view_parse)
-            return scrapy.Request(url=view_href, callback=self.view_parse)
+            yield scrapy.Request(url=view_href, callback=self.view_parse)
+            # return scrapy.Request(url=view_href, callback=self.view_parse)
 
     def view_parse(self, response):
 
@@ -190,9 +190,14 @@ class FseSpider(scrapy.Spider):
         else:
             paper['bib_source'] = ''
 
+        if re.match(r'.*?springer.*?', view_url):
+            return scrapy.Request(url=view_url, callback=self.springer_paper_view_parse,
+                                  cb_kwargs=dict(paper_item=paper))
         return scrapy.Request(url=view_url, callback=self.paper_view_parse, cb_kwargs=dict(paper_item=paper))
 
     def paper_view_parse(self, response, paper_item):
+
+        self.logger.info(response)
         citation = response.xpath(
             '//*[@class="icon-quote"][1]/../span[1]/text()').get()
         keywords = response.xpath('//*[@class="tags-widget__content"]/ul/li/a/@href').getall()
@@ -231,8 +236,25 @@ class FseSpider(scrapy.Spider):
         paper_item['authors'] = authors
         paper_item['author_affiliations'] = affiliations
 
-        self.logger.info(paper_item)
-
         self.paper_count = self.paper_count + 1
         self.logger.info('crawl ' + str(self.paper_count) + ' papers')
         return paper_item
+
+    def springer_paper_view_parse(self, response, paper_item):
+
+        self.logger.info('---------------------springer---------------------')
+
+        citation = response.xpath('//*[@id="chaptercitations-count-number"]/text()').get()
+        self.logger.info("citation = " + citation)
+
+        authors = response.xpath('//*[@class="authors-affiliations__name"]/text()').getall()
+        self.logger.info("authors = " + authors)
+
+        affiliation_list = response.xpath('//*[@class="affiliation__item"]//text()').getall()
+        self.logger.info("affiliation_list")
+
+        for author in authors:
+            affiliations = response.xpath('//*[@class="authors-affiliations__indexes u-inline-list"]/li/text()')
+            self.logger.info(author + "'s affiliation = " + affiliations)
+
+        return None

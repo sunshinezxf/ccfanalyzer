@@ -21,11 +21,11 @@ class PapercrawlPipeline(object):
             print('------------------ fail to connect database ------------------', e)
 
     def process_item(self, item, spider):
-        if isinstance(item, PaperItem):
-            self.paper_insert(item)
-        elif isinstance(item, MeetingItem):
-            self.meeting_insert(item)
-        # pass
+        # if isinstance(item, PaperItem):
+        #     self.paper_insert(item)
+        # elif isinstance(item, MeetingItem):
+        #     self.meeting_insert(item)
+        pass
 
     def paper_insert(self, paper):
 
@@ -147,13 +147,14 @@ class PapercrawlPipeline(object):
             try:
                 for keyword in keywords:
 
-                    self.cursor.execute(query_keyword, keyword)
+                    lower_keyword = keyword.lower()
+                    self.cursor.execute(query_keyword, lower_keyword)
                     keyword_query = self.cursor.fetchone()
 
                     if keyword_query is not None:
                         keyword_id = keyword_query[0]
                     else:
-                        self.cursor.execute(insert_keyword, keyword)
+                        self.cursor.execute(insert_keyword, lower_keyword)
                         keyword_id = self.cursor.lastrowid
 
                     self.cursor.execute(insert_keyword_relation, (paper_id, keyword_id))
