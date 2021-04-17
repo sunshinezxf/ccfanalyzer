@@ -710,6 +710,8 @@ export default {
         logout: false,
         username: 'yry',
         password: '',
+        id: '',
+        token: ''
       },
       searchAuthor:{},
       searchAffiliation:{},
@@ -1020,8 +1022,14 @@ export default {
           let total = 0
           getCommonSearchResult(this.commonInput, 0).then(res => {
             if (res.success) {
-              paperList = res.content.paperBriefInfoVOList
-              total = res.content.totalNum
+              console.log(res.content)
+                if(res.content=== "查询结果为0"){
+                  paperList=[]
+                }else{
+                  paperList = res.content.paperBriefInfoVOList
+                  total = res.content.totalNum
+                }
+
               console.log(total)
               this.searching = false
               this.$router.push({
@@ -1054,9 +1062,13 @@ export default {
           let total = 0
           getAdvancedSearchResult(this.advSearchForm).then(res => {
             if (res.success) {
-              console.log(this.advSearchForm.authors)
-              paperList = res.content.paperBriefInfoVOList
-              total = res.content.totalNum
+              console.log(res.content)
+              if(res.content=== "搜索结果为0"){
+                paperList=[]
+              }else{
+                paperList = res.content.paperBriefInfoVOList
+                total = res.content.totalNum
+              }
               this.searching = false
               this.$router.push({
                 name: 'SearchPaper',
@@ -1090,12 +1102,14 @@ export default {
           let paperList = []
           let total = 0
           getAdvancedSearchResult(this.advSearchForm).then(res => {
-            console.log(this.advSearchForm)
-            console.log("!!!!!!!!")
-            console.log(res)
             if (res.success) {
-              paperList = res.content.paperBriefInfoVOList
-              total = res.content.totalNum
+              console.log(res.content)
+              if(res.content=== "搜索结果为0"){
+                paperList=[]
+              }else{
+                paperList = res.content.paperBriefInfoVOList
+                total = res.content.totalNum
+              }
               this.searching = false
               this.$router.push({
                 name: 'SearchPaper',
@@ -1129,8 +1143,13 @@ export default {
           let total = 0
           getAdvancedSearchResult(this.advSearchForm).then(res => {
             if (res.success ) {
-              paperList = res.content.paperBriefInfoVOList
-              total = res.content.totalNum
+              console.log(res.content)
+              if(res.content=== "搜索结果为0"){
+                paperList=[]
+              }else{
+                paperList = res.content.paperBriefInfoVOList
+                total = res.content.totalNum
+              }
               this.searching = false
               this.$router.push({
                 name: 'SearchPaper',
@@ -1256,8 +1275,13 @@ export default {
           console.log(this.advSearchForm)
           this.advSearchForm.keywords.push(this.searchConference)
           if (res.success ) {
-            paperList = res.content.paperBriefInfoVOList
-            total = res.content.totalNum
+            console.log(res.content)
+            if(res.content=== "搜索结果为0"){
+              paperList=[]
+            }else{
+              paperList = res.content.paperBriefInfoVOList
+              total = res.content.totalNum
+            }
             this.searching_advanced = false
             this.$router.push({
               name: 'SearchPaper',
@@ -1340,7 +1364,9 @@ export default {
     },
   },
   mounted: function () {
-    // this.$store.dispatch('flushFun')
+    this.user.username = localStorage.getItem('username')
+    this.user.token = localStorage.getItem('token')
+    console.log(this.user.token)
     this.loadData()
   }
 }

@@ -284,7 +284,12 @@ export default {
           let total = 0
           getCommonSearchResult(this.commonInput, 0).then(res => {
             if (res.success) {
-              paperList = res.content.paperBriefInfoVOList
+              if(typeof(res.content) == "undefined"){
+                console.log("dsgf")
+                paperList=[]
+              }else{
+                paperList = res.content.paperBriefInfoVOList
+              }
               total = res.content.totalNum
               console.log(total)
               this.searching = false
@@ -390,6 +395,7 @@ export default {
 
       }else {
         if (this.commonInput!== '') {
+          console.log("!!!!!!!!!!!!")
           this.advSearchForm.keywords = [this.commonInput]
           console.log(this.advSearchForm)
           let paperList = []

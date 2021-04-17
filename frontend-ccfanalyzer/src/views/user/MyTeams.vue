@@ -222,6 +222,7 @@
     mounted () {
       this.user.username = localStorage.getItem('username')
       this.user.token = localStorage.getItem('token')
+      console.log(this.user.token)
       this.getTeamLists(this.user.token)
     },
     created () {
@@ -246,11 +247,12 @@
       getTeamLists (userID) {
         getTeamList(userID).then((res) => {
           console.log("fsd")
+          console.log(res)
           this.Team = res.content.TeamInf
         })
       },
       Upload (token, Form) {
-        TeamCreate(token, Form.team_name).then((res) => {
+        TeamCreate({token:token, team_name:Form.team_name}).then((res) => {
           console.log(res)
           this.$message.success({
             message: 'Build Successful',
