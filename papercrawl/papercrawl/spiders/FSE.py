@@ -197,7 +197,14 @@ class FseSpider(scrapy.Spider):
 
     def paper_view_parse(self, response, paper_item):
 
-        self.logger.info(response)
+        self.logger.info(response.url)
+        if re.match(r'.*?springer.*?', response.url):
+            return self.springer_paper_view_parse(response, paper_item)
+        else:
+            return self.dl_paper_view_parse(response, paper_item)
+
+    def dl_paper_view_parse(self, response, paper_item):
+
         citation = response.xpath(
             '//*[@class="icon-quote"][1]/../span[1]/text()').get()
         keywords = response.xpath('//*[@class="tags-widget__content"]/ul/li/a/@href').getall()
@@ -245,16 +252,101 @@ class FseSpider(scrapy.Spider):
         self.logger.info('---------------------springer---------------------')
 
         citation = response.xpath('//*[@id="chaptercitations-count-number"]/text()').get()
-        self.logger.info("citation = " + citation)
+        self.logger.info("citation = ")
+        if citation is None:
+            self.logger.info(0)
+        else:
+            self.logger.info(citation)
 
         authors = response.xpath('//*[@class="authors-affiliations__name"]/text()').getall()
-        self.logger.info("authors = " + authors)
+        for i in range(0, len(authors)):
+            authors[i] = authors[i].replace('\xa0', ' ')
+        self.logger.info("authors = ")
+        self.logger.info(authors)
 
-        affiliation_list = response.xpath('//*[@class="affiliation__item"]//text()').getall()
-        self.logger.info("affiliation_list")
+        affiliation_list = []
+        counter = 1
+        while True:
+            affiliation_total = response.xpath(
+                '//*[@id="authorsandaffiliations"]/div/ol/li[ ' + str(counter) + ']/span[2]//text()').getall()
+            counter = counter + 1
+            self.logger.info(affiliation_total)
+            if affiliation_total is None or affiliation_total == []:
+                break
+            counter = counter + 1
+            affiliation = ', '.join(affiliation_total)
+            self.logger.info('affiliation = ')
+            self.logger.info(affiliation)
 
-        for author in authors:
-            affiliations = response.xpath('//*[@class="authors-affiliations__indexes u-inline-list"]/li/text()')
-            self.logger.info(author + "'s affiliation = " + affiliations)
+            affiliation_list.append(affiliation)
 
-        return None
+        for aff in affiliation_list:
+            self.logger.info(aff)
+
+        affiliations = []
+        for i in range(0, len(authors)):
+            author_affiliation = []
+            affiliations_num = response.xpath(
+                '//*[@id="authorsandaffiliations"]/div/ul/li[ ' + str(i + 1) + ']/ul/li/text()').getall()
+
+            self.logger.info(authors[i] + "'s affiliation = ")
+            self.logger.info(affiliations_num)
+
+            for j in affiliations_num:
+                self.logger.info(affiliation_list[int(j) - 1])
+                author_affiliation.append(affiliation_list[int(j) - 1])
+
+            affiliations.append('/'.join(author_affiliation))
+
+        keywords = response.xpath('//*[@class="KeywordGroup"]/span/text()').getall()
+        for i in range(0, len(keywords)):
+            keywords[i] = keywords[i].replace('\xa0', ' ')
+        self.logger.info('keyword = ')
+        self.logger.info(keywords)
+
+        counter = 1
+        abstract_list = []
+        while True:
+            abstract_part = response.xpath(
+                '//*[@id="Abs1"]/p[ ' + str(counter) + ']//text()').getall()
+            counter = counter + 1
+            if abstract_part is None or abstract_part == []:
+                break
+            abstract_part = ''.join(abstract_part)
+            abstract_list.append(abstract_part)
+
+            self.logger.info('abstract_part = ')
+            self.logger.info(abstract_part)
+
+        abstract = '\n'.join(abstract_list)
+
+        self.logger.info('abstract = ')
+        self.logger.info(abstract)
+
+        counter = 1
+        ref_content = ''
+        while True:
+            ref_paper = response.xpath('//*[@id="CR' + str(counter) + '"]/text()').get()
+            if ref_paper is None or ref_paper == []:
+                break
+            ref_href = response.xpath('//*[@id="CR' + str(counter) + '"]/span/span/a/@href').get()
+            counter = counter + 1
+            ref_content = ref_content + ref_paper + '***' + ref_href + '^^^'
+
+            self.logger.info('ref_paper = ')
+            self.logger.info(ref_paper)
+
+            self.logger.info('ref_href = ')
+            self.logger.info(ref_href)
+
+        counter = counter - 1
+
+        paper_item['ref_count'] = counter
+        paper_item['ref_content'] = ref_content
+        paper_item['citation'] = citation
+        paper_item['abstract'] = abstract
+        paper_item['keywords'] = keywords
+        paper_item['authors'] = authors
+        paper_item['author_affiliations'] = affiliations
+
+        return paper_item
