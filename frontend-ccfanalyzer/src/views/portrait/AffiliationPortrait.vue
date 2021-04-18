@@ -6,13 +6,15 @@
        style="overflow: hidden" >
     <el-container >
       <div id="link"></div>
-      <el-header class="headerr" :style ="this.$store.state.background" height="150px">
+      <el-header class="headerr" :style ="this.$store.state.background" height="230px">
+        <div><lo></lo></div>
+
         <el-row>
-          <el-col :span="5">
+          <el-col :span="4">
             <el-row>
-              <div class="OASIS" id="OASIS" style="font-weight:bold;color:white;font-size: 70px;text-align:center;margin-top: 4%"
+              <div class="OASIS" id="OASIS" style="font-weight:bold;color:white;font-size: 40px;text-align:center;margin-top: 4%"
                    @mouseenter="highlight" @mouseout="redoHightLight" @click="toHomepage">
-                OASIS
+                CCF ANALYZER
               </div>
             </el-row>
             <!--<el-row><div class="OASIS" style="color:white;font-size: 17px;text-align:center; ">-->
@@ -20,29 +22,42 @@
             <!--</div>-->
             <!--</el-row>-->
           </el-col>
-          <el-col :span="19">
+          <el-col :span="20">
             <!--普通搜索-->
-            <div style="text-align: center;">
-              <el-select v-model="commonSearchTypeValue" clearable placeholder="All" style="opacity:80%; width: 10%">
+            <div style="text-align: center;" >
+
+              <el-select v-model="commonSearchTypeValue" clearable placeholder="All"  style="opacity:80%; width: 10%;text-align: left;position:relative; z-index:9999;" :popper-append-to-body="false" >
                 <el-option
                   v-for="item in options"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value">
                 </el-option>
+
               </el-select>
               <el-input
-                style="opacity:80%;width:50%; justify-content: center;;margin-top: 4%"
+                v-if="commonSearchTypeValue === ''||commonSearchTypeValue === 'keyword'"
+                class="common_input"
+                style="opacity:80%;width:50%;margin-top: 4%"
                 placeholder="Enter something..."
                 v-model="commonInput"
+                :disabled="searching"
+                @keyup.enter.native="commonSearch"
                 clearable>
               </el-input>
+              <el-autocomplete v-if="commonSearchTypeValue === 'author'"
+                               :minlength="2" style="opacity:80%;width:50%;margin-top: 4%;text-align: left;position:relative; z-index:9999;" :popper-append-to-body="false" v-model="searchAuthor.name" :fetch-suggestions="querySearchAsync" placeholder="Enter something..."
+                               @select="handleSelect"></el-autocomplete>
+              <el-autocomplete v-if="commonSearchTypeValue === 'affiliation'"
+                               :minlength="2" style="opacity:80%;width:50%;margin-top: 4%;text-align: left;position:relative; z-index:9999;" :popper-append-to-body="false" v-model="searchAffiliation.name" :fetch-suggestions="querySearchAsync2" placeholder="Enter something..."
+                               @select="handleSelect2"></el-autocomplete>
 
               <el-button @click="commonSearch" type="primary" icon="el-icon-search" :loading="searching">SEARCH</el-button>
 
             </div>
           </el-col>
         </el-row>
+
       </el-header>
       <el-main >
         <el-row>
@@ -222,8 +237,12 @@ import {
 import {
   getAffiliationPaper, getAffiliationPortrait, getAffiliationValue
 } from '../../API/Portrait/AffiliationPortraitAPIs'
+import lo from '../../components/Center'
 
 export default {
+  components: {
+    lo
+  },
 
   data () {
     return {

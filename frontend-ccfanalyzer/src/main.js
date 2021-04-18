@@ -16,7 +16,6 @@ import router from './router'
 import * as echarts from 'echarts'
 
 import axios from 'axios'
-axios.defaults.withCredentials = true
 
 Vue.config.productionTip = false
 Vue.prototype.$echarts = echarts
