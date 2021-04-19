@@ -270,16 +270,15 @@ class FseSpider(scrapy.Spider):
             affiliation_total = response.xpath(
                 '//*[@id="authorsandaffiliations"]/div/ol/li[ ' + str(counter) + ']/span[2]//text()').getall()
             counter = counter + 1
-            self.logger.info(affiliation_total)
             if affiliation_total is None or affiliation_total == []:
                 break
-            counter = counter + 1
             affiliation = ', '.join(affiliation_total)
             self.logger.info('affiliation = ')
             self.logger.info(affiliation)
 
             affiliation_list.append(affiliation)
 
+        self.logger.info('affiliation list = ')
         for aff in affiliation_list:
             self.logger.info(aff)
 
@@ -301,6 +300,7 @@ class FseSpider(scrapy.Spider):
         keywords = response.xpath('//*[@class="KeywordGroup"]/span/text()').getall()
         for i in range(0, len(keywords)):
             keywords[i] = keywords[i].replace('\xa0', ' ')
+            keywords[i] = keywords[i].strip()
         self.logger.info('keyword = ')
         self.logger.info(keywords)
 
@@ -315,13 +315,13 @@ class FseSpider(scrapy.Spider):
             abstract_part = ''.join(abstract_part)
             abstract_list.append(abstract_part)
 
-            self.logger.info('abstract_part = ')
-            self.logger.info(abstract_part)
+            # self.logger.info('abstract_part = ')
+            # self.logger.info(abstract_part)
 
         abstract = '\n'.join(abstract_list)
 
-        self.logger.info('abstract = ')
-        self.logger.info(abstract)
+        # self.logger.info('abstract = ')
+        # self.logger.info(abstract)
 
         counter = 1
         ref_content = ''
@@ -333,13 +333,9 @@ class FseSpider(scrapy.Spider):
             counter = counter + 1
             ref_content = ref_content + ref_paper + '***' + ref_href + '^^^'
 
-            self.logger.info('ref_paper = ')
-            self.logger.info(ref_paper)
-
-            self.logger.info('ref_href = ')
-            self.logger.info(ref_href)
-
         counter = counter - 1
+        self.logger.info('counter = ')
+        self.logger.info(counter)
 
         paper_item['ref_count'] = counter
         paper_item['ref_content'] = ref_content
@@ -349,4 +345,6 @@ class FseSpider(scrapy.Spider):
         paper_item['authors'] = authors
         paper_item['author_affiliations'] = affiliations
 
+        self.paper_count = self.paper_count + 1
+        self.logger.info('crawl ' + str(self.paper_count) + ' papers')
         return paper_item
