@@ -255,6 +255,7 @@ class FseSpider(scrapy.Spider):
         self.logger.info("citation = ")
         if citation is None:
             self.logger.info(0)
+            citation = 0
         else:
             self.logger.info(citation)
 
@@ -331,7 +332,11 @@ class FseSpider(scrapy.Spider):
                 break
             ref_href = response.xpath('//*[@id="CR' + str(counter) + '"]/span/span/a/@href').get()
             counter = counter + 1
-            ref_content = ref_content + ref_paper + '***' + ref_href + '^^^'
+            ref_content = ref_content + ref_paper + '***'
+            if ref_href is None or ref_href == []:
+                ref_content = ref_content + '' + '^^^'
+            else:
+                ref_content = ref_content + ref_href + '^^^'
 
         counter = counter - 1
         self.logger.info('counter = ')

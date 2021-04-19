@@ -21,11 +21,11 @@ class PapercrawlPipeline(object):
             print('------------------ fail to connect database ------------------', e)
 
     def process_item(self, item, spider):
-        # if isinstance(item, PaperItem):
-        #     self.paper_insert(item)
-        # elif isinstance(item, MeetingItem):
-        #     self.meeting_insert(item)
-        pass
+        if isinstance(item, PaperItem):
+            self.paper_insert(item)
+        elif isinstance(item, MeetingItem):
+            self.meeting_insert(item)
+        # pass
 
     def paper_insert(self, paper):
 
