@@ -38,7 +38,7 @@
                  <i class="el-icon-arrow-down el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
+                <el-dropdown-item command="logout" divided @click.native="userLogout">退出登录</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
@@ -49,7 +49,7 @@
                       <!--<el-avatar class="user-avatar" :src="avatar"></el-avatar>-->
                       <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
 
-                     <span class="u" style="font-size: 20px">
+                     <span class="u" style="font-size: 20px" @click="userLogin">
                         &nbsp;&nbsp; Login&nbsp;In&nbsp;&nbsp;
                      </span>
 
@@ -168,6 +168,7 @@
 
 <script>
 import {SharedPapers} from '../../API/User/PaperSharedAPIs'
+import {Logout} from '../../API/User/LoginAPIs'
 
 export default {
   name: 'PaperShared',
@@ -209,6 +210,8 @@ export default {
     this.user.username = this.user.username = localStorage.getItem('username')
     this.user.token = localStorage.getItem('token')
     this.getSharedPaper(this.user.token)
+    this.user.login = localStorage.getItem('flag')
+    this.user.logout = !localStorage.getItem('flag')
   },
   created () {
     var docHeight = document.documentElement.clientHeight
@@ -251,6 +254,19 @@ export default {
     getSharedPaper (token) {
       SharedPapers(token).then((res) => {
         this.PaperList = res.content.Private_Paper_Must
+      })
+    },
+    userLogout () {
+      Logout(localStorage.getItem('token')).then((res) => {
+        localStorage.clear()
+        this.$router.push({
+          name: 'Homepage'
+        })
+      })
+    },
+    userLogin () {
+      this.$router.push({
+        name: 'Login'
       })
     }
   }

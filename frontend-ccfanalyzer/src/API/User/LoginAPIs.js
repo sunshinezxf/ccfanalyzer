@@ -6,3 +6,8 @@ axios.defaults.withCredentials = true
 export const Login = (userForm) => {
   return axios.post('/user/login', userForm).then(res => res.data)
 }
+
+// 退出登录
+export const Logout = (token) => {
+  return axios.post('/user/logout', token).then(res => res.data)
+}

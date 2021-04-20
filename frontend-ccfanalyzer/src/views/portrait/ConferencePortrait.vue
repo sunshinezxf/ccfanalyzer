@@ -44,7 +44,7 @@
                    <i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
                   <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
+                    <el-dropdown-item command="logout" divided @click.native="userLogout">退出登录</el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
               </div>
@@ -55,7 +55,7 @@
                         <!--<el-avatar class="user-avatar" :src="avatar"></el-avatar>-->
                         <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
 
-                       <span class="u" style="font-size: 20px">
+                       <span class="u" style="font-size: 20px" @click="userLogin">
                           &nbsp;&nbsp; Login&nbsp;In&nbsp;&nbsp;
                        </span>
 
@@ -270,6 +270,7 @@
 <script>
 import {getCommonSearchResult, getAdvancedSearchResult} from '../../API/Home/HomePageAPIs'
 import {getConferencePaper, getConferencePortrait} from '../../API/Portrait/ConferencePortraitAPIs'
+import {Logout} from '../../API/User/LoginAPIs'
 
 export default {
 
@@ -563,6 +564,19 @@ export default {
     },
     redoHightLight () {
       document.getElementById('OASIS').style.fontSize = '70px'
+    },
+    userLogout () {
+      Logout(localStorage.getItem('token')).then((res) => {
+        localStorage.clear()
+        this.$router.push({
+          name: 'Homepage'
+        })
+      })
+    },
+    userLogin () {
+      this.$router.push({
+        name: 'Login'
+      })
     }
   },
   mounted () {
@@ -571,6 +585,9 @@ export default {
     this.getConferenceContent()
     this.getPapers()
     this.$store.dispatch('flushFun')
+    this.user.login = localStorage.getItem('flag')
+    this.user.username = localStorage.getItem('username')
+    this.user.logout = !localStorage.getItem('flag')
   }
 }
 </script>
