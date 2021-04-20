@@ -62,7 +62,7 @@
             </el-col>
             <el-col :span="3">
               <div class="st" style="font-size: 60px;margin-top: -25px">
-              <el-button  icon="el-icon-star-off" circle></el-button>
+              <el-button  icon="el-icon-star-off" circle @click="collectPaper(item.paperId)"></el-button>
               </div>
             </el-col>
             <el-col :span="3">
@@ -229,13 +229,13 @@
 </template>
 
 <script>
-  import {getPaperDetail,getPaperDetailref,} from '../../API/Paper/PaperDetail'
+  import {getPaperDetail,getPaperDetailref,paperCollection} from '../../API/Paper/PaperDetail'
   import {
     getCommonSearchResult, getAdvancedSearchResult,getMatchAuthor,getMatchAffiliation,
     //   getAffiliationActivityRanking, getAuthorActivityRanking, getResearchDirectionPopularityRanking, getTopPapers, getTopAffiliations, getTopAuthors,  adminLogin,
   } from '../../API/Home/HomePageAPIs'
   import lo from '../../components/Center'
-
+  import Qs from 'qs'
   export default {
     components: {
       lo
@@ -608,6 +608,25 @@
     },
     redoHightLight () {
       document.getElementById('OASIS').style.fontSize = '50px'
+    },
+    collectPaper (paperId) {
+      if (localStorage.getItem('flag')) {
+        var params = {
+          token: localStorage.getItem('token'),
+          paper_id: paperId
+        }
+        paperCollection(Qs.stringify(params)).then((res) => {
+          this.$message.success({
+            message: 'Collection Successful',
+            center: true
+          })
+        })
+      } else {
+        this.$message.error({
+          message: 'Please Login First',
+          center: true
+        })
+      }
     }
   },
   mounted () {

@@ -40,7 +40,7 @@
                 </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item @click.native="toHome" divided>个人中心</el-dropdown-item>
-              <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
+              <el-dropdown-item command="logout" divided @click.native="userLogout">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
@@ -83,51 +83,60 @@
 </template>
 
 <script>
-    export default{
-    name: 'lo',
-    data(){
-          return{
-            user: {
-              login: false,
-              logout: false,
-              username: 'yry',
-              password: '',
-              id: '',
-              token: ''
-            },
-            dialogVisible: false,
-          }
-    },
-      methods:{
-        toHomepage () {
-          this.$router.push({path: '/'})
-        },
-        toHome () {
-          router.beforeEach((to,from,next)=>{
-            if(to.path ==='/Login'){
-              next();
-            }else {
-              let token = localStorage.getItem('userInfo');
-              if(token === null || token === ''){
-                next('/Login');
-              }else {
-                next('/Collections');
-              }
-            }
-          });
-        },
-        toLogin () {
-          this.$router.push({path: '/Login'})
-        },
+import {Logout} from '../API/User/LoginAPIs'
 
+export default{
+  name: 'lo',
+  data () {
+    return {
+      user: {
+        login: false,
+        logout: false,
+        username: 'yry',
+        password: '',
+        id: '',
+        token: ''
       },
-      mounted () {
-        this.user.username = localStorage.getItem('username')
-        this.user.token = localStorage.getItem('token')
-        this.user.login=true
-        this.user.logout=false
-      },
+      dialogVisible: false,
     }
+  },
+  methods: {
+    toHomepage () {
+      this.$router.push({path: '/'})
+    },
+    toHome () {
+      router.beforeEach((to,from,next)=>{
+        if(to.path ==='/Login'){
+          next();
+        }else {
+          let token = localStorage.getItem('userInfo');
+          if(token === null || token === ''){
+            next('/Login');
+          }else {
+            next('/Collections');
+          }
+        }
+      });
+    },
+    toLogin () {
+      this.$router.push({path: '/Login'})
+    },
+    userLogout () {
+      Logout(localStorage.getItem('token')).then((res) => {
+        localStorage.clear()
+        this.$router.push({
+          name: 'Collections'
+        })
+      })
+    }
+  },
+  mounted () {
+    this.user.username = localStorage.getItem('username')
+    this.user.token = localStorage.getItem('token')
+    this.user.login = localStorage.getItem('flag')
+    this.user.logout = !localStorage.getItem('flag')
+  },
+}
 </script>
 
 <style scoped>
