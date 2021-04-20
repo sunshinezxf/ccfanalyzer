@@ -1,80 +1,7 @@
 <template>
 <el-container>
-  <el-header class="header" style="overflow: hidden;padding: 0%">
-    <div style="margin-left: -19px;margin-right: -19px;text-align:center">
-      <el-row style="margin-bottom: 0%">
-        <el-col :span="4">
-          <div class="grid-content2 bg-purple2" style="color: white;text-align:center">
-
-            <el-row>
-                <span class="avatar-dropdown">
-                  <i class="el-icon-s-home" ></i>
-                  <span class="u" style="font-size: 20px;color: grey;text-align: center">
-                  &nbsp;&nbsp;HomePage &nbsp;
-               </span>
-                </span>
-            </el-row>
-
-          </div>
-        </el-col>
-
-        <el-col :span="17">
-          <div class="grid-content2 bg-purple2" style="color: white;">
-
-            <el-row style="margin-bottom: -8%"></el-row>
-          </div>
-        </el-col>
-        <el-col :span="3"><div class="grid-content2 bg-purple2" style="color: white;">
-          <div v-show="user.login">
-            <el-dropdown @command="handleCommand">
-               <span class="avatar-dropdown">
-                <!--<el-avatar class="user-avatar" :src="avatar"></el-avatar>-->
-                <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-
-               <span class="u" style="font-size: 20px">
-                  &nbsp;&nbsp;{{ user.username }} &nbsp;
-               </span>
-
-                 <i class="el-icon-arrow-down el-icon--right"></i>
-              </span>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="logout" divided @click.native="userLogout">退出登录</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-          </div>
-
-          <div v-show="user.logout">
-
-                 <span class="avatar-dropdown">
-                      <!--<el-avatar class="user-avatar" :src="avatar"></el-avatar>-->
-                      <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-
-                     <span class="u" style="font-size: 20px" @click="userLogin">
-                        &nbsp;&nbsp; Login&nbsp;In&nbsp;&nbsp;
-                     </span>
-
-                    </span>
-          </div>
-        </div>
-        </el-col>
-      </el-row>
-    </div>
-
-    <el-dialog
-      title="Administrator Login"
-      :visible.sync="dialogVisible"
-      width="30%"
-      center>
-      <div style="text-align:center">
-        <el-input style="width: 70%" placeholder="username" v-model="username" clearable></el-input>
-      </div>
-      <div style="text-align:center">
-        <el-input style="width: 70%; margin-top: 5%" placeholder="password" v-model="password" show-password></el-input>
-      </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button style="width: 70%; margin-bottom: 5%; font-size: large" type="primary" @click="dialogVisible = true; login()">LOGIN</el-button>
-      </span>
-    </el-dialog>
+  <el-header class="header" :style ="this.$store.state.background" style="overflow: hidden;padding: 0%">
+    <div><lo></lo></div>
   </el-header>
   <el-container>
     <el-aside class="side" width="200px">
@@ -168,9 +95,12 @@
 
 <script>
 import {SharedPapers} from '../../API/User/PaperSharedAPIs'
-import {Logout} from '../../API/User/LoginAPIs'
+import lo from '../../components/Center'
 
 export default {
+  components: {
+    lo
+  },
   name: 'PaperShared',
   data () {
     return {
@@ -210,8 +140,6 @@ export default {
     this.user.username = this.user.username = localStorage.getItem('username')
     this.user.token = localStorage.getItem('token')
     this.getSharedPaper(this.user.token)
-    this.user.login = localStorage.getItem('flag')
-    this.user.logout = !localStorage.getItem('flag')
   },
   created () {
     var docHeight = document.documentElement.clientHeight
@@ -254,19 +182,6 @@ export default {
     getSharedPaper (token) {
       SharedPapers(token).then((res) => {
         this.PaperList = res.content.Private_Paper_Must
-      })
-    },
-    userLogout () {
-      Logout(localStorage.getItem('token')).then((res) => {
-        localStorage.clear()
-        this.$router.push({
-          name: 'Homepage'
-        })
-      })
-    },
-    userLogin () {
-      this.$router.push({
-        name: 'Login'
       })
     }
   }

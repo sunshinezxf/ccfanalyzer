@@ -44,3 +44,14 @@ export const getTeamMember = (teamId) => {
 export const getTeamOwner = (token,teamId) => {
   return axios.get('/team/owner/check?token='+token+'?team_id=' + teamId).then(res => res.data)
 }
+
+
+// 获取团队文章
+export const getTeamPaperList = (token,teamId) => {
+  return axios.get('/warehouse/team/papers?token='+token+'?teamId=' + teamId).then(res => res.data)
+}
+
+// 删除团队文章
+export const DeleteTeamPaper = (param) => {
+  return axios.post('/warehouse/team/delete',param).then(res => res.data)
+}

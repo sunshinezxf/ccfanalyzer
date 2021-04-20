@@ -13,6 +13,8 @@ import PersonalWarehouse from '@/views/user/PersonalWarehouse'
 import PaperShared from '@/views/user/PaperShared'
 import MyTeams from '@/views/user/MyTeams'
 import TeamDetails from '@/views/user/TeamDetails'
+import AdminLogin from '@/views/Admin/AdminLogin'
+import UpdateTime from '@/views/Admin/UpdateTime'
 Vue.use(Router)
 
 export default new Router({
@@ -117,6 +119,22 @@ export default new Router({
       path: '/TeamDetails',
       name: 'TeamDetails',
       component: TeamDetails,
+      meta: {
+        isLogin: true
+      }
+    },
+    {
+      path: '/AdminLogin',
+      name: 'AdminLogin',
+      component: AdminLogin,
+      meta: {
+        isLogin: false
+      }
+    },
+    {
+      path: '/UpdateTime',
+      name: 'UpdateTime',
+      component: UpdateTime,
       meta: {
         isLogin: true
       }

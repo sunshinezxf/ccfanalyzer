@@ -7,85 +7,12 @@
     <el-container >
       <div id="link"></div>
       <el-header class="headerr" :style ="this.$store.state.background" height="230px">
-        <div style="margin-left: -19px;margin-right: -19px;text-align:center">
-          <el-row style="margin-bottom: 1%">
-            <el-col :span="4">
-              <div class="grid-content2 bg-purple2" style="color: white;text-align:center">
-
-                <el-row>
-                  <span class="avatar-dropdown">
-                    <i class="el-icon-s-home" ></i>
-                    <span class="u" style="font-size: 20px;color: grey;text-align: center">
-                    &nbsp;&nbsp;HomePage &nbsp;
-                 </span>
-                  </span>
-                </el-row>
-
-              </div>
-            </el-col>
-
-            <el-col :span="17">
-              <div class="grid-content2 bg-purple2" style="color: white;">
-
-                <el-row style="margin-bottom: -8%"></el-row>
-              </div>
-            </el-col>
-            <el-col :span="3"><div class="grid-content2 bg-purple2" style="color: white;">
-              <div v-show="user.login">
-                <el-dropdown @command="handleCommand">
-                 <span class="avatar-dropdown">
-                  <!--<el-avatar class="user-avatar" :src="avatar"></el-avatar>-->
-                  <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-
-                 <span class="u" style="font-size: 20px">
-                    &nbsp;&nbsp;{{ user.username }} &nbsp;
-                 </span>
-
-                   <i class="el-icon-arrow-down el-icon--right"></i>
-                </span>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item command="logout" divided @click.native="userLogout">退出登录</el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
-              </div>
-
-              <div v-show="user.logout">
-
-                   <span class="avatar-dropdown">
-                        <!--<el-avatar class="user-avatar" :src="avatar"></el-avatar>-->
-                        <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-
-                       <span class="u" style="font-size: 20px" @click="userLogin">
-                          &nbsp;&nbsp; Login&nbsp;In&nbsp;&nbsp;
-                       </span>
-
-                      </span>
-              </div>
-            </div>
-            </el-col>
-          </el-row>
-        </div>
-
-        <el-dialog
-          title="Administrator Login"
-          :visible.sync="dialogVisible"
-          width="30%"
-          center>
-          <div style="text-align:center">
-            <el-input style="width: 70%" placeholder="username" v-model="username" clearable></el-input>
-          </div>
-          <div style="text-align:center">
-            <el-input style="width: 70%; margin-top: 5%" placeholder="password" v-model="password" show-password></el-input>
-          </div>
-          <span slot="footer" class="dialog-footer">
-          <el-button style="width: 70%; margin-bottom: 5%; font-size: large" type="primary" @click="dialogVisible = false; login()">LOGIN</el-button>
-        </span>
-        </el-dialog>
+        <div><lo></lo></div>
 
         <el-row>
           <el-col :span="4">
             <el-row>
-              <div class="OASIS" id="OASIS" style="font-weight:bold;color:white;font-size: 40px;text-align:center;margin-top: 12%"
+              <div class="OASIS" id="OASIS" style="font-weight:bold;color:white;font-size: 40px;text-align:center;margin-top: 4%"
                    @mouseenter="highlight" @mouseout="redoHightLight" @click="toHomepage">
                 CCF ANALYZER
               </div>
@@ -97,23 +24,33 @@
           </el-col>
           <el-col :span="20">
             <!--普通搜索-->
-            <div style="text-align: center;">
-              <el-select v-model="commonSearchTypeValue" clearable placeholder="All" style="opacity:80%; width: 10%">
+            <div style="text-align: center;" >
+
+              <el-select v-model="commonSearchTypeValue" clearable placeholder="All"  style="opacity:80%; width: 10%;text-align: left;position:relative; z-index:9999;" :popper-append-to-body="false" >
                 <el-option
                   v-for="item in options"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value">
                 </el-option>
+
               </el-select>
               <el-input
-                style="opacity:80%;width:50%; justify-content: center;;margin-top: 4%"
+                v-if="commonSearchTypeValue === ''||commonSearchTypeValue === 'keyword'"
+                class="common_input"
+                style="opacity:80%;width:50%;margin-top: 4%"
                 placeholder="Enter something..."
                 v-model="commonInput"
                 :disabled="searching"
                 @keyup.enter.native="commonSearch"
                 clearable>
               </el-input>
+              <el-autocomplete v-if="commonSearchTypeValue === 'author'"
+                               :minlength="2" style="opacity:80%;width:50%;margin-top: 4%;text-align: left;position:relative; z-index:9999;" :popper-append-to-body="false" v-model="searchAuthor.name" :fetch-suggestions="querySearchAsync" placeholder="Enter something..."
+                               @select="handleSelect"></el-autocomplete>
+              <el-autocomplete v-if="commonSearchTypeValue === 'affiliation'"
+                               :minlength="2" style="opacity:80%;width:50%;margin-top: 4%;text-align: left;position:relative; z-index:9999;" :popper-append-to-body="false" v-model="searchAffiliation.name" :fetch-suggestions="querySearchAsync2" placeholder="Enter something..."
+                               @select="handleSelect2"></el-autocomplete>
 
               <el-button @click="commonSearch" type="primary" icon="el-icon-search" :loading="searching">SEARCH</el-button>
 
@@ -270,9 +207,12 @@
 <script>
 import {getCommonSearchResult, getAdvancedSearchResult} from '../../API/Home/HomePageAPIs'
 import {getConferencePaper, getConferencePortrait} from '../../API/Portrait/ConferencePortraitAPIs'
-import {Logout} from '../../API/User/LoginAPIs'
+import lo from '../../components/Center'
 
 export default {
+  components: {
+    lo
+  },
 
   data () {
     return {
@@ -564,19 +504,6 @@ export default {
     },
     redoHightLight () {
       document.getElementById('OASIS').style.fontSize = '70px'
-    },
-    userLogout () {
-      Logout(localStorage.getItem('token')).then((res) => {
-        localStorage.clear()
-        this.$router.push({
-          name: 'Homepage'
-        })
-      })
-    },
-    userLogin () {
-      this.$router.push({
-        name: 'Login'
-      })
     }
   },
   mounted () {
@@ -585,9 +512,6 @@ export default {
     this.getConferenceContent()
     this.getPapers()
     this.$store.dispatch('flushFun')
-    this.user.login = localStorage.getItem('flag')
-    this.user.username = localStorage.getItem('username')
-    this.user.logout = !localStorage.getItem('flag')
   }
 }
 </script>
