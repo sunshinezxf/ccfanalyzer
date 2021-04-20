@@ -125,7 +125,7 @@ export default{
       Logout(localStorage.getItem('token')).then((res) => {
         localStorage.clear()
         this.$router.push({
-          name: 'Collections'
+          name: 'Homepage'
         })
       })
     }

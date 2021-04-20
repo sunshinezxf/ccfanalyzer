@@ -234,7 +234,7 @@ export default {
         Login(Qs.stringify(ruleForm)).then((res) => {
           console.log(res)
           if (res.content !== '用户名或者密码错误') {
-            localStorage.setItem('Flag', 'isLogin')
+            localStorage.setItem('flag', true)
             localStorage.setItem('token', res.content)
             localStorage.setItem('username', ruleForm.username)
             this.$message.success({
