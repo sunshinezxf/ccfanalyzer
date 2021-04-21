@@ -18,19 +18,19 @@
             :span="2" :style="containerHeight">
             <el-menu-item index="/MyTeams">
               <i class="el-icon-menu"></i>
-              <span slot="title">我的团队</span>
+              <span slot="title">MyTeams</span>
             </el-menu-item>
             <el-menu-item index="/PersonalWarehouse">
               <i class="el-icon-menu"></i>
-              <span slot="title">个人仓库</span>
+              <span slot="title">PersonalWarehouse</span>
             </el-menu-item>
             <el-menu-item index="/Collections">
               <i class="el-icon-document"></i>
-              <span slot="title">我的收藏</span>
+              <span slot="title">MyCollections</span>
             </el-menu-item>
             <el-menu-item index="/PaperShared">
               <i class="el-icon-reading"></i>
-              <span slot="title">分享文章</span>
+              <span slot="title">PaperShared</span>
             </el-menu-item>
           </el-menu>
         </el-col>
@@ -39,16 +39,16 @@
         <el-breadcrumb separator="/" style="font-size: 32px">
           <el-breadcrumb-item :to="{ path: '/MyTeams' }">MyTeams</el-breadcrumb-item>
           <el-breadcrumb-item><a href="/">Team1</a></el-breadcrumb-item>
-          <el-button  plain style="float:right;width: 200px;font-size: 15px" @click="drawer = true" >修改成员</el-button>
-          <el-button  plain style="float:right;width: 100px;margin-right: 30px;font-size: 15px"  type="danger" :disabled="!isOwner" @click="open2">删除团队</el-button>
-          <el-button  plain style="float:right;width: 100px;margin-right: 30px;font-size: 15px"  type="info" @click="open">退出团队</el-button>
+          <el-button  plain style="float:right;width: 250px;font-size: 15px" @click="drawer = true" >Modify&nbsp;Member</el-button>
+          <el-button  plain style="float:right;width: 150px;margin-right: 30px;font-size: 15px"  type="danger" :disabled="!isOwner" @click="open2">Delete&nbsp;Team</el-button>
+          <el-button  plain style="float:right;width: 150px;margin-right: 30px;font-size: 15px"  type="info" @click="open">Exit&nbsp;Team</el-button>
         </el-breadcrumb>
         <el-divider></el-divider>
         <div>
           <el-drawer
             append-to-body="true"
             style="margin-top: 10%;text-align: center;font-size: 20px;font-weight: bold"
-            title="全部成员"
+            title="All Menmber"
             :modal="false"
             :visible.sync="drawer"
             :direction="direction"
@@ -65,10 +65,10 @@
             <el-divider></el-divider>
             <el-row style="font-weight: bold;color: grey;font-size: 14px">
               <el-col :span="12">
-                <span>姓名</span>
+                <span>Name</span>
               </el-col>
               <el-col :span="12">
-                <span>操作</span>
+                <span>Operations</span>
               </el-col>
               <el-divider></el-divider>
             </el-row>
@@ -78,7 +78,7 @@
                   <span>{{item}}</span>
                 </el-col>
                 <el-col :span="12">
-                  <el-button type="text" :disabled="!isOwner" @click.native.prevent="deleteRow(item)">移出</el-button>
+                  <el-button type="text" :disabled="!isOwner" @click.native.prevent="deleteRow(item)">Remove</el-button>
                 </el-col>
               </el-row>
             </div>
@@ -88,43 +88,43 @@
           <br>
           <h1 style="margin-left: 3%;color:black;">{{paperNum}} Papers</h1>
           <div style="text-align:right">
-            <el-button type="text" @click="dialogFormVisible = true">文章上传</el-button>
-            <el-dialog title="文章信息" :visible.sync="dialogFormVisible" align="center" :modal="false" :close-on-click-modal="false">
+            <el-button type="text" @click="dialogFormVisible = true">Upload&nbsp;Paper</el-button>
+            <el-dialog title="PaperInfo" :visible.sync="dialogFormVisible" align="center" :modal="false" :close-on-click-modal="false">
               <el-form :model="form">
-                <el-form-item label="文章标题" :label-width="formLabelWidth">
+                <el-form-item label="Title" :label-width="formLabelWidth">
                   <el-input v-model="form.title" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="文章简介" :label-width="formLabelWidth">
+                <el-form-item label="Abstract" :label-width="formLabelWidth">
                   <el-input v-model="form.abstracts" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="文章doi" :label-width="formLabelWidth">
+                <el-form-item label="Paper doi" :label-width="formLabelWidth">
                   <el-input v-model="form.doi" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="文章引用数" :label-width="formLabelWidth">
+                <el-form-item label="Citation Counts" :label-width="formLabelWidth">
                   <el-input v-model="form.citation" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="出版标题" :label-width="formLabelWidth">
+                <el-form-item label="Book_title" :label-width="formLabelWidth">
                   <el-input v-model="form.book_title" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="文章页数" :label-width="formLabelWidth">
+                <el-form-item label="PaperPages" :label-width="formLabelWidth">
                   <el-input v-model="form.paperPages" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="年份" :label-width="formLabelWidth">
+                <el-form-item label="Years" :label-width="formLabelWidth">
                   <el-input v-model="form.years" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="出版商" :label-width="formLabelWidth">
+                <el-form-item label="Publisher" :label-width="formLabelWidth">
                   <el-input v-model="form.publisher" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="url" :label-width="formLabelWidth">
+                <el-form-item label="Url" :label-width="formLabelWidth">
                   <el-input v-model="form.url" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="出版时间" :label-width="formLabelWidth">
+                <el-form-item label="PublishTime" :label-width="formLabelWidth">
                   <el-input v-model="form.time" autocomplete="off"></el-input>
                 </el-form-item>
               </el-form>
               <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="Upload(user.token, form)">确 定</el-button>
+                <el-button @click="dialogFormVisible = false">Cancel</el-button>
+                <el-button type="primary" @click="Upload(user.token, form)">Confirm</el-button>
               </div>
             </el-dialog>
           </div>
@@ -215,8 +215,8 @@
                     </el-form-item>
                   </el-form>
                   <div slot="footer" class="dialog-footer">
-                    <el-button @click="dialogForm1Visible = false">取 消</el-button>
-                    <el-button type="primary" @click="SharePapers(user.token, item.paperId, shareForm.name)">确 定</el-button>
+                    <el-button @click="dialogForm1Visible = false">Cancel</el-button>
+                    <el-button type="primary" @click="SharePapers(user.token, item.paperId, shareForm.name)">Confirm</el-button>
                   </div>
                 </el-dialog>
               </div>
@@ -325,22 +325,22 @@
       },
       deleteRow(item) {
         console.log(item)
-        this.$confirm('此操作将移出此人, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+        this.$confirm('This operation will remove this person,whether to continue?', 'Prompt', {
+          confirmButtonText: 'Confirm',
+          cancelButtonText: 'Cancel',
           type: 'warning'
         }).then(() => {
           TeamDeleteMember({token:this.user.token, member:item,team_id:this.team_id}).then((res) => {
             this.$message({
               type: 'success',
-              message: '移出成功!'
+              message: 'Remove Successfully!'
             });
             rows.splice(index, 1);
           }).catch(error => console.log(error))
         }).catch(() => {
           this.$message({
             type: 'info',
-            message: '已取消退出'
+            message: 'Cancel Remove Successfully!'
           });
         });
 
@@ -349,7 +349,7 @@
         TeamInviteMember({token:this.user.token, invitee:this.input,team_id:this.team_id}).then((res) => {
           this.$message({
             type: 'success',
-            message: '邀请成功!'
+            message: 'Invite Successfully!'
 
           });
           this.getTeamList(this.team_id)
@@ -374,40 +374,43 @@
         }).catch(error => console.log(error))
       },
       open() {
-        this.$confirm('此操作将退出团队1, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+        this.$confirm('This operation will exit this team,whether to continue?', 'Prompt', {
+          confirmButtonText: 'Confirm',
+          cancelButtonText: 'Cancel',
           type: 'warning'
         }).then(() => {
             TeamMemberQuit({token:this.user.token, team_id:this.team_id}).then((res) => {
               this.$message({
                 type: 'success',
-                message: '退出成功!'
+                message: 'Exit Successfully!'
+
               });
+              this.$router.push({path: '/MyTeams'})
             }).catch(error => console.log(error))
         }).catch(() => {
           this.$message({
             type: 'info',
-            message: '已取消退出'
+            message: 'Cancel Exit Successfully!'
           });
         });
       },
       open2() {
-        this.$confirm('此操作将删除团队1，包括所有数据, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+        this.$confirm('This operation will delete this team,whether to continue', 'Prompt', {
+          confirmButtonText: 'Confirm',
+          cancelButtonText: 'Cancel',
           type: 'warning'
         }).then(() => {
           TeamDelete({token:this.user.token, team_id:this.team_id}).then((res) => {
             this.$message({
               type: 'success',
-              message: '退出成功!'
+              message: 'Delete Successfully!'
             });
+            this.$router.push({path: '/MyTeams'})
           }).catch(error => console.log(error))
         }).catch(() => {
           this.$message({
             type: 'info',
-            message: '已取消退出'
+            message: 'Cancel Delete Successfully!'
           });
         });
       },
@@ -415,7 +418,7 @@
         console.log(row);
       },
       handleClose(done) {
-        this.$confirm('确认关闭？')
+        this.$confirm('Close？')
           .then(_ => {
             done();
           })

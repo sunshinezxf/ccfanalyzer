@@ -39,8 +39,8 @@
                    <i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item @click.native="toHome" divided>个人中心</el-dropdown-item>
-              <el-dropdown-item command="logout" divided @click.native="userLogout">退出登录</el-dropdown-item>
+              <el-dropdown-item @click.native="toHome" divided>My&nbsp;Center</el-dropdown-item>
+              <el-dropdown-item command="logout" divided @click.native="userLogout">Logout</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
@@ -111,9 +111,9 @@ export default{
       this.$router.push({path: '/Login'})
     },
     userLogout () {
-      this.$confirm('此操作将退出登录, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm('This operation will log out, whether to continue?', 'Prompt', {
+        confirmButtonText: 'Confirm',
+        cancelButtonText: 'Cancel',
         type: 'warning'
       }).then(() => {
         Logout(localStorage.getItem('token')).then((res) => {

@@ -18,19 +18,19 @@
             :span="2" :style="containerHeight">
             <el-menu-item index="/MyTeams">
               <i class="el-icon-menu"></i>
-              <span slot="title">我的团队</span>
+              <span slot="title">MyTeams</span>
             </el-menu-item>
             <el-menu-item index="/PersonalWarehouse">
               <i class="el-icon-menu"></i>
-              <span slot="title">个人仓库</span>
+              <span slot="title">PersonalWarehouse</span>
             </el-menu-item>
             <el-menu-item index="/Collections">
               <i class="el-icon-document"></i>
-              <span slot="title">我的收藏</span>
+              <span slot="title">MyCollections</span>
             </el-menu-item>
             <el-menu-item index="/PaperShared">
               <i class="el-icon-reading"></i>
-              <span slot="title">分享文章</span>
+              <span slot="title">PaperShared</span>
             </el-menu-item>
           </el-menu>
         </el-col>
@@ -40,43 +40,43 @@
           <br>
           <h1 style="margin-left: 3%;color:black;">{{paperNum}} Papers</h1>
           <div style="text-align:right">
-            <el-button type="text" @click="dialogFormVisible = true">文章上传</el-button>
-            <el-dialog title="文章信息" :visible.sync="dialogFormVisible" align="center" :modal="false" :close-on-click-modal="false">
+            <el-button type="text" @click="dialogFormVisible = true">Upload&nbsp;Paper</el-button>
+            <el-dialog title="PaperInfo" :visible.sync="dialogFormVisible" align="center" :modal="false" :close-on-click-modal="false">
               <el-form :model="form">
-                <el-form-item label="文章标题" :label-width="formLabelWidth">
+                <el-form-item label="Title" :label-width="formLabelWidth">
                   <el-input v-model="form.title" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="文章简介" :label-width="formLabelWidth">
+                <el-form-item label="Abstract" :label-width="formLabelWidth">
                   <el-input v-model="form.abstracts" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="文章doi" :label-width="formLabelWidth">
+                <el-form-item label="Paper doi" :label-width="formLabelWidth">
                   <el-input v-model="form.doi" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="文章引用数" :label-width="formLabelWidth">
+                <el-form-item label="Citation Counts" :label-width="formLabelWidth">
                   <el-input v-model="form.citation" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="出版标题" :label-width="formLabelWidth">
+                <el-form-item label="Book_title" :label-width="formLabelWidth">
                   <el-input v-model="form.book_title" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="文章页数" :label-width="formLabelWidth">
+                <el-form-item label="PaperPages" :label-width="formLabelWidth">
                   <el-input v-model="form.paperPages" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="年份" :label-width="formLabelWidth">
+                <el-form-item label="Years" :label-width="formLabelWidth">
                   <el-input v-model="form.years" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="出版商" :label-width="formLabelWidth">
+                <el-form-item label="Publisher" :label-width="formLabelWidth">
                   <el-input v-model="form.publisher" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="url" :label-width="formLabelWidth">
-                <el-input v-model="form.url" autocomplete="off"></el-input>
-              </el-form-item>
-                <el-form-item label="出版时间" :label-width="formLabelWidth">
+                <el-form-item label="Url" :label-width="formLabelWidth">
+                  <el-input v-model="form.url" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="PublishTime" :label-width="formLabelWidth">
                   <el-input v-model="form.time" autocomplete="off"></el-input>
                 </el-form-item>
               </el-form>
               <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="Upload(user.token, form)">确 定</el-button>
+                <el-button @click="dialogFormVisible = false">Cancel</el-button>
+                <el-button type="primary" @click="Upload(user.token, form)">Confirm</el-button>
               </div>
             </el-dialog>
           </div>
@@ -121,54 +121,54 @@
               </div>
               <div  style="text-align:right">
                 <el-button type="primary" icon="el-icon-edit" @click="dialogForm2Visible = true"></el-button>
-                <el-dialog title="文章信息" :visible.sync="dialogForm2Visible" align="center" :modal="false" :close-on-click-modal="false">
+                <el-dialog title="PaperInfo" :visible.sync="dialogForm2Visible" align="center" :modal="false" :close-on-click-modal="false">
                   <el-form :model="form">
-                    <el-form-item label="文章标题" :label-width="formLabelWidth">
+                    <el-form-item label="Title" :label-width="formLabelWidth">
                       <el-input v-model="form.title" autocomplete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="文章简介" :label-width="formLabelWidth">
+                    <el-form-item label="Abstract" :label-width="formLabelWidth">
                       <el-input v-model="form.abstracts" autocomplete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="文章doi" :label-width="formLabelWidth">
+                    <el-form-item label="Paper doi" :label-width="formLabelWidth">
                       <el-input v-model="form.doi" autocomplete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="文章引用数" :label-width="formLabelWidth">
+                    <el-form-item label="Citation Counts" :label-width="formLabelWidth">
                       <el-input v-model="form.citation" autocomplete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="出版标题" :label-width="formLabelWidth">
+                    <el-form-item label="Book_title" :label-width="formLabelWidth">
                       <el-input v-model="form.book_title" autocomplete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="文章页数" :label-width="formLabelWidth">
+                    <el-form-item label="PaperPages" :label-width="formLabelWidth">
                       <el-input v-model="form.paperPages" autocomplete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="年份" :label-width="formLabelWidth">
+                    <el-form-item label="Years" :label-width="formLabelWidth">
                       <el-input v-model="form.years" autocomplete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="出版商" :label-width="formLabelWidth">
+                    <el-form-item label="Publisher" :label-width="formLabelWidth">
                       <el-input v-model="form.publisher" autocomplete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="url" :label-width="formLabelWidth">
+                    <el-form-item label="Url" :label-width="formLabelWidth">
                       <el-input v-model="form.url" autocomplete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="出版时间" :label-width="formLabelWidth">
+                    <el-form-item label="PublishTime" :label-width="formLabelWidth">
                       <el-input v-model="form.time" autocomplete="off"></el-input>
                     </el-form-item>
                   </el-form>
                   <div slot="footer" class="dialog-footer">
-                    <el-button @click="dialogForm2Visible = false">取 消</el-button>
-                    <el-button type="primary" @click="UpdatePaper(user.token, form)">确 定</el-button>
+                    <el-button @click="dialogFormVisible = false">Cancel</el-button>
+                    <el-button type="primary" @click="Upload(user.token, form)">Confirm</el-button>
                   </div>
                 </el-dialog>
                 <el-button type="primary" icon="el-icon-share" @click="dialogForm1Visible = true"></el-button>
-                <el-dialog title="文章分享" :visible.sync="dialogForm1Visible" align="center" :modal="false" :close-on-click-modal="false">
+                <el-dialog title="Paper Share" :visible.sync="dialogForm1Visible" align="center" :modal="false" :close-on-click-modal="false">
                   <el-form :model="shareForm">
-                    <el-form-item label="用户名" :label-width="formLabelWidth">
+                    <el-form-item label="UserName" :label-width="formLabelWidth">
                       <el-input v-model="shareForm.name" autocomplete="off"></el-input>
                     </el-form-item>
                   </el-form>
                   <div slot="footer" class="dialog-footer">
-                    <el-button @click="dialogForm1Visible = false">取 消</el-button>
-                    <el-button type="primary" @click="SharePapers(user.token, item.paperId, shareForm.name)">确 定</el-button>
+                    <el-button @click="dialogForm1Visible = false">Cancel</el-button>
+                    <el-button type="primary" @click="SharePapers(user.token, item.paperId, shareForm.name)">Confirm</el-button>
                   </div>
                 </el-dialog>
               </div>

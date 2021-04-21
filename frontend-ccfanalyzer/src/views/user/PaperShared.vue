@@ -18,19 +18,19 @@
           :span="2" :style="containerHeight">
           <el-menu-item index="/MyTeams">
             <i class="el-icon-menu"></i>
-            <span slot="title">我的团队</span>
+            <span slot="title">MyTeams</span>
           </el-menu-item>
           <el-menu-item index="/PersonalWarehouse">
             <i class="el-icon-menu"></i>
-            <span slot="title">个人仓库</span>
+            <span slot="title">PersonalWarehouse</span>
           </el-menu-item>
           <el-menu-item index="/Collections">
             <i class="el-icon-document"></i>
-            <span slot="title">我的收藏</span>
+            <span slot="title">MyCollections</span>
           </el-menu-item>
           <el-menu-item index="/PaperShared">
             <i class="el-icon-reading"></i>
-            <span slot="title">分享文章</span>
+            <span slot="title">PaperShared</span>
           </el-menu-item>
         </el-menu>
       </el-col>

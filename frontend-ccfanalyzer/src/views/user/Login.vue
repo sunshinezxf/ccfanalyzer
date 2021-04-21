@@ -44,19 +44,19 @@
       <div align="center">
         <el-card class="box-card" style="margin-top: 4%" >
           <div slot="header" class="clearfix" style="font-size: 20px">
-            <span>用户登录</span>
+            <span>Login</span>
           </div>
           <div class="text item">
             <el-form :model="ruleForm" class="demo-ruleForm">
-              <el-form-item label="用户名" prop="username">
+              <el-form-item label="UserName" prop="username">
                 <el-input v-model="ruleForm.username"></el-input>
               </el-form-item>
-              <el-form-item label="密码" prop="password">
+              <el-form-item label="Password" prop="password">
                 <el-input type="password" v-model="ruleForm.password"></el-input>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" @click="login(ruleForm)" >登录</el-button>
-                <el-button type="primary" @click="register()" >注册</el-button>
+                <el-button type="primary" @click="login(ruleForm)" >Login</el-button>
+                <el-button type="primary" @click="register()" >Register</el-button>
               </el-form-item>
             </el-form>
           </div>
@@ -233,7 +233,7 @@ export default {
       } else {
         Login(Qs.stringify(ruleForm)).then((res) => {
           console.log(res)
-          if (res.content !== '用户名或者密码错误') {
+          if (res.content !== 'Incorrect Username or Password') {
             localStorage.setItem('flag', true)
             localStorage.setItem('token', res.content)
             localStorage.setItem('username', ruleForm.username)

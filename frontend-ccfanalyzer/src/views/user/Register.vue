@@ -44,22 +44,22 @@
       <div align="center">
         <el-card class="box-card" style="margin-top: 4%" >
           <div slot="header" class="clearfix" style="font-size: 20px">
-            <span >用户注册</span>
+            <span >Register</span>
           </div>
           <div class="text item">
             <el-form :model="registerForm" class="demo-ruleForm">
-              <el-form-item label="用户名" prop="username" >
+              <el-form-item label="Username" prop="username" >
                 <el-input v-model="registerForm.username"></el-input>
               </el-form-item>
-              <el-form-item label="密码" prop="password">
+              <el-form-item label="Password" prop="password">
                 <el-input type="password" v-model="registerForm.password" ></el-input>
               </el-form-item>
-              <el-form-item label="确认密码" prop="checkPassword">
+              <el-form-item label="Confirm Password" prop="checkPassword">
                 <el-input type="password" v-model="registerForm.checkPass" ></el-input>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" @click="resetForm('ruleForm')">重置</el-button>
-                <el-button type="primary" @click="register(registerForm)" >注册</el-button>
+                <el-button type="primary" @click="resetForm('ruleForm')">Reset</el-button>
+                <el-button type="primary" @click="register(registerForm)" >Register</el-button>
               </el-form-item>
             </el-form>
           </div>
@@ -244,7 +244,7 @@ export default {
         Register(ruleForm.username, ruleForm.password).then((res) => {
           if (res.content === '成功注册！') {
             this.$message.success({
-              message: '注册成功，请重新登录',
+              message: 'Registered successfully, please log in again',
               center: true
             })
             this.$router.push({
@@ -252,7 +252,7 @@ export default {
             })
           } else {
             this.$message.error({
-              message: res.content,
+              message: 'Registered failed, please re-register',
               center: true
             })
           }
