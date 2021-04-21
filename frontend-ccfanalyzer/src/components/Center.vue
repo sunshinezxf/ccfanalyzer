@@ -6,12 +6,12 @@
         <div class="grid-content2 bg-purple2" style="color: white;text-align:center">
 
           <el-row>
-                  <span class="avatar-dropdown" @click="toHomepage">
+                  <dic class="avatar-dropdown" @click="toHomepage">
                     <i class="el-icon-s-home" ></i>
-                    <span class="u" style="font-size: 20px;color: grey;text-align: center"  @click="toHomepage">
+                    <div class="u" style="font-size: 20px;color: grey;text-align: center"  @click="toHomepage">
                     &nbsp;&nbsp;HomePage &nbsp;
-                 </span>
-                  </span>
+                 </div>
+                  </dic>
           </el-row>
 
         </div>
@@ -90,8 +90,7 @@ export default{
   data () {
     return {
       user: {
-        login: false,
-        logout: false,
+        flag: false,
         username: 'yry',
         password: '',
         id: '',
@@ -105,29 +104,35 @@ export default{
       this.$router.push({path: '/'})
     },
     toHome () {
-      router.beforeEach((to,from,next)=>{
-        if(to.path ==='/Login'){
-          next();
-        }else {
-          let token = localStorage.getItem('userInfo');
-          if(token === null || token === ''){
-            next('/Login');
-          }else {
-            next('/Collections');
-          }
-        }
-      });
+
+      this.$router.push({path: '/Collections'})
     },
     toLogin () {
       this.$router.push({path: '/Login'})
     },
     userLogout () {
-      Logout(localStorage.getItem('token')).then((res) => {
-        localStorage.clear()
-        this.$router.push({
-          name: 'Homepage'
+      this.$confirm('此操作将退出登录, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        Logout(localStorage.getItem('token')).then((res) => {
+          localStorage.clear()
+          this.$router.push({
+            name: 'Homepage'
+          })
         })
-      })
+        this.$message({
+          type: 'success',
+          message: 'Logout Successfully!'
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: 'Cancel'
+        });
+      });
+
     }
   },
   mounted () {

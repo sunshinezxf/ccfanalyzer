@@ -24,6 +24,20 @@ VueRouter.prototype.push = function push (location) {
   return routerPush.call(this, location).catch(error => error)
 }
 
+router.beforeEach((to, from, next) => {
+  if (to.meta.requireAuth) {
+    if (JSON.parse(localStorage.getItem("flag"))) {
+      next();
+    } else {
+      next({
+        path: "/Login"//指向为你的登录界面
+      });
+    }
+  } else {
+    next();
+  }
+});
+
 Vue.prototype.$axios = axios;
 axios.defaults.withCredentials = true
 /* eslint-disable no-new */
