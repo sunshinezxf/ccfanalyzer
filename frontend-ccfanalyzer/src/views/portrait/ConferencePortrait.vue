@@ -65,7 +65,7 @@
             <el-card style="height:320px">
               <el-row class="box-card">
                 <div style="margin-left: 2%;">
-                  <el-row><div style="font-size:40px">{{ConferencePor.name}}</div></el-row><br><br><br>
+                  <el-row><div style="font-size:30px">{{ConferencePor.name}}</div></el-row><br><br><br>
                   <el-row>
                     <el-col span="6">
                       <div style="font-size:25px">{{ConferencePor.articleNum}}</div>
@@ -94,14 +94,14 @@
             <div class="col-md-2 text-center" v-for="item in PaperList" :key="item.title">
               <el-card style=" height: 100%">
                 <div style="margin-left: 2%;margin-left: 2%">
-                  <el-link style="font-size: 27px;color: black" @click="getContent(item.id)"><strong>{{item.name}}</strong></el-link><br>
+                  <el-link style="font-size: 27px;color: black" @click="getContent(item.paperId)"><strong>{{item.title}}</strong></el-link><br>
                   <el-row>
               <span class="affcon" style="font-size: 17px;color: dimgray">
                 Affiliations:&nbsp;&nbsp;&nbsp;
-                <span  class="divider" v-if="item.affiliations.length==0">None</span>
-              <span  v-for="(aff,index) in item.affiliations" :key="index">
+                <span  class="divider" v-if="item.authors.length==0">None</span>
+              <span  v-for="(aff,index) in item.authors" :key="index">
                 <span role="separator" class="divider" v-if="index != 0">,</span>
-                <el-link style="font-size: 17px;color: cornflowerblue;font-style:italic"  :key='aff' @click="searchAffiliationPor(aff.id)">{{aff.name}}</el-link>
+                <el-link style="font-size: 17px;color: cornflowerblue;font-style:italic"  :key='aff' @click="searchAffiliationPor(aff.affiliations[0].id)">{{aff.affiliations[0].name}}</el-link>
               </span>
               </span>
                   </el-row>
@@ -115,7 +115,7 @@
               </span>
               </span>
                   </el-row>
-                  <span class="sum" style="font-size: 15px;color: dimgray;margin-top: 5px;margin-bottom: 5px" v-if="item.summary" >{{item.summary}}</span>
+                  <span class="sum" style="font-size: 15px;color: dimgray;margin-top: 5px;margin-bottom: 5px" v-if="item.abstract" >{{item.abstract}}</span>
                   <el-row>
               <span class="affcon" style="font-size: 17px;color: dimgray">
                 Keywords:&nbsp;&nbsp;&nbsp;
@@ -271,15 +271,23 @@ export default {
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover'
       },
-
       PaperList: [{
+        id: 2,
+        name: 'a',
         paperId: 0,
         title: 'Learning Styles and Inclusion.',
-        authors: ['Gavin Reid', 'YRY'],
-        affiliations: ['NJU', 'NJU'],
+        authors: [{
+          id: 1,
+          name: 'zjh',
+          affiliations: [{
+            id: 1,
+            name: 'NJU'
+          }]
+        }],
         publication: 'IEEE',
-        summary: 'Learning Models and the Learning Cycle Learning Differences and Learning Styles The Role of the Learning Environment Background to Learning Styles Assessment of Learning Styles Learning Styles Learning and Teaching The Inclusive School Characteristics and Challenges Learning Styles in the Inclusive Context Promoting Effective Learning Learning Styles Strategies and Insights',
-        keywords: ['Educational technology']
+        abstract: 'Learning Models and the Learning Cycle Learning Differences and Learning Styles The Role of the Learning Environment Background to Learning Styles Assessment of Learning Styles Learning Styles Learning and Teaching The Inclusive School Characteristics and Challenges Learning Styles in the Inclusive Context Promoting Effective Learning Learning Styles Strategies and Insights',
+        keywords: ['Educational technology'],
+        citationCnt: 0
       }]
     }
   },
@@ -291,9 +299,9 @@ export default {
         let total = 0
         if (this.commonSearchTypeValue === '') { // type为All
           getCommonSearchResult(this.commonInput, 0).then((res) => {
-            if (res.status.code === '0000') {
-              paperList = res.data.paperBriefInfoVOList
-              total = res.data.totalNum
+            if (res.success) {
+              paperList = res.content.paperBriefInfoVOList
+              total = res.content.totalNum
               this.searching = false
               let newpage = this.$router.resolve({
                 name: 'SearchPaper',
@@ -319,9 +327,9 @@ export default {
             let paperList = []
             let total = 0
             getAdvancedSearchResult(this.advSearchForm).then((res) => {
-              if (res.status.code === '0000') {
-                paperList = res.data.paperBriefInfoVOList
-                total = res.data.totalNum
+              if (res.success) {
+                paperList = res.content.paperBriefInfoVOList
+                total = res.content.totalNum
                 this.searching = false
                 let newpage = this.$router.resolve({
                   name: 'SearchPaper',
@@ -346,9 +354,9 @@ export default {
             let paperList = []
             let total = 0
             getAdvancedSearchResult(this.advSearchForm).then((res) => {
-              if (res.status.code === '0000') {
-                paperList = res.data.paperBriefInfoVOList
-                total = res.data.totalNum
+              if (res.success) {
+                paperList = res.content.paperBriefInfoVOList
+                total = res.content.totalNum
                 this.searching = false
                 let newpage = this.$router.resolve({
                   name: 'SearchPaper',
@@ -373,9 +381,9 @@ export default {
             let paperList = []
             let total = 0
             getAdvancedSearchResult(this.advSearchForm).then((res) => {
-              if (res.status.code === '0000') {
-                paperList = res.data.paperBriefInfoVOList
-                total = res.data.totalNum
+              if (res.success) {
+                paperList = res.content.paperBriefInfoVOList
+                total = res.content.totalNum
                 this.searching = false
                 let newpage = this.$router.resolve({
                   name: 'SearchPaper',
@@ -454,8 +462,8 @@ export default {
       let paperList = []
       let total = 0
       getAdvancedSearchResult(this.advSearchForm).then((res) => {
-        paperList = res.data.paperBriefInfoVOList
-        total = res.data.totalNum
+        paperList = res.content.paperBriefInfoVOList
+        total = res.content.totalNum
         let newpage = this.$router.resolve({
           name: 'SearchPaper',
           query: {
@@ -470,8 +478,9 @@ export default {
     },
     handleCurrentChange (val) {
       this.page = val - 1
-      getConferencePaper(this.ConferencePor.name, this.page).then((res) => {
-        this.PaperList = res.data
+      getConferencePaper(this.ConferencePor.id, this.page).then((res) => {
+        console.log(res)
+        this.PaperList = res.content
       })
       document.querySelector('#link').scrollIntoView(true)
     },
@@ -479,9 +488,10 @@ export default {
     },
     getConferenceContent () {
       this.loading_chart = false
-      getConferencePortrait(this.ConferencePor.name).then((res) => {
+      getConferencePortrait(this.ConferencePor.id).then((res) => {
         console.log(res)
-        this.ConferencePor = res.data
+        this.ConferencePor = res.content
+        console.log(this.ConferencePor.articleNum)
         if (this.ConferencePor.articleNum > 20) {
           this.paperNum = 20
         } else {
@@ -490,8 +500,8 @@ export default {
       })
     },
     getPapers () {
-      getConferencePaper(this.ConferencePor.name, 0).then((res) => {
-        this.PaperList = res.data
+      getConferencePaper(this.ConferencePor.id, 0).then((res) => {
+        this.PaperList = res.content
         this.loading_chart = false
       })
     },
@@ -508,7 +518,7 @@ export default {
   },
   mounted () {
     let name = this.$route.query.name
-    this.ConferencePor.name = name
+    this.ConferencePor.id = name
     this.getConferenceContent()
     this.getPapers()
     this.$store.dispatch('flushFun')

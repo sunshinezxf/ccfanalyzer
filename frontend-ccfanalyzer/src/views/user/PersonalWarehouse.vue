@@ -86,76 +86,59 @@
                 <el-link style="font-size: 27px;color: black" @click="getContent(item.paperId)"><strong>{{item.title}}</strong></el-link><br>
                 <el-row>
               <span class="affcon" style="font-size: 17px;color: dimgray">
-                Affiliations:&nbsp;&nbsp;&nbsp;
-                <span  class="divider" v-if="item.affiliations.length==0">None</span>
-              <span  v-for="(aff,index) in item.affiliations" :key="index">
-                <span role="separator" class="divider" v-if="index != 0">,</span>
-                <el-link style="font-size: 17px;color: cornflowerblue;font-style:italic"  :key='aff' @click="searchAffiliationPor(aff.affiliationId)">{{aff.name}}</el-link>
-              </span>
-              </span>
-                </el-row>
-                <el-row>
-              <span class="affcon" style="font-size: 17px;color: dimgray">
                 Authors:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <span  class="divider" v-if="item.authors.length==0">None</span>
               <span v-for="(author,index) in item.authors" :key="index">
                 <span role="separator" class="divider" v-if="index != 0">,</span>
-              <el-link style="font-size: 17px;color: cornflowerblue;font-style:italic" :key="author" @click="searchAuthorPor(author.authorId)">{{author.name}}</el-link>
+              <span style="font-size: 17px;color: dimgray;font-style:italic" :key="author" >{{author}}</span>
               </span>
               </span>
                 </el-row>
-                <span class="sum" style="font-size: 15px;color: dimgray;margin-top: 5px;margin-bottom: 5px" v-if="item.summary" >{{item.summary}}</span>
+                <span class="sum" style="font-size: 15px;color: dimgray;margin-top: 5px;margin-bottom: 5px" v-if="item.abstracts" >{{item.abstracts}}</span>
                 <el-row>
-              <span class="affcon" style="font-size: 17px;color: dimgray">
-                Keywords:&nbsp;&nbsp;&nbsp;
-                <span  class="divider" v-if="item.keywords.length==0">None</span>
-              <span v-for="(keyword,index) in item.keywords" :key="index">
-                <span role="separator" class="divider" v-if="index != 0">,</span>
-              <el-link style="font-size: 17px;color: cornflowerblue;font-style:italic" :key="keyword" @click="searchByKeyword(keyword)">{{keyword}}</el-link>
-              </span>
-                </span>
-                </el-row>
-                <el-row>
-                  <span style="font-size: 17px;color: dimgray">Publication:&nbsp;&nbsp;<el-link style="font-size: 17px;color: cornflowerblue;font-style:italic" @click="searchConferencePor(item.publication)">{{item.publication}}</el-link></span><br>
+                  <span style="font-size: 17px;color: dimgray">Publication:&nbsp;&nbsp;<el-link style="font-size: 17px;color: cornflowerblue;font-style:italic">{{item.publisher}}</el-link></span><br>
                 </el-row>
               </div>
               <div  style="text-align:right">
                 <el-button type="primary" icon="el-icon-edit" @click="dialogForm2Visible = true"></el-button>
                 <el-dialog title="PaperInfo" :visible.sync="dialogForm2Visible" align="center" :modal="false" :close-on-click-modal="false">
-                  <el-form :model="form">
+                  <el-form :model="modifyForm">
                     <el-form-item label="Title" :label-width="formLabelWidth">
-                      <el-input v-model="form.title" autocomplete="off"></el-input>
+                      <el-input v-model="modifyForm.title" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="Authors" :label-width="formLabelWidth">
+                      <el-input v-model="modifyForm.authors" autocomplete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="Abstract" :label-width="formLabelWidth">
-                      <el-input v-model="form.abstracts" autocomplete="off"></el-input>
+                      <el-input v-model="modifyForm.abstracts" autocomplete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="Paper doi" :label-width="formLabelWidth">
-                      <el-input v-model="form.doi" autocomplete="off"></el-input>
+                      <el-input v-model="modifyForm.doi" autocomplete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="Citation Counts" :label-width="formLabelWidth">
-                      <el-input v-model="form.citation" autocomplete="off"></el-input>
+                      <el-input v-model="modifyForm.citation" autocomplete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="Book_title" :label-width="formLabelWidth">
-                      <el-input v-model="form.book_title" autocomplete="off"></el-input>
+                      <el-input v-model="modifyForm.book_title" autocomplete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="PaperPages" :label-width="formLabelWidth">
-                      <el-input v-model="form.paperPages" autocomplete="off"></el-input>
+                      <el-input v-model="modifyForm.paperPages" autocomplete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="Years" :label-width="formLabelWidth">
-                      <el-input v-model="form.years" autocomplete="off"></el-input>
+                      <el-input v-model="modifyForm.years" autocomplete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="Publisher" :label-width="formLabelWidth">
-                      <el-input v-model="form.publisher" autocomplete="off"></el-input>
+                      <el-input v-model="modifyForm.publisher" autocomplete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="Url" :label-width="formLabelWidth">
-                      <el-input v-model="form.url" autocomplete="off"></el-input>
+                      <el-input v-model="modifyForm.url" autocomplete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="PublishTime" :label-width="formLabelWidth">
-                      <el-input v-model="form.time" autocomplete="off"></el-input>
+                      <el-input v-model="modifyForm.time" autocomplete="off"></el-input>
                     </el-form-item>
                   </el-form>
                   <div slot="footer" class="dialog-footer">
-                    <el-button @click="dialogFormVisible = false">Cancel</el-button>
+                    <el-button @click="dialogForm2Visible = false">Cancel</el-button>
                     <el-button type="primary" @click="Upload(user.token, form)">Confirm</el-button>
                   </div>
                 </el-dialog>
@@ -181,7 +164,7 @@
 </template>
 
 <script>
-import {PaperUpload, PaperShare, PaperUpdate} from '../../API/User/PersonalWarehouseAPIs'
+import {PaperUpload, PaperShare, PaperUpdate, PaperInfo} from '../../API/User/PersonalWarehouseAPIs'
 import lo from '../../components/Center'
 
 export default {
@@ -204,42 +187,60 @@ export default {
       containerHeight: {
         height: ''
       },
-      paperNum: 8,
+      paperNum: '',
       PaperList: [
         {
-          paperId: 0,
-          title: 'Learning Styles and Inclusion.',
           authors: [{
-            name: 'apple',
-            id: 1
+            name: 'apple'
           }, {
-            name: 'bear',
-            id: 2
+            name: 'bear'
           }],
-          affiliations: [{
-            name: 'NJU',
-            id: 1
-          }, {
-            name: 'ZJU',
-            id: 2
-          }],
-          publication: 'IEEE',
-          summary: 'Learning Models and the Learning Cycle Learning Differences and Learning Styles The Role of the Learning Environment Background to Learning Styles Assessment of Learning Styles Learning Styles Learning and Teaching The Inclusive School Characteristics and Challenges Learning Styles in the Inclusive Context Promoting Effective Learning Learning Styles Strategies and Insights',
-          keywords: ['Educational technology']
+          abstracts: 'Learning Models and the Learning Cycle Learning Differences and Learning Styles The Role of the Learning Environment Background to Learning Styles Assessment of Learning Styles Learning Styles Learning and Teaching The Inclusive School Characteristics and Challenges Learning Styles in the Inclusive Context Promoting Effective Learning Learning Styles Strategies and Insights',
+          bib_source: '',
+          bib_url: '',
+          book_title: '',
+          citation: '',
+          doi: '',
+          pages: '',
+          paper_id: '',
+          publisher: '',
+          time: '',
+          title: '',
+          url: '',
+          year: '',
         }
       ],
       dialogFormVisible: false,
       form: {
+        authors: [],
         title: '',
         abstracts: '',
         doi: '',
         citation: '',
         book_title: '',
-        paperPages: '',
-        years: '',
+        pages: '',
+        year: '',
         publisher: '',
         url: '',
-        time: ''
+        time: '',
+        bib_url: '',
+        bib_source: ''
+      },
+      modifyForm: {
+        paper_id: '',
+        authors: [],
+        title: '',
+        abstracts: '',
+        doi: '',
+        citation: '',
+        book_title: '',
+        pages: '',
+        publisher: '',
+        year: '',
+        url: '',
+        time: '',
+        bib_url: '',
+        bib_source: ''
       },
       formLabelWidth: '120px',
       shareForm: {
@@ -252,6 +253,7 @@ export default {
   mounted () {
     this.user.username = this.user.username = localStorage.getItem('username')
     this.user.token = localStorage.getItem('token')
+    this.getPersonalPaper()
   },
   created () {
     var docHeight = document.documentElement.clientHeight
@@ -314,6 +316,12 @@ export default {
           message: 'Update Successful',
           center: true
         })
+      })
+    },
+    getPersonalPaper () {
+      PaperInfo(localStorage.getItem('token')).then((res) => {
+        console.log(res)
+        this.PaperList = res.content
       })
     }
   }

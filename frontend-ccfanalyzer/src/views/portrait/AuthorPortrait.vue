@@ -650,9 +650,9 @@ export default {
         let total = 0
         if (this.commonSearchTypeValue === '') { // type为All
           getCommonSearchResult(this.commonInput, 0).then((res) => {
-            if (res.status.code === '0000') {
-              paperList = res.data.paperBriefInfoVOList
-              total = res.data.totalNum
+            if (res.success) {
+              paperList = res.content.paperBriefInfoVOList
+              total = res.content.totalNum
               this.searching = false
               let newpage = this.$router.resolve({
                 name: 'SearchPaper',
@@ -678,9 +678,9 @@ export default {
             let paperList = []
             let total = 0
             getAdvancedSearchResult(this.advSearchForm).then((res) => {
-              if (res.status.code === '0000') {
-                paperList = res.data.paperBriefInfoVOList
-                total = res.data.totalNum
+              if (res.success) {
+                paperList = res.content.paperBriefInfoVOList
+                total = res.content.totalNum
                 this.searching = false
                 let newpage = this.$router.resolve({
                   name: 'SearchPaper',
@@ -705,9 +705,9 @@ export default {
             let paperList = []
             let total = 0
             getAdvancedSearchResult(this.advSearchForm).then((res) => {
-              if (res.status.code === '0000') {
-                paperList = res.data.paperBriefInfoVOList
-                total = res.data.totalNum
+              if (res.success) {
+                paperList = res.content.paperBriefInfoVOList
+                total = res.content.totalNum
                 this.searching = false
                 let newpage = this.$router.resolve({
                   name: 'SearchPaper',
@@ -732,9 +732,9 @@ export default {
             let paperList = []
             let total = 0
             getAdvancedSearchResult(this.advSearchForm).then((res) => {
-              if (res.status.code === '0000') {
-                paperList = res.data.paperBriefInfoVOList
-                total = res.data.totalNum
+              if (res.success) {
+                paperList = res.content.paperBriefInfoVOList
+                total = res.content.totalNum
                 this.searching = false
                 let newpage = this.$router.resolve({
                   name: 'SearchPaper',
@@ -813,8 +813,8 @@ export default {
       let paperList = []
       let total = 0
       getAdvancedSearchResult(this.advSearchForm).then((res) => {
-        paperList = res.data.paperBriefInfoVOList
-        total = res.data.totalNum
+        paperList = res.content.paperBriefInfoVOList
+        total = res.content.totalNum
         let newpage = this.$router.resolve({
           name: 'SearchPaper',
           query: {
@@ -838,6 +838,7 @@ export default {
     },
     getAuthorContent () {
       getAuthorPortrait(this.AuPor.authorId).then((res) => {
+        console.log(res)
         this.AuPor = res.content
 
         if (this.AuPor.articleNum > 20) {
@@ -856,6 +857,7 @@ export default {
     },
     getValue (authorId) {
       getAuthorValue(authorId).then((res) => {
+        console.log(res)
         this.aveArticleNum = res.content.aveArticleNum
         this.maxArticleNum = res.content.maxArticleNum
         this.aveCitationNum = res.content.aveCitationNum
@@ -941,7 +943,7 @@ export default {
             type: 'radar',
             data: [
               {
-                value: [this.AuPor.articleNum, this.AuPor.articleCitationNum, this.AuPor.AuthorCitation, this.AuPor.researchRelation, this.AuPor.YearArticleNum],
+                value: [this.AuPor.articleNum, this.AuPor.articleCitationNum, this.maxAuthorCitation, this.maxRelation, this.maxYearArticleNum],
                 name: 'Statistics'
               }, {
                 value: [this.aveArticleNum, this.aveCitationNum, this.aveAuthorCitation, this.aveRelation, this.aveYearArticleNum],

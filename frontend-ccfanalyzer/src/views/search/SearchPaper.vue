@@ -100,7 +100,7 @@
                 </span>
             </el-row>
               <el-row>
-                <span style="font-size: 17px;color: dimgray">Publication:&nbsp;&nbsp;<el-link style="font-size: 17px;color: cornflowerblue;font-style:italic" @click="searchConferencePor(item.publication)">{{item.publication}}</el-link></span><br>
+                <span style="font-size: 17px;color: dimgray">Publication:&nbsp;&nbsp;<el-link style="font-size: 17px;color: cornflowerblue;font-style:italic" @click="searchConferencePor(item.meeting_id)">{{item.publication}}</el-link></span><br>
               </el-row>
          </div>
           </el-card>
@@ -189,7 +189,8 @@
           affiliations: ['NJU', 'NJU'],
           publication: 'IEEE',
           summary: 'Learning Models and the Learning Cycle Learning Differences and Learning Styles The Role of the Learning Environment Background to Learning Styles Assessment of Learning Styles Learning Styles Learning and Teaching The Inclusive School Characteristics and Challenges Learning Styles in the Inclusive Context Promoting Effective Learning Learning Styles Strategies and Insights',
-          keywords: ['Educational technology']
+          keywords: ['Educational technology'],
+          meeting_id: ''
         }
       ]
     }
@@ -414,11 +415,11 @@
       })
       window.open(newpage.href, '_blank')
     },
-     searchConferencePor (name) {
+     searchConferencePor (meetingId) {
       let newpage = this.$router.resolve({
         name: 'ConferencePortrait',
         query: {
-          name: name
+          name: meetingId
         }
       })
       window.open(newpage.href, '_blank')

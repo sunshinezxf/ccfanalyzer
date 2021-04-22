@@ -233,7 +233,7 @@ export default {
       } else {
         Login(Qs.stringify(ruleForm)).then((res) => {
           console.log(res)
-          if (res.content !== 'Incorrect Username or Password') {
+          if (res.content !== '用户名或者密码错误') {
             localStorage.setItem('flag', true)
             localStorage.setItem('token', res.content)
             localStorage.setItem('username', ruleForm.username)
@@ -246,7 +246,7 @@ export default {
             })
           } else {
             this.$message.error({
-              message: res.content,
+              message: 'Incorrect Username or Password',
               center: true
             })
           }
