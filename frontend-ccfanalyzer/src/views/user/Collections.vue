@@ -79,7 +79,7 @@
               </el-row>
             </div>
            <div  style="text-align:right">
-             <el-button type="primary" icon="el-icon-delete" @click="deletePaper(user.id, item.paperId)"></el-button>
+             <el-button type="primary" icon="el-icon-delete" @click="deletePaper(user.token, item.paperId)"></el-button>
            </div>
           </el-card>
         </div>
@@ -176,6 +176,7 @@ export default {
           message: res.content,
           center: true
         })
+        this.$router.go(0)
       })
     },
     getContent (e) {

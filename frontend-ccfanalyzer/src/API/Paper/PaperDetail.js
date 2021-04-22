@@ -17,5 +17,5 @@ export const getPaperDetailref = (paperId) => {
 
 // 收藏该文章
 export const paperCollection = (params) => {
-  return axios.post('/user/collection' + params).then(res => res.data)
+  return axios.post('/user/collection', params).then(res => res.data)
 }

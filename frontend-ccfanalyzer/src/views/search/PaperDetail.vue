@@ -616,6 +616,7 @@
           paper_id: paperId
         }
         paperCollection(Qs.stringify(params)).then((res) => {
+          console.log(res)
           this.$message.success({
             message: 'Collection Successful',
             center: true
