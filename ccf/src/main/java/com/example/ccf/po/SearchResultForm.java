@@ -10,6 +10,15 @@ public class SearchResultForm {
     private List<String> keywords;
     private String summary;
     private String publication;
+    private int meeting_id;
+
+    public int getMeeting_id() {
+        return meeting_id;
+    }
+
+    public void setMeeting_id(int meeting_id) {
+        this.meeting_id = meeting_id;
+    }
 
     public int getPaperId() {
         return paperId;

@@ -2,16 +2,18 @@ package com.example.ccf.blImpl.Session;
 
 import com.example.ccf.vo.UserVO;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+
 @Service
 public class SessionGet implements SessionBIService{
+    private static HashMap mymap = new HashMap();
     @Override
     public int get_id(String token){
-        UserVO userVO=get_user(token);
+        HttpSession session=getSession(token);
+        if(session==null)
+            return 0;
+        UserVO userVO=(UserVO) session.getAttribute(token);
         if(userVO==null){
             return 0;
         }
@@ -21,7 +23,10 @@ public class SessionGet implements SessionBIService{
     }
     @Override
     public String get_username(String token){
-        UserVO userVO=get_user(token);
+        HttpSession session=getSession(token);
+        if(session==null)
+            return "0";
+        UserVO userVO=(UserVO) session.getAttribute(token);
         if(userVO==null){
             return "0";
         }
@@ -30,17 +35,21 @@ public class SessionGet implements SessionBIService{
         }
     }
 
-    public UserVO get_user(String token){
-        HttpServletRequest httpServletRequest=getRequest();
-        HttpSession session=httpServletRequest.getSession();
-//        System.out.println(session.getId());
-        UserVO userForm=(UserVO) session.getAttribute(token);
-        return userForm;
 
+    @Override
+    public synchronized void AddSession(HttpSession session, String token) {
+        if (session != null) {
+            mymap.put(token, session);
+        }
     }
-    public static HttpServletRequest getRequest() {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        return request;
-
+    @Override
+    public  synchronized void DelSession(String token) {
+            mymap.remove(token);
+    }
+    @Override
+    public synchronized HttpSession getSession(String token) {
+        if (token == null)
+            return null;
+        return (HttpSession) mymap.get(token);
     }
 }
