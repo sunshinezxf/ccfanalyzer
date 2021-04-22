@@ -44,37 +44,17 @@
               <el-link style="font-size: 27px;color: black" @click="getContent(item.paperId)"><strong>{{item.title}}</strong></el-link><br>
               <el-row>
             <span class="affcon" style="font-size: 17px;color: dimgray">
-              Publisher:&nbsp;&nbsp;&nbsp;
-              <span  class="divider" v-if="item.publisher==0">None</span>
-            <span  v-for="(aff,index) in item.affiliations" :key="index">
-              <span role="separator" class="divider" v-if="index != 0">,</span>
-              <el-link style="font-size: 17px;color: cornflowerblue;font-style:italic"  :key='aff' @click="searchAffiliationPor(aff.affiliationId)">{{aff.name}}</el-link>
-            </span>
-            </span>
-              </el-row>
-              <el-row>
-            <span class="affcon" style="font-size: 17px;color: dimgray">
               Authors:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <span  class="divider" v-if="item.authors.length==0">None</span>
             <span v-for="(author,index) in item.authors" :key="index">
               <span role="separator" class="divider" v-if="index != 0">,</span>
-            <el-link style="font-size: 17px;color: cornflowerblue;font-style:italic" :key="author" >{{author.name}}</el-link>
+            <el-link style="font-size: 17px;color: cornflowerblue;font-style:italic" :key="author" >{{author}}</el-link>
             </span>
             </span>
               </el-row>
               <span class="sum" style="font-size: 15px;color: dimgray;margin-top: 5px;margin-bottom: 5px" v-if="item.abstracts" >{{item.abstracts}}</span>
               <el-row>
-            <span class="affcon" style="font-size: 17px;color: dimgray">
-              Keywords:&nbsp;&nbsp;&nbsp;
-              <span  class="divider" v-if="item.keywords.length==0">None</span>
-            <span v-for="(keyword,index) in item.keywords" :key="index">
-              <span role="separator" class="divider" v-if="index != 0">,</span>
-            <el-link style="font-size: 17px;color: cornflowerblue;font-style:italic" :key="keyword" @click="searchByKeyword(keyword)">{{keyword}}</el-link>
-            </span>
-              </span>
-              </el-row>
-              <el-row>
-                <span style="font-size: 17px;color: dimgray">Publication:&nbsp;&nbsp;<el-link style="font-size: 17px;color: cornflowerblue;font-style:italic" @click="searchConferencePor(item.publication)">{{item.publication}}</el-link></span><br>
+                <span style="font-size: 17px;color: dimgray">Publication:&nbsp;&nbsp;<el-link style="font-size: 17px;color: cornflowerblue;font-style:italic">{{item.publisher}}</el-link></span><br>
               </el-row>
             </div>
           </el-card>
@@ -121,12 +101,8 @@ export default {
       PaperList: [
         {
           paper_id: 0,
+          authors: [],
           title: 'Learning Styles and Inclusion.',
-          authors: [{
-            name: 'apple'
-          }, {
-            name: 'bear'
-          }],
           publisher: 'IEEE',
           abstracts: 'Learning Models and the Learning Cycle Learning Differences and Learning Styles The Role of the Learning Environment Background to Learning Styles Assessment of Learning Styles Learning Styles Learning and Teaching The Inclusive School Characteristics and Challenges Learning Styles in the Inclusive Context Promoting Effective Learning Learning Styles Strategies and Insights',
           doi: '',
@@ -181,7 +157,8 @@ export default {
     },
     getSharedPaper (token) {
       SharedPapers(token).then((res) => {
-        this.PaperList = res.content.Private_Paper_Must
+        console.log(res)
+        this.PaperList = res.content
       })
     }
   }

@@ -128,17 +128,17 @@ export default {
           title: 'Learning Styles and Inclusion.',
           authors: [{
             name: 'apple',
-            id: 1
+            authorId: 1
           }, {
             name: 'bear',
-            id: 2
+            authorId: 2
           }],
           affiliations: [{
             name: 'NJU',
-            id: 1
+            affiliationId: 1
           }, {
             name: 'ZJU',
-            id: 2
+            affiliationId: 2
           }],
           publication: 'IEEE',
           summary: 'Learning Models and the Learning Cycle Learning Differences and Learning Styles The Role of the Learning Environment Background to Learning Styles Assessment of Learning Styles Learning Styles Learning and Teaching The Inclusive School Characteristics and Challenges Learning Styles in the Inclusive Context Promoting Effective Learning Learning Styles Strategies and Insights',
@@ -166,7 +166,6 @@ export default {
     },
     getCollections (userID) {
       getCollections(userID).then((res) => {
-        console.log(res)
         this.PaperList = res.content.paperBriefInfoVOList
         this.paperNum = res.content.totalNum
       })

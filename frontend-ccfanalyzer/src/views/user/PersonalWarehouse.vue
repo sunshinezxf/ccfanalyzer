@@ -151,7 +151,7 @@
                   </el-form>
                   <div slot="footer" class="dialog-footer">
                     <el-button @click="dialogForm1Visible = false">Cancel</el-button>
-                    <el-button type="primary" @click="SharePapers(user.token, item.paperId, shareForm.name)">Confirm</el-button>
+                    <el-button type="primary" @click="SharePapers(user.token, item.paper_id, shareForm.name); dialogForm1Visible = false">Confirm</el-button>
                   </div>
                 </el-dialog>
               </div>
@@ -304,6 +304,7 @@ export default {
     },
     SharePapers (token, paperId, username) {
       PaperShare(token, paperId, username).then((res) => {
+        console.log(res)
         this.$message.success({
           message: 'Share Successful',
           center: true
