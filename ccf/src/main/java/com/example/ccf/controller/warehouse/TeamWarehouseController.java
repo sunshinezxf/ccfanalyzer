@@ -22,7 +22,7 @@ public class TeamWarehouseController {
         return warehouseService.getTeamPapers(token,teamId);
     }
 
-    @RequestMapping(value = "/delete/{paperId}",method = RequestMethod.GET)
+    @RequestMapping(value = "/delete/{paperId}",method = RequestMethod.POST)
     public ResponseVO deletePaper(@PathVariable int paperId,String token){
         return warehouseService.deleteTeamPaper(paperId,token);
     }
