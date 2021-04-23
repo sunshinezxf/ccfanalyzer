@@ -4,6 +4,11 @@
     <select id="getStatistic" resultType="Statistic">
         select * from statistic where statistic_id = 1
     </select>
-    <resultMap id="Statistic" type="com.example.ccf.po.Statistic">
+    <select id="getCrawlStatistic" resultMap="Crawl">
+        select * from crawl
+    </select>
+    <resultMap id="Crawl" type="com.example.ccf.po.statistic.Crawl">
+    </resultMap>
+    <resultMap id="Statistic" type="com.example.ccf.po.statistic.Statistic">
     </resultMap>
 </mapper>

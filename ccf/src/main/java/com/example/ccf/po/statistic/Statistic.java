@@ -1,4 +1,4 @@
-package com.example.ccf.po;
+package com.example.ccf.po.statistic;
 
 public class Statistic {
 

@@ -22,6 +22,11 @@ public class StatisticController {
         return statisticService.getStatisticData();
     }
 
+    @RequestMapping(value = "/crawl",method = RequestMethod.GET)
+    public ResponseVO crawlStatistic(){
+        return statisticService.getCrawlData();
+    }
+
     @RequestMapping(value = "/getValue/author/{authorId}",method = RequestMethod.GET)
     public ResponseVO authorRadar(@PathVariable int authorId){
         return statisticService.getAuthorRadar(authorId);

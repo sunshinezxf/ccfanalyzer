@@ -6,14 +6,17 @@ import com.example.ccf.blImpl.affiliation.AffiliationBlService;
 import com.example.ccf.blImpl.author.AuthorBlService;
 import com.example.ccf.blImpl.relation.RelationBlService;
 import com.example.ccf.data.statistic.StatisticMapper;
-import com.example.ccf.po.Statistic;
+import com.example.ccf.po.statistic.Crawl;
+import com.example.ccf.po.statistic.Statistic;
 import com.example.ccf.vo.AffiliationRadar;
 import com.example.ccf.vo.AuthorRadar;
 import com.example.ccf.vo.ResponseVO;
-import com.example.ccf.vo.StatisticsData;
+import com.example.ccf.vo.statistic.CrawlData;
+import com.example.ccf.vo.statistic.StatisticsData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -45,6 +48,33 @@ public class StatisticServiceImpl implements StatisticService {
         statisticsData.setAuthorNum(statistic.getAuthor_num());
 
         return ResponseVO.buildSuccess(statisticsData);
+    }
+
+    @Override
+    public ResponseVO getCrawlData() {
+
+        List<Crawl> crawls=statisticMapper.getCrawlStatistic();
+        List<CrawlData> crawlDataList=new LinkedList<>();
+
+        for(Crawl crawl:crawls){
+
+            CrawlData crawlData=new CrawlData();
+            crawlData.setRequestBytes(crawl.getRequest_bytes());
+            crawlData.setRequestCount(crawl.getRequest_count());
+            crawlData.setCount200(crawl.getResponse_status_count_200());
+            crawlData.setCount40x(crawl.getResponse_status_count_40x());
+            crawlData.setCount301(crawl.getResponse_status_count_301());
+            crawlData.setCount302(crawl.getResponse_status_count_302());
+            crawlData.setCountGET(crawl.getRequest_method_count_GET());
+            crawlData.setFinishReason(crawl.getFinish_reason());
+            crawlData.setFinishTime(crawl.getFinish_time());
+            crawlData.setStartTime(crawl.getStart_time());
+            crawlData.setMeetingCount(crawl.getMeeting_count());
+            crawlData.setPaperCount(crawl.getPaper_count());
+
+            crawlDataList.add(crawlData);
+        }
+        return ResponseVO.buildSuccess(crawlDataList);
     }
 
     @Override

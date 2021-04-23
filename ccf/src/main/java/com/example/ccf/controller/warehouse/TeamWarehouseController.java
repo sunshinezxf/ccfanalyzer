@@ -5,6 +5,8 @@ import com.example.ccf.vo.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/warehouse/team")
 @CrossOrigin
@@ -23,7 +25,7 @@ public class TeamWarehouseController {
     }
 
     @RequestMapping(value = "/delete/{paperId}",method = RequestMethod.POST)
-    public ResponseVO deletePaper(@PathVariable int paperId,String token){
-        return warehouseService.deleteTeamPaper(paperId,token);
+    public ResponseVO deletePaper(@PathVariable int paperId,@RequestBody Map<String,Object> param){
+        return warehouseService.deleteTeamPaper(paperId,(String)param.get("token"));
     }
 }

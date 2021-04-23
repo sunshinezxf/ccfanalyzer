@@ -1,4 +1,4 @@
-package com.example.ccf.vo;
+package com.example.ccf.vo.statistic;
 
 public class StatisticsData {
 
