@@ -38,8 +38,6 @@ router.beforeEach((to, from, next) => {
   }
 });
 
-Vue.prototype.$axios = axios;
-axios.defaults.withCredentials = true
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
