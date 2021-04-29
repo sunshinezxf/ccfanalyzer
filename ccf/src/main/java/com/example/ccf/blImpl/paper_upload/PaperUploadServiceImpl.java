@@ -4,9 +4,8 @@ import com.example.ccf.bl.paper_upload.PaperUploadService;
 import com.example.ccf.blImpl.Session.SessionBIService;
 import com.example.ccf.data.paper_upload.PaperUploadMapper;
 import com.example.ccf.data.team_manage.TeamManageMapper;
-import com.example.ccf.vo.Private_Author;
-import com.example.ccf.vo.Private_paper;
-import com.example.ccf.vo.ResponseVO;
+import com.example.ccf.vo.*;
+import com.example.ccf.blImpl.JWT.JwtUtilsBIService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,14 +17,23 @@ import java.util.regex.Pattern;
 @Service
 public class PaperUploadServiceImpl implements PaperUploadService {
     @Autowired
+    private JwtUtilsBIService jwtUtilsBIService;
+    @Autowired
     private PaperUploadMapper paperUploadMapper;
     @Autowired
     private TeamManageMapper teamManageMapper;
     @Autowired
     private SessionBIService sessionBIService;
     @Override
-    public ResponseVO team_paper_upload(Private_paper upload_paper, int team_id,String token){
-        int user_id=sessionBIService.get_id(token);
+    public ResponseVO team_paper_upload(TeamPaperImport t){
+        String token=t.getToken();
+        int team_id=t.getTeam_id();
+        Private_paper upload_paper=t.change();
+        String userId=jwtUtilsBIService.getUserId(token);
+        int user_id=0;
+        if(userId!=null){
+            user_id=Integer.parseInt(userId);
+        }
         if(user_id==0){
             return ResponseVO.buildSuccess("该用户未登录");
         }
@@ -46,8 +54,14 @@ public class PaperUploadServiceImpl implements PaperUploadService {
         }
     }
     @Override
-    public ResponseVO private_paper_upload(Private_paper upload_paper,String token){
-        int user_id=sessionBIService.get_id(token);
+    public ResponseVO private_paper_upload(UserPaperImport u){
+        String token=u.getToken();
+        Private_paper upload_paper=u.change();
+        String userId=jwtUtilsBIService.getUserId(token);
+        int user_id=0;
+        if(userId!=null){
+            user_id=Integer.parseInt(userId);
+        }
         if(user_id==0){
             return ResponseVO.buildSuccess("该用户未登录");
         }
@@ -64,8 +78,15 @@ public class PaperUploadServiceImpl implements PaperUploadService {
         }
     }
     @Override
-    public ResponseVO team_paper_alter(Private_paper upload_paper, int team_id,String token){
-        int user_id=sessionBIService.get_id(token);
+    public ResponseVO team_paper_alter(TeamPaperImport t){
+        String token=t.getToken();
+        int team_id=t.getTeam_id();
+        Private_paper upload_paper=t.change();
+        String userId=jwtUtilsBIService.getUserId(token);
+        int user_id=0;
+        if(userId!=null){
+            user_id=Integer.parseInt(userId);
+        }
         if(user_id==0){
             return ResponseVO.buildSuccess("该用户未登录");
         }
@@ -86,8 +107,14 @@ public class PaperUploadServiceImpl implements PaperUploadService {
         }
     }
     @Override
-    public ResponseVO private_paper_alter(Private_paper upload_paper,String token){
-        int user_id=sessionBIService.get_id(token);
+    public ResponseVO private_paper_alter(UserPaperImport u){
+        String token=u.getToken();
+        Private_paper upload_paper=u.change();
+        String userId=jwtUtilsBIService.getUserId(token);
+        int user_id=0;
+        if(userId!=null){
+            user_id=Integer.parseInt(userId);
+        }
         if(user_id==0){
             return ResponseVO.buildSuccess("该用户未登录");
         }

@@ -8,6 +8,7 @@ import com.example.ccf.vo.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
+import com.example.ccf.blImpl.JWT.JwtUtilsBIService;
 import java.util.List;
 import com.example.ccf.blImpl.Session.SessionBIService;
 @Service
@@ -15,12 +16,19 @@ public class CollectServiceImpl implements CollectService {
     @Autowired
     private CollectMapper collectMapper;
     @Autowired
+    private JwtUtilsBIService jwtUtilsBIService;
+    @Autowired
     private SearchMapper searchMapper;
     @Autowired
     private SessionBIService sessionBIService;
     @Override
     public ResponseVO collect(String token, int paper_id){
-        int user_id=sessionBIService.get_id(token);
+        String userId=jwtUtilsBIService.getUserId(token);
+        int user_id=0;
+        if(userId!=null){
+            user_id=Integer.parseInt(userId);
+        }
+//        int user_id=sessionBIService.get_id(token);
         if(user_id==0){
             return ResponseVO.buildSuccess("该用户未登录");
         }
@@ -35,7 +43,11 @@ public class CollectServiceImpl implements CollectService {
     }
     @Override
     public ResponseVO cancel_collect(String token,int paper_id){
-        int user_id=sessionBIService.get_id(token);
+        String userId=jwtUtilsBIService.getUserId(token);
+        int user_id=0;
+        if(userId!=null){
+            user_id=Integer.parseInt(userId);
+        }
         if(user_id==0){
             return ResponseVO.buildSuccess("该用户未登录");
         }
@@ -50,7 +62,12 @@ public class CollectServiceImpl implements CollectService {
     }
     @Override
     public ResponseVO collection_list(String token){
-        int user_id=sessionBIService.get_id(token);
+        String userId=jwtUtilsBIService.getUserId(token);
+        int user_id=0;
+        if(userId!=null){
+            user_id=Integer.parseInt(userId);
+        }
+//        int user_id=sessionBIService.get_id(token);
         if(user_id==0){
             return ResponseVO.buildSuccess("该用户未登录");
         }

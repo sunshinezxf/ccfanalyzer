@@ -12,9 +12,9 @@ public class CollectServiceTest {
     private CollectServiceImpl collectService;
 //    @Test
 //    public void collect(){
-//        collectService.collect(2,1);
+//        collectService.collect("57b268c4fcf3f9647ffc231edaaf4df0",1);
 //    }
-    @Test
+//    @Test
     public void collection_list(){
        System.out.println();
     }

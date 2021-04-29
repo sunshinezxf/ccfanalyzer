@@ -3,11 +3,12 @@ package com.example.ccf.blImpl.Session;
 import com.example.ccf.vo.UserVO;
 import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
+
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class SessionGet implements SessionBIService{
-    private static HashMap mymap = new HashMap();
+    private ConcurrentHashMap<String,HttpSession> map = new ConcurrentHashMap();
     @Override
     public int get_id(String token){
         HttpSession session=getSession(token);
@@ -38,18 +39,19 @@ public class SessionGet implements SessionBIService{
 
     @Override
     public synchronized void AddSession(HttpSession session, String token) {
-        if (session != null) {
-            mymap.put(token, session);
-        }
+
+            map.remove(token);
+            map.put(token, session);
+
     }
     @Override
     public  synchronized void DelSession(String token) {
-            mymap.remove(token);
+            map.remove(token);
     }
     @Override
     public synchronized HttpSession getSession(String token) {
         if (token == null)
             return null;
-        return (HttpSession) mymap.get(token);
+        return (HttpSession) map.get(token);
     }
 }
