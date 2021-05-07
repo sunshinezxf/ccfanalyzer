@@ -104,11 +104,7 @@
           {url:require('../../assets/team4.jpg'),id:4}
 
         ],
-        Team:[{team_id:'1',
-            name:'1'},{team_id:'2',
-          name:'2'},{team_id:'2',
-          name:'2'}
-        ],
+        Team:[],
         dialogFormVisible:false,
         user: {
           login: true,
@@ -125,27 +121,6 @@
         },
         paperNum: 8,
         PaperList: [
-          {
-            paperId: 0,
-            title: 'Learning Styles and Inclusion.',
-            authors: [{
-              name: 'apple',
-              id: 1
-            }, {
-              name: 'bear',
-              id: 2
-            }],
-            affiliations: [{
-              name: 'NJU',
-              id: 1
-            }, {
-              name: 'ZJU',
-              id: 2
-            }],
-            publication: 'IEEE',
-            summary: 'Learning Models and the Learning Cycle Learning Differences and Learning Styles The Role of the Learning Environment Background to Learning Styles Assessment of Learning Styles Learning Styles Learning and Teaching The Inclusive School Characteristics and Challenges Learning Styles in the Inclusive Context Promoting Effective Learning Learning Styles Strategies and Insights',
-            keywords: ['Educational technology']
-          }
         ],
         page: 0
       }
@@ -183,13 +158,21 @@
       },
       Upload (token, Form) {
         TeamCreate({token:token, team_name:Form.team_name}).then((res) => {
-          console.log(res)
-          this.$message.success({
-            message: 'Build Successful',
-            center: true
-          })
-          this.dialogFormVisible = false
-          this.getTeamLists(token)
+          if(res.content==="该团队名称已被使用"){
+            this.$message({
+              type: 'info',
+              message: 'This team name is already in use.'
+            });
+          }else{
+            this.$message.success({
+              message: 'Build Successful',
+              center: true
+            })
+            this.dialogFormVisible = false
+            this.getTeamLists(token)
+          }
+
+
         }).catch(() => {
           this.$message({
             type: 'info',
@@ -316,6 +299,7 @@
     width:350px;
     height: 200px;
     display: block;
+
   }
   .el-select-dropdown__item span{
     opacity: 80%;
@@ -338,6 +322,9 @@
   .box-shadow {
     -webkit-box-shadow: 0 0.25rem 1rem rgba(48, 55, 66, 0.15);
     box-shadow: 0 0.25rem 1rem rgba(48, 55, 66, 0.15);
+  }
+  img {
+    opacity: 0.8;
   }
 
 </style>

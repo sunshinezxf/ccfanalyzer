@@ -4,6 +4,9 @@ import axios from 'axios'
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
 axios.defaults.baseURL = 'http://47.97.228.185:8080'
 
+export const getCrawl= () => {
+  return axios.get('/interests/crawl').then(res => res.data)
+}
 // 获得论文相关的统计数据
 export const getStatistics = () => {
   return axios.get('/interests/statistics').then(res => res.data)

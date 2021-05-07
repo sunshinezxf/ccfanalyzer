@@ -78,7 +78,7 @@
                   <span>{{item}}</span>
                 </el-col>
                 <el-col :span="12">
-                  <el-button type="text" :disabled="!isOwner" @click.native.prevent="deleteRow(item)">Remove</el-button>
+                  <el-button type="text" :disabled="!isOwner||user.username===item" @click.native.prevent="deleteRow(item)">Remove</el-button>
                 </el-col>
               </el-row>
             </div>
@@ -242,16 +242,16 @@
     data () {
       return {
         input:'',
-        isOwner:true,
+        isOwner:false,
         team_id:1,
         team_name:'',
-        tableData: ["A","B","c"],
+        tableData: [],
         drawer: false,
         direction: 'rtl',
         user: {
           login: true,
           logout: false,
-          username: 'yry',
+          username: '',
           password: '',
           id: '',
           token: ''
@@ -261,29 +261,8 @@
         containerHeight: {
           height: ''
         },
-        paperNum: 8,
+        paperNum: 1,
         PaperList: [
-          {
-            paperId: 0,
-            title: 'Learning Styles and Inclusion.',
-            authors: [{
-              name: 'apple',
-              id: 1
-            }, {
-              name: 'bear',
-              id: 2
-            }],
-            affiliations: [{
-              name: 'NJU',
-              id: 1
-            }, {
-              name: 'ZJU',
-              id: 2
-            }],
-            publication: 'IEEE',
-            summary: 'Learning Models and the Learning Cycle Learning Differences and Learning Styles The Role of the Learning Environment Background to Learning Styles Assessment of Learning Styles Learning Styles Learning and Teaching The Inclusive School Characteristics and Challenges Learning Styles in the Inclusive Context Promoting Effective Learning Learning Styles Strategies and Insights',
-            keywords: ['Educational technology']
-          }
         ],
         dialogFormVisible: false,
         form: {
@@ -322,6 +301,7 @@
         getTeamPaperList(this.user.token,teamid).then((res) => {
           console.log(res)
           this.PaperList=res.content
+          this.paperNum=this.PaperList.length
         }).catch(error => console.log(error))
       },
       deleteRow(item) {
