@@ -18,11 +18,12 @@ public class SegmentationServiceImpl implements SegmentationService {
     public ResponseVO segmentation_title(int start_id) {
         List<SegmentationTitle> origin_sts= segmentationMapper.get_title(start_id);
         int size=origin_sts.size();
+        List<SegmentationTitle> new_sts=new ArrayList<>();
         for(int i=0;i<size;i++){
             int paper_id =origin_sts.get(i).getPaper_id();
 //            System.out.println(paper_id);
 //            System.out.println(origin_sts.get(i).getTitle());
-            List<SegmentationTitle> new_sts=new ArrayList<>();
+
             String[] segmentation=segmentation(origin_sts.get(i).getTitle());
             for(int j=0;j<segmentation.length;j++) {
                 if (segmentation[j].length() >= 4) {
@@ -32,8 +33,8 @@ public class SegmentationServiceImpl implements SegmentationService {
                     new_sts.add(st);
                 }
             }
-            segmentationMapper.insert_segmentation_title(new_sts);
         }
+        segmentationMapper.insert_segmentation_title(new_sts);
         return  ResponseVO.buildSuccess("数据库1更新完成。");
 
     }
