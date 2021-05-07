@@ -1,7 +1,7 @@
 package com.example.ccf.blImpl.warehouse;
 
 import com.example.ccf.bl.WarehouseService;
-import com.example.ccf.blImpl.Session.SessionBIService;
+import com.example.ccf.blImpl.JWT.JwtUtilsBIService;
 import com.example.ccf.blImpl.team_manage.TeamManageBlService;
 import com.example.ccf.data.warehouse.WarehouseMapper;
 import com.example.ccf.po.Paper;
@@ -15,21 +15,24 @@ import java.util.List;
 @Service
 public class WarehouseServiceImpl implements WarehouseService {
 
-    private SessionBIService sessionBIService;
+    private JwtUtilsBIService jwtUtilsBIService;
     private WarehouseMapper warehouseMapper;
     private TeamManageBlService teamManageBlService;
 
     @Autowired
-    public void DI(SessionBIService sessionBIService,WarehouseMapper warehouseMapper,TeamManageBlService teamManageBlService){
-        this.sessionBIService=sessionBIService;
+    public void DI(WarehouseMapper warehouseMapper,TeamManageBlService teamManageBlService,JwtUtilsBIService jwtUtilsBIService){
         this.warehouseMapper=warehouseMapper;
         this.teamManageBlService=teamManageBlService;
+        this.jwtUtilsBIService=jwtUtilsBIService;
     }
 
     @Override
     public ResponseVO getPrivatePapers(String token) {
-
-        int userId=sessionBIService.get_id(token);
+        String userStrId=jwtUtilsBIService.getUserId(token);
+        int userId=0;
+        if(userStrId!=null){
+            userId=Integer.parseInt(userStrId);
+        }
         if(userId==0){
             return ResponseVO.buildSuccess("该用户未登录");
         }
@@ -42,7 +45,11 @@ public class WarehouseServiceImpl implements WarehouseService {
     @Override
     public ResponseVO getTeamPapers(String token,int teamId) {
 
-        int userId=sessionBIService.get_id(token);
+        String userStrId=jwtUtilsBIService.getUserId(token);
+        int userId=0;
+        if(userStrId!=null){
+            userId=Integer.parseInt(userStrId);
+        }
         if(userId==0){
             return ResponseVO.buildSuccess("该用户未登录");
         }
@@ -57,7 +64,11 @@ public class WarehouseServiceImpl implements WarehouseService {
     @Override
     public ResponseVO deleteTeamPaper(int privatePaperId, String token) {
 
-        int userId=sessionBIService.get_id(token);
+        String userStrId=jwtUtilsBIService.getUserId(token);
+        int userId=0;
+        if(userStrId!=null){
+            userId=Integer.parseInt(userStrId);
+        }
         if(userId==0){
             return ResponseVO.buildSuccess("该用户未登录");
         }
@@ -78,7 +89,11 @@ public class WarehouseServiceImpl implements WarehouseService {
     @Override
     public ResponseVO deletePrivatePaper(int privatePaperId, String token) {
 
-        int userId=sessionBIService.get_id(token);
+        String userStrId=jwtUtilsBIService.getUserId(token);
+        int userId=0;
+        if(userStrId!=null){
+            userId=Integer.parseInt(userStrId);
+        }
         if(userId==0){
             return ResponseVO.buildSuccess("该用户未登录");
         }
