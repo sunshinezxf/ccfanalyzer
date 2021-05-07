@@ -13,6 +13,8 @@ import PersonalWarehouse from '@/views/user/PersonalWarehouse'
 import PaperShared from '@/views/user/PaperShared'
 import MyTeams from '@/views/user/MyTeams'
 import TeamDetails from '@/views/user/TeamDetails'
+import AdminLogin from '@/views/Admin/AdminLogin'
+import UpdateTime from '@/views/Admin/UpdateTime'
 Vue.use(Router)
 
 export default new Router({
@@ -21,105 +23,91 @@ export default new Router({
       path: '/SearchPaper',
       name: 'SearchPaper',
       component: SearchPaper,
-      meta: {
-        isLogin: false
-      }
+      meta: { requireAuth: false },
     },
     {
       path: '/',
       name: 'Homepage',
       component: Homepage,
-      meta: {
-        isLogin: false
-      }
+      meta: { requireAuth: false },
     },
     {
       path: '/PaperDetail',
       name: 'PaperDetail',
       component: PaperDetail,
-      meta: {
-        isLogin: false
-      }
+      meta: { requireAuth: false },
     },
     {
       path: '/AuthorPortrait',
       name: 'AuthorPortrait',
       component: AuthorPortrait,
-      meta: {
-        isLogin: false
-      }
+      meta: { requireAuth: false },
     },
     {
       path: '/AffiliationPortrait',
       name: 'AffiliationPortrait',
       component: AffiliationPortrait,
-      meta: {
-        isLogin: false
-      }
+      meta: { requireAuth: false },
     },
     {
       path: '/ConferencePortrait',
       name: 'ConferencePortrait',
       component: ConferencePortrait,
-      meta: {
-        isLogin: false
-      }
+      meta: { requireAuth: false },
     },
     {
       path: '/Login',
       name: 'Login',
       component: Login,
-      meta: {
-        isLogin: false
-      }
+      meta: { requireAuth: false },
     },
     {
       path: '/Register',
       name: 'Register',
       component: Register,
-      meta: {
-        isLogin: false
-      }
+      meta: { requireAuth: false },
     },
     {
       path: '/Collections',
       name: 'Collections',
       component: Collections,
-      meta: {
-        isLogin: true
-      }
+      meta: { requireAuth: true },
     },
     {
       path: '/PersonalWarehouse',
       name: 'PersonalWarehouse',
       component: PersonalWarehouse,
-      meta: {
-        isLogin: true
-      }
+      meta: { requireAuth: true },
     },
     {
       path: '/PaperShared',
       name: 'PaperShared',
       component: PaperShared,
-      meta: {
-        isLogin: true
-      }
+      meta: { requireAuth: true },
     },
     {
       path: '/MyTeams',
       name: 'MyTeams',
       component: MyTeams,
-      meta: {
-        isLogin: true
-      }
+      meta: { requireAuth: true },
     },
     {
       path: '/TeamDetails',
       name: 'TeamDetails',
       component: TeamDetails,
-      meta: {
-        isLogin: true
-      }
+      meta: { requireAuth: true },
+    },
+    {
+      path: '/AdminLogin',
+      name: 'AdminLogin',
+      component: AdminLogin,
+      meta: { requireAuth: true },
+    },
+    {
+      path: '/UpdateTime',
+      name: 'UpdateTime',
+      component: UpdateTime,
+      meta: { requireAuth: true },
     }
   ]
 })

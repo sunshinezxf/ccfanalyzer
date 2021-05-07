@@ -2,83 +2,7 @@
   <el-container>
 
     <el-main class="main" :style="this.$store.state.background" style="overflow: hidden;padding: 0%">
-        <div style="margin-left: -19px;margin-right: -19px;text-align:center">
-          <el-row style="margin-bottom: 2%">
-            <el-col :span="4">
-              <div class="grid-content2 bg-purple2" style="color: white;text-align:center">
-
-                <el-row>
-                  <span class="avatar-dropdown">
-                    <i class="el-icon-s-home" ></i>
-                    <span class="u" style="font-size: 20px;color: grey;text-align: center">
-                    &nbsp;&nbsp;HomePage &nbsp;
-                 </span>
-                  </span>
-                </el-row>
-
-              </div>
-            </el-col>
-
-            <el-col :span="17">
-              <div class="grid-content2 bg-purple2" style="color: white;">
-
-                <el-row style="margin-bottom: -8%"></el-row>
-              </div>
-            </el-col>
-            <el-col :span="3"><div class="grid-content2 bg-purple2" style="color: white;">
-              <div v-show="user.login">
-                <el-dropdown @command="handleCommand">
-                 <span class="avatar-dropdown">
-                  <!--<el-avatar class="user-avatar" :src="avatar"></el-avatar>-->
-                  <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-
-
-                 <span class="u" style="font-size: 20px">
-                    &nbsp;&nbsp;{{ user.username }} &nbsp;
-                 </span>
-
-
-                   <i class="el-icon-arrow-down el-icon--right"></i>
-                </span>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
-              </div>
-
-              <div v-show="user.logout">
-
-                   <span class="avatar-dropdown">
-                        <!--<el-avatar class="user-avatar" :src="avatar"></el-avatar>-->
-                        <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-
-
-                       <span class="u" style="font-size: 20px">
-                          &nbsp;&nbsp; Login&nbsp;In&nbsp;&nbsp;
-                       </span>
-
-                      </span>
-              </div>
-            </div>
-            </el-col>
-          </el-row>
-        </div>
-
-      <el-dialog
-        title="Administrator Login"
-        :visible.sync="dialogVisible"
-        width="30%"
-        center>
-        <div style="text-align:center">
-          <el-input style="width: 70%" placeholder="username" v-model="username" clearable></el-input>
-        </div>
-        <div style="text-align:center">
-          <el-input style="width: 70%; margin-top: 5%" placeholder="password" v-model="password" show-password></el-input>
-        </div>
-        <span slot="footer" class="dialog-footer">
-          <el-button style="width: 70%; margin-bottom: 5%; font-size: large" type="primary" @click="dialogVisible = false; login()">LOGIN</el-button>
-        </span>
-      </el-dialog>
+       <div><lo></lo></div>
 
       <div class="OASIS" style="font-weight: bold ;color:white;font-size: 130px;text-align:center;margin-top: 7%">
             CCF ANALYZER
@@ -309,357 +233,357 @@
 
     </el-main>
 
-    <el-footer>
-      <el-row :gutter="80" style="margin-left: 2%;margin-right: 2%">
+    <!--<el-footer>-->
+      <!--<el-row :gutter="80" style="margin-left: 2%;margin-right: 2%">-->
 
-        <el-col :span="8">
-          <div class="ranking_1 grid-content" style="margin-top: 50px">
+        <!--<el-col :span="8">-->
+          <!--<div class="ranking_1 grid-content" style="margin-top: 50px">-->
 
-            <el-card class="box-card">
-              <div slot="header" class="clearfix head_card">
-                <span style="font-size: 24px;font-weight: bold">
-                  <Icon type="ios-home" style="color: cornflowerblue;margin-left: 2%" size = "40" />
-                  Most Published Affiliations
-                </span>
-              </div>
-              <div>
-                <el-row style="font-size: 24px">
-                  <el-col :span="12" style="text-align: left">Name</el-col>
-                  <el-col :span="12" style="text-align: right">Article Num</el-col>
-                </el-row>
-              </div>
-              <div v-for="item in topAffiliationList" :key="item.affiliationId" class="text item">
-                <!--{{'列表内容 ' + o }}-->
-                <el-row style="font-size: 18px">
-                  <el-col :span="20" style="text-align: left">
-                    <el-tooltip effect="dark" placement="right">
-                      <div slot="content">
-                        {{item.name}}
-                      </div>
-                      <router-link target="_blank" :to="{name:'AffiliationPortrait',query:{affiliationId:item.affiliationId}}">
-                        <!--<el-link style="transition-duration: 0.4s;">-->
-                        <div style="font-size: 18px;color: cornflowerblue; overflow: hidden;
-                       white-space: nowrap;width: 300px;text-overflow: ellipsis;">
-                          {{item.name}}
-                        </div>
-                        <!--</el-link>-->
-                      </router-link>
-                    </el-tooltip>
-                  </el-col>
-                  <el-col :span="4" style="text-align: right">{{item.articleNum}}</el-col>
-                </el-row>
-                <div style="margin-top: -20px">
-                  <Progress :percent="100*item.articleNum/articleNumMost_affiliation" :stroke-color="['#108ee9', '#87d068']" hide-info/>
-                </div>
+            <!--<el-card class="box-card">-->
+              <!--<div slot="header" class="clearfix head_card">-->
+                <!--<span style="font-size: 24px;font-weight: bold">-->
+                  <!--<Icon type="ios-home" style="color: cornflowerblue;margin-left: 2%" size = "40" />-->
+                  <!--Most Published Affiliations-->
+                <!--</span>-->
+              <!--</div>-->
+              <!--<div>-->
+                <!--<el-row style="font-size: 24px">-->
+                  <!--<el-col :span="12" style="text-align: left">Name</el-col>-->
+                  <!--<el-col :span="12" style="text-align: right">Article Num</el-col>-->
+                <!--</el-row>-->
+              <!--</div>-->
+              <!--<div v-for="item in topAffiliationList" :key="item.affiliationId" class="text item">-->
+                <!--&lt;!&ndash;{{'列表内容 ' + o }}&ndash;&gt;-->
+                <!--<el-row style="font-size: 18px">-->
+                  <!--<el-col :span="20" style="text-align: left">-->
+                    <!--<el-tooltip effect="dark" placement="right">-->
+                      <!--<div slot="content">-->
+                        <!--{{item.name}}-->
+                      <!--</div>-->
+                      <!--<router-link target="_blank" :to="{name:'AffiliationPortrait',query:{affiliationId:item.affiliationId}}">-->
+                        <!--&lt;!&ndash;<el-link style="transition-duration: 0.4s;">&ndash;&gt;-->
+                        <!--<div style="font-size: 18px;color: cornflowerblue; overflow: hidden;-->
+                       <!--white-space: nowrap;width: 300px;text-overflow: ellipsis;">-->
+                          <!--{{item.name}}-->
+                        <!--</div>-->
+                        <!--&lt;!&ndash;</el-link>&ndash;&gt;-->
+                      <!--</router-link>-->
+                    <!--</el-tooltip>-->
+                  <!--</el-col>-->
+                  <!--<el-col :span="4" style="text-align: right">{{item.articleNum}}</el-col>-->
+                <!--</el-row>-->
+                <!--<div style="margin-top: -20px">-->
+                  <!--<Progress :percent="100*item.articleNum/articleNumMost_affiliation" :stroke-color="['#108ee9', '#87d068']" hide-info/>-->
+                <!--</div>-->
 
-              </div>
-            </el-card>
+              <!--</div>-->
+            <!--</el-card>-->
 
-          </div>
-        </el-col>
+          <!--</div>-->
+        <!--</el-col>-->
 
-        <!--获得参与发表论文次数最多的作者TOP10-->
-        <el-col :span="8">
-          <div class="ranking_1 grid-content" style="margin-top: 50px">
+        <!--&lt;!&ndash;获得参与发表论文次数最多的作者TOP10&ndash;&gt;-->
+        <!--<el-col :span="8">-->
+          <!--<div class="ranking_1 grid-content" style="margin-top: 50px">-->
 
-            <el-card class="box-card">
-              <div slot="header" class="clearfix head_card">
-                <span style="font-size: 24px;font-weight: bold">
-                  <Icon type="md-person" style="color: cornflowerblue;margin-left: 10%" size = "40" />
-                  Most Published Authors
-                </span>
-              </div>
-              <div>
-                <el-row style="font-size: 24px">
-                  <el-col :span="12" style="text-align: left">Name</el-col>
-                  <el-col :span="12" style="text-align: right">Article Num</el-col>
-                </el-row>
-              </div>
-              <div v-for="item in topAuthorList" :key="item.paperId" class="text item">
-                <!--{{'列表内容 ' + o }}-->
-                <el-row style="font-size: 18px">
-                  <el-col :span="20" style="text-align: left">
-                    <el-tooltip effect="dark" placement="right">
-                      <div slot="content">
-                        {{item.name}}
-                      </div>
-                      <router-link target="_blank" :to="{name:'AuthorPortrait',query:{authorId:item.authorId}}">
-                        <!--<el-link style="transition-duration: 0.4s;">-->
-                        <div style="font-size: 18px;color: cornflowerblue; overflow: hidden;
-                       white-space: nowrap;width: 300px;text-overflow: ellipsis;">
-                          {{item.name}}
-                        </div>
-                        <!--</el-link>-->
-                      </router-link>
-                    </el-tooltip>
-                  </el-col>
-                  <el-col :span="4" style="text-align: right">{{item.articleNum}}</el-col>
-                </el-row>
-                <div style="margin-top: -20px">
-                  <Progress :percent="100*item.articleNum/articleNumMost_author" :stroke-color="['#108ee9', '#87d068']" hide-info/>
-                </div>
+            <!--<el-card class="box-card">-->
+              <!--<div slot="header" class="clearfix head_card">-->
+                <!--<span style="font-size: 24px;font-weight: bold">-->
+                  <!--<Icon type="md-person" style="color: cornflowerblue;margin-left: 10%" size = "40" />-->
+                  <!--Most Published Authors-->
+                <!--</span>-->
+              <!--</div>-->
+              <!--<div>-->
+                <!--<el-row style="font-size: 24px">-->
+                  <!--<el-col :span="12" style="text-align: left">Name</el-col>-->
+                  <!--<el-col :span="12" style="text-align: right">Article Num</el-col>-->
+                <!--</el-row>-->
+              <!--</div>-->
+              <!--<div v-for="item in topAuthorList" :key="item.paperId" class="text item">-->
+                <!--&lt;!&ndash;{{'列表内容 ' + o }}&ndash;&gt;-->
+                <!--<el-row style="font-size: 18px">-->
+                  <!--<el-col :span="20" style="text-align: left">-->
+                    <!--<el-tooltip effect="dark" placement="right">-->
+                      <!--<div slot="content">-->
+                        <!--{{item.name}}-->
+                      <!--</div>-->
+                      <!--<router-link target="_blank" :to="{name:'AuthorPortrait',query:{authorId:item.authorId}}">-->
+                        <!--&lt;!&ndash;<el-link style="transition-duration: 0.4s;">&ndash;&gt;-->
+                        <!--<div style="font-size: 18px;color: cornflowerblue; overflow: hidden;-->
+                       <!--white-space: nowrap;width: 300px;text-overflow: ellipsis;">-->
+                          <!--{{item.name}}-->
+                        <!--</div>-->
+                        <!--&lt;!&ndash;</el-link>&ndash;&gt;-->
+                      <!--</router-link>-->
+                    <!--</el-tooltip>-->
+                  <!--</el-col>-->
+                  <!--<el-col :span="4" style="text-align: right">{{item.articleNum}}</el-col>-->
+                <!--</el-row>-->
+                <!--<div style="margin-top: -20px">-->
+                  <!--<Progress :percent="100*item.articleNum/articleNumMost_author" :stroke-color="['#108ee9', '#87d068']" hide-info/>-->
+                <!--</div>-->
 
-              </div>
-            </el-card>
+              <!--</div>-->
+            <!--</el-card>-->
 
-          </div>
-        </el-col>
+          <!--</div>-->
+        <!--</el-col>-->
 
-        <!--被引用次数最多论文TOP10-->
-        <el-col :span="8">
-          <div class="ranking_1 grid-content" style="margin-top: 50px">
+        <!--&lt;!&ndash;被引用次数最多论文TOP10&ndash;&gt;-->
+        <!--<el-col :span="8">-->
+          <!--<div class="ranking_1 grid-content" style="margin-top: 50px">-->
 
-            <el-card class="box-card">
-              <div slot="header" class="clearfix head_card">
-                <span style="font-size: 24px;font-weight: bold">
-                  <Icon type="ios-paper" style="color: cornflowerblue;margin-left: 18%" size = "40" />
-                   Popular Papers
-                </span>
-              </div>
-              <div>
-                <el-row style="font-size: 24px">
-                  <el-col :span="12" style="text-align: left">Paper</el-col>
-                  <el-col :span="12" style="text-align: right">Times Cited</el-col>
-                </el-row>
-              </div>
-              <div v-for="item in topPaperList" :key="item.paperId" class="text item">
-                <!--{{'列表内容 ' + o }}-->
-                <el-row style="font-size: 18px">
-                  <el-col :span="20" style="text-align: left">
-                    <el-tooltip effect="dark" placement="left">
-                      <div slot="content">
-                        {{item.title}}
-                      </div>
-                      <router-link target="_blank" :to="{name:'PaperDetail',query:{paperId:item.paperId}}">
-                        <!--<el-link style="transition-duration: 0.4s;">-->
-                        <div style="font-size: 18px;color: cornflowerblue; overflow: hidden;
-                       white-space: nowrap;width: 300px;text-overflow: ellipsis;">
-                          {{item.title}}
-                        </div>
-                        <!--</el-link>-->
-                      </router-link>
-                    </el-tooltip>
-                  </el-col>
-                  <el-col :span="4" style="text-align: right">{{item.articleCitationCount}}</el-col>
-                </el-row>
-                <div style="margin-top: -20px">
-                  <Progress :percent="100*item.articleCitationCount/timedCitedMost" :stroke-color="['#108ee9', '#87d068']" hide-info/>
-                </div>
+            <!--<el-card class="box-card">-->
+              <!--<div slot="header" class="clearfix head_card">-->
+                <!--<span style="font-size: 24px;font-weight: bold">-->
+                  <!--<Icon type="ios-paper" style="color: cornflowerblue;margin-left: 18%" size = "40" />-->
+                   <!--Popular Papers-->
+                <!--</span>-->
+              <!--</div>-->
+              <!--<div>-->
+                <!--<el-row style="font-size: 24px">-->
+                  <!--<el-col :span="12" style="text-align: left">Paper</el-col>-->
+                  <!--<el-col :span="12" style="text-align: right">Times Cited</el-col>-->
+                <!--</el-row>-->
+              <!--</div>-->
+              <!--<div v-for="item in topPaperList" :key="item.paperId" class="text item">-->
+                <!--&lt;!&ndash;{{'列表内容 ' + o }}&ndash;&gt;-->
+                <!--<el-row style="font-size: 18px">-->
+                  <!--<el-col :span="20" style="text-align: left">-->
+                    <!--<el-tooltip effect="dark" placement="left">-->
+                      <!--<div slot="content">-->
+                        <!--{{item.title}}-->
+                      <!--</div>-->
+                      <!--<router-link target="_blank" :to="{name:'PaperDetail',query:{paperId:item.paperId}}">-->
+                        <!--&lt;!&ndash;<el-link style="transition-duration: 0.4s;">&ndash;&gt;-->
+                        <!--<div style="font-size: 18px;color: cornflowerblue; overflow: hidden;-->
+                       <!--white-space: nowrap;width: 300px;text-overflow: ellipsis;">-->
+                          <!--{{item.title}}-->
+                        <!--</div>-->
+                        <!--&lt;!&ndash;</el-link>&ndash;&gt;-->
+                      <!--</router-link>-->
+                    <!--</el-tooltip>-->
+                  <!--</el-col>-->
+                  <!--<el-col :span="4" style="text-align: right">{{item.articleCitationCount}}</el-col>-->
+                <!--</el-row>-->
+                <!--<div style="margin-top: -20px">-->
+                  <!--<Progress :percent="100*item.articleCitationCount/timedCitedMost" :stroke-color="['#108ee9', '#87d068']" hide-info/>-->
+                <!--</div>-->
 
-              </div>
-            </el-card>
+              <!--</div>-->
+            <!--</el-card>-->
 
-          </div>
-        </el-col>
+          <!--</div>-->
+        <!--</el-col>-->
 
-      </el-row>
+      <!--</el-row>-->
 
-      <div style="margin-top: 5%; margin-bottom: 5%; margin-left: 5%; margin-right: 5%"><el-divider></el-divider></div>
+      <!--<div style="margin-top: 5%; margin-bottom: 5%; margin-left: 5%; margin-right: 5%"><el-divider></el-divider></div>-->
 
-      <!--迭代二活跃度排行-->
-      <div class="ranking_2">
-        <el-row :gutter="80" style="margin-left: 2%;margin-right: 2%">
+      <!--&lt;!&ndash;迭代二活跃度排行&ndash;&gt;-->
+      <!--<div class="ranking_2">-->
+        <!--<el-row :gutter="80" style="margin-left: 2%;margin-right: 2%">-->
 
-          <!--机构活跃度排行-->
-          <el-col :span="8">
-            <el-card class="box-card">
-              <div slot="header" class="clearfix head_card" style=";text-align: center;background-color: #A6BAC9">
-                <span style="font-size: 23px;font-weight: bold">
-                  <!--<Icon type="md-person" style="color: cornflowerblue;margin-left: 18%" size = "40" />-->
-                  {{ranking2s[0].title}}
-                </span>
-              </div>
-              <div v-for="(item, index) in ranking2s[0].contents5" :key="item.id" class="text item">
-                <!--{{'列表内容 ' + o }}-->
-                <el-row style="font-size: 18px">
-                  <el-col :span="20" style="text-align: left">
-                    <el-tooltip effect="dark" placement="right">
-                      <div slot="content">
-                        Activity: {{toPercent(item.activeness)}}, {{item.name}}
-                      </div>
-                      <router-link target="_blank" :to="{name:'AffiliationPortrait',query:{affiliationId:item.affiliationId}}">
-                          <div style="font-size: 18px; overflow: hidden; color: #000000;
-                       white-space: nowrap;width: 320px;text-overflow: ellipsis;">
-                            <span style="color: darkgray; font-weight: bold; font-style: italic">{{index + 1}}.</span>&nbsp;&nbsp;
-                            <span style="font-weight: bold; color: #383838">{{item.name}}</span>
-                          </div>
-                      </router-link>
-                    </el-tooltip>
-                  </el-col>
-                  <el-col :span="4" style="text-align: right;">
-                    <router-link target="_blank" :to="{name:'AffiliationPortrait',query:{affiliationId:item.affiliationId}}" style="color: darkgray">
-                      <i class="el-icon-arrow-right"></i>
-                    </router-link>
-                  </el-col>
-                </el-row>
+          <!--&lt;!&ndash;机构活跃度排行&ndash;&gt;-->
+          <!--<el-col :span="8">-->
+            <!--<el-card class="box-card">-->
+              <!--<div slot="header" class="clearfix head_card" style=";text-align: center;background-color: #A6BAC9">-->
+                <!--<span style="font-size: 23px;font-weight: bold">-->
+                  <!--&lt;!&ndash;<Icon type="md-person" style="color: cornflowerblue;margin-left: 18%" size = "40" />&ndash;&gt;-->
+                  <!--{{ranking2s[0].title}}-->
+                <!--</span>-->
+              <!--</div>-->
+              <!--<div v-for="(item, index) in ranking2s[0].contents5" :key="item.id" class="text item">-->
+                <!--&lt;!&ndash;{{'列表内容 ' + o }}&ndash;&gt;-->
+                <!--<el-row style="font-size: 18px">-->
+                  <!--<el-col :span="20" style="text-align: left">-->
+                    <!--<el-tooltip effect="dark" placement="right">-->
+                      <!--<div slot="content">-->
+                        <!--Activity: {{toPercent(item.activeness)}}, {{item.name}}-->
+                      <!--</div>-->
+                      <!--<router-link target="_blank" :to="{name:'AffiliationPortrait',query:{affiliationId:item.affiliationId}}">-->
+                          <!--<div style="font-size: 18px; overflow: hidden; color: #000000;-->
+                       <!--white-space: nowrap;width: 320px;text-overflow: ellipsis;">-->
+                            <!--<span style="color: darkgray; font-weight: bold; font-style: italic">{{index + 1}}.</span>&nbsp;&nbsp;-->
+                            <!--<span style="font-weight: bold; color: #383838">{{item.name}}</span>-->
+                          <!--</div>-->
+                      <!--</router-link>-->
+                    <!--</el-tooltip>-->
+                  <!--</el-col>-->
+                  <!--<el-col :span="4" style="text-align: right;">-->
+                    <!--<router-link target="_blank" :to="{name:'AffiliationPortrait',query:{affiliationId:item.affiliationId}}" style="color: darkgray">-->
+                      <!--<i class="el-icon-arrow-right"></i>-->
+                    <!--</router-link>-->
+                  <!--</el-col>-->
+                <!--</el-row>-->
 
-              </div>
-            </el-card>
-          </el-col>
+              <!--</div>-->
+            <!--</el-card>-->
+          <!--</el-col>-->
 
-          <!--作者活跃度排行-->
-          <el-col :span="8">
-            <el-card class="box-card">
-              <div slot="header" class="clearfix head_card" style=";text-align: center;background-color: #E6CBCB">
-                <span style="font-size: 23px;font-weight: bold">
-                  <!--<Icon type="md-person" style="color: cornflowerblue;margin-left: 18%" size = "40" />-->
-                  {{ranking2s[1].title}}
-                </span>
-              </div>
-              <div v-for="(item, index) in ranking2s[1].contents5" :key="item.id" class="text item">
-                <!--{{'列表内容 ' + o }}-->
-                <el-row style="font-size: 18px">
-                  <el-col :span="20" style="text-align: left">
-                    <el-tooltip effect="dark" placement="right">
-                      <div slot="content">
-                        Activity: {{toPercent(item.activeness)}}, {{item.name}}
-                      </div>
-                      <router-link target="_blank" :to="{name:'AuthorPortrait',query:{authorId:item.authorId}}">
-                        <div style="font-size: 18px; overflow: hidden; color: #000000;
-                       white-space: nowrap;width: 320px;text-overflow: ellipsis;">
-                          <span style="color: darkgray; font-weight: bold; font-style: italic">{{index + 1}}.</span>&nbsp;&nbsp;
-                          <span style="font-weight: bold; color: #383838">{{item.name}}</span>
-                        </div>
-                      </router-link>
-                    </el-tooltip>
-                  </el-col>
-                  <el-col :span="4" style="text-align: right;">
-                    <router-link target="_blank" :to="{name:'AffiliationPortrait',query:{affiliationId:item.affiliationId}}" style="color: darkgray">
-                      <i class="el-icon-arrow-right"></i>
-                    </router-link>
-                  </el-col>
-                </el-row>
-              </div>
-            </el-card>
-          </el-col>
+          <!--&lt;!&ndash;作者活跃度排行&ndash;&gt;-->
+          <!--<el-col :span="8">-->
+            <!--<el-card class="box-card">-->
+              <!--<div slot="header" class="clearfix head_card" style=";text-align: center;background-color: #E6CBCB">-->
+                <!--<span style="font-size: 23px;font-weight: bold">-->
+                  <!--&lt;!&ndash;<Icon type="md-person" style="color: cornflowerblue;margin-left: 18%" size = "40" />&ndash;&gt;-->
+                  <!--{{ranking2s[1].title}}-->
+                <!--</span>-->
+              <!--</div>-->
+              <!--<div v-for="(item, index) in ranking2s[1].contents5" :key="item.id" class="text item">-->
+                <!--&lt;!&ndash;{{'列表内容 ' + o }}&ndash;&gt;-->
+                <!--<el-row style="font-size: 18px">-->
+                  <!--<el-col :span="20" style="text-align: left">-->
+                    <!--<el-tooltip effect="dark" placement="right">-->
+                      <!--<div slot="content">-->
+                        <!--Activity: {{toPercent(item.activeness)}}, {{item.name}}-->
+                      <!--</div>-->
+                      <!--<router-link target="_blank" :to="{name:'AuthorPortrait',query:{authorId:item.authorId}}">-->
+                        <!--<div style="font-size: 18px; overflow: hidden; color: #000000;-->
+                       <!--white-space: nowrap;width: 320px;text-overflow: ellipsis;">-->
+                          <!--<span style="color: darkgray; font-weight: bold; font-style: italic">{{index + 1}}.</span>&nbsp;&nbsp;-->
+                          <!--<span style="font-weight: bold; color: #383838">{{item.name}}</span>-->
+                        <!--</div>-->
+                      <!--</router-link>-->
+                    <!--</el-tooltip>-->
+                  <!--</el-col>-->
+                  <!--<el-col :span="4" style="text-align: right;">-->
+                    <!--<router-link target="_blank" :to="{name:'AffiliationPortrait',query:{affiliationId:item.affiliationId}}" style="color: darkgray">-->
+                      <!--<i class="el-icon-arrow-right"></i>-->
+                    <!--</router-link>-->
+                  <!--</el-col>-->
+                <!--</el-row>-->
+              <!--</div>-->
+            <!--</el-card>-->
+          <!--</el-col>-->
 
-          <!--研究方向热度排行-->
-          <el-col :span="8">
-            <el-card class="box-card">
-              <div slot="header" class="clearfix head_card" style=";text-align: center;background-color: #B7E0C3">
-                <span style="font-size: 23px;font-weight: bold">
-                  <!--<Icon type="md-person" style="color: cornflowerblue;margin-left: 18%" size = "40" />-->
-                  {{ranking2s[2].title}}
-                </span>
-              </div>
-              <div v-for="(item, index) in ranking2s[2].contents5" :key="item.id" class="text item">
-                <!--{{'列表内容 ' + o }}-->
-                <el-row style="font-size: 18px">
-                  <el-col :span="20" style="text-align: left">
-                    <el-tooltip effect="dark" placement="right">
-                      <div slot="content">
-                        Popularity: {{toPercent(item.activeness)}}, {{item.name}}
-                      </div>
-                      <router-link target="_blank" :to="{name:'DirectionPortrait',query:{directionId:item.researchDirectionId}}">
-                        <div style="font-size: 18px; overflow: hidden; color: #000000;
-                       white-space: nowrap;width: 320px;text-overflow: ellipsis;">
-                          <span style="color: darkgray; font-weight: bold; font-style: italic">{{index + 1}}.</span>&nbsp;&nbsp;
-                          <span style="font-weight: bold; color: #383838">{{item.name}}</span>
-                        </div>
-                      </router-link>
-                    </el-tooltip>
-                  </el-col>
-                  <el-col :span="4" style="text-align: right;">
-                    <router-link target="_blank" :to="{name:'AffiliationPortrait',query:{affiliationId:item.affiliationId}}" style="color: darkgray">
-                      <i class="el-icon-arrow-right"></i>
-                    </router-link>
-                  </el-col>
-                </el-row>
+          <!--&lt;!&ndash;研究方向热度排行&ndash;&gt;-->
+          <!--<el-col :span="8">-->
+            <!--<el-card class="box-card">-->
+              <!--<div slot="header" class="clearfix head_card" style=";text-align: center;background-color: #B7E0C3">-->
+                <!--<span style="font-size: 23px;font-weight: bold">-->
+                  <!--&lt;!&ndash;<Icon type="md-person" style="color: cornflowerblue;margin-left: 18%" size = "40" />&ndash;&gt;-->
+                  <!--{{ranking2s[2].title}}-->
+                <!--</span>-->
+              <!--</div>-->
+              <!--<div v-for="(item, index) in ranking2s[2].contents5" :key="item.id" class="text item">-->
+                <!--&lt;!&ndash;{{'列表内容 ' + o }}&ndash;&gt;-->
+                <!--<el-row style="font-size: 18px">-->
+                  <!--<el-col :span="20" style="text-align: left">-->
+                    <!--<el-tooltip effect="dark" placement="right">-->
+                      <!--<div slot="content">-->
+                        <!--Popularity: {{toPercent(item.activeness)}}, {{item.name}}-->
+                      <!--</div>-->
+                      <!--<router-link target="_blank" :to="{name:'DirectionPortrait',query:{directionId:item.researchDirectionId}}">-->
+                        <!--<div style="font-size: 18px; overflow: hidden; color: #000000;-->
+                       <!--white-space: nowrap;width: 320px;text-overflow: ellipsis;">-->
+                          <!--<span style="color: darkgray; font-weight: bold; font-style: italic">{{index + 1}}.</span>&nbsp;&nbsp;-->
+                          <!--<span style="font-weight: bold; color: #383838">{{item.name}}</span>-->
+                        <!--</div>-->
+                      <!--</router-link>-->
+                    <!--</el-tooltip>-->
+                  <!--</el-col>-->
+                  <!--<el-col :span="4" style="text-align: right;">-->
+                    <!--<router-link target="_blank" :to="{name:'AffiliationPortrait',query:{affiliationId:item.affiliationId}}" style="color: darkgray">-->
+                      <!--<i class="el-icon-arrow-right"></i>-->
+                    <!--</router-link>-->
+                  <!--</el-col>-->
+                <!--</el-row>-->
 
-              </div>
-            </el-card>
-          </el-col>
+              <!--</div>-->
+            <!--</el-card>-->
+          <!--</el-col>-->
 
-        </el-row>
-      </div>
+        <!--</el-row>-->
+      <!--</div>-->
 
-      <div style="margin-top: 7%; margin-bottom: 7%;  margin-left: 5%; margin-right: 5%">
-        <el-divider content-position="center" >WHAT'S NEW</el-divider>
-      </div>
+      <!--<div style="margin-top: 7%; margin-bottom: 7%;  margin-left: 5%; margin-right: 5%">-->
+        <!--<el-divider content-position="center" >WHAT'S NEW</el-divider>-->
+      <!--</div>-->
 
-      <!--迭代二兴趣点列表-->
-      <div class="whats_funny">
-        <el-row :gutter="40" style="margin-left: 2%;margin-right: 2%">
+      <!--&lt;!&ndash;迭代二兴趣点列表&ndash;&gt;-->
+      <!--<div class="whats_funny">-->
+        <!--<el-row :gutter="40" style="margin-left: 2%;margin-right: 2%">-->
 
-          <el-col :span="6">
-            <el-card class="funny_card" :body-style="{ padding: '0px' }">
-              <router-link :to="{name:'PaperDetail',query:{tab: 'tab1'}}">
-                <img :src="funnyList[0].picture" class="image">
-              </router-link>
+          <!--<el-col :span="6">-->
+            <!--<el-card class="funny_card" :body-style="{ padding: '0px' }">-->
+              <!--<router-link :to="{name:'PaperDetail',query:{tab: 'tab1'}}">-->
+                <!--<img :src="funnyList[0].picture" class="image">-->
+              <!--</router-link>-->
 
-              <div style="padding: 20px;text-align: center">
-                <router-link :to="{name:'PaperDetail',query:{tab: 'tab1'}}">
-                  <el-link style="transition-duration: 0.4s;">
-                    <div style="font-size: 24px;color: #000000; overflow: hidden;
-                         white-space: nowrap;text-overflow: ellipsis;">
-                      {{funnyList[0].title}}
-                    </div>
-                  </el-link>
-                </router-link>
-              </div>
+              <!--<div style="padding: 20px;text-align: center">-->
+                <!--<router-link :to="{name:'PaperDetail',query:{tab: 'tab1'}}">-->
+                  <!--<el-link style="transition-duration: 0.4s;">-->
+                    <!--<div style="font-size: 24px;color: #000000; overflow: hidden;-->
+                         <!--white-space: nowrap;text-overflow: ellipsis;">-->
+                      <!--{{funnyList[0].title}}-->
+                    <!--</div>-->
+                  <!--</el-link>-->
+                <!--</router-link>-->
+              <!--</div>-->
 
-            </el-card>
-          </el-col>
+            <!--</el-card>-->
+          <!--</el-col>-->
 
-          <el-col :span="6">
-            <el-card class="funny_card" :body-style="{ padding: '0px' }">
-              <router-link :to="{name:'PaperDetail',query:{tab: 'tab2'}}">
-                <img :src="funnyList[1].picture" class="image">
-              </router-link>
+          <!--<el-col :span="6">-->
+            <!--<el-card class="funny_card" :body-style="{ padding: '0px' }">-->
+              <!--<router-link :to="{name:'PaperDetail',query:{tab: 'tab2'}}">-->
+                <!--<img :src="funnyList[1].picture" class="image">-->
+              <!--</router-link>-->
 
-              <div style="padding: 20px;text-align: center">
-                <router-link :to="{name:'PaperDetail',query:{tab: 'tab2'}}">
-                  <el-link style="transition-duration: 0.4s;">
-                    <div style="font-size: 24px;color: #000000; overflow: hidden;
-                         white-space: nowrap;text-overflow: ellipsis;">
-                      {{funnyList[1].title}}
-                    </div>
-                  </el-link>
-                </router-link>
-              </div>
+              <!--<div style="padding: 20px;text-align: center">-->
+                <!--<router-link :to="{name:'PaperDetail',query:{tab: 'tab2'}}">-->
+                  <!--<el-link style="transition-duration: 0.4s;">-->
+                    <!--<div style="font-size: 24px;color: #000000; overflow: hidden;-->
+                         <!--white-space: nowrap;text-overflow: ellipsis;">-->
+                      <!--{{funnyList[1].title}}-->
+                    <!--</div>-->
+                  <!--</el-link>-->
+                <!--</router-link>-->
+              <!--</div>-->
 
-            </el-card>
-          </el-col>
+            <!--</el-card>-->
+          <!--</el-col>-->
 
-          <el-col :span="6">
-            <el-card class="funny_card" :body-style="{ padding: '0px' }">
-              <router-link :to="{name:'PaperDetail',query:{tab: 'tab3'}}">
-                <img :src="funnyList[2].picture" class="image">
-              </router-link>
+          <!--<el-col :span="6">-->
+            <!--<el-card class="funny_card" :body-style="{ padding: '0px' }">-->
+              <!--<router-link :to="{name:'PaperDetail',query:{tab: 'tab3'}}">-->
+                <!--<img :src="funnyList[2].picture" class="image">-->
+              <!--</router-link>-->
 
-              <div style="padding: 20px;text-align: center">
-                <router-link :to="{name:'PaperDetail',query:{tab: 'tab3'}}">
-                  <el-link style="transition-duration: 0.4s;">
-                    <div style="font-size: 24px;color: #000000; overflow: hidden;
-                         white-space: nowrap;text-overflow: ellipsis;">
-                      {{funnyList[2].title}}
-                    </div>
-                  </el-link>
-                </router-link>
-              </div>
+              <!--<div style="padding: 20px;text-align: center">-->
+                <!--<router-link :to="{name:'PaperDetail',query:{tab: 'tab3'}}">-->
+                  <!--<el-link style="transition-duration: 0.4s;">-->
+                    <!--<div style="font-size: 24px;color: #000000; overflow: hidden;-->
+                         <!--white-space: nowrap;text-overflow: ellipsis;">-->
+                      <!--{{funnyList[2].title}}-->
+                    <!--</div>-->
+                  <!--</el-link>-->
+                <!--</router-link>-->
+              <!--</div>-->
 
-            </el-card>
-          </el-col>
+            <!--</el-card>-->
+          <!--</el-col>-->
 
-          <el-col :span="6">
-            <el-card class="funny_card" :body-style="{ padding: '0px' }">
-              <router-link :to="{name:'PaperDetail',query:{tab: 'tab4'}}">
-                <img :src="funnyList[3].picture" class="image">
-              </router-link>
+          <!--<el-col :span="6">-->
+            <!--<el-card class="funny_card" :body-style="{ padding: '0px' }">-->
+              <!--<router-link :to="{name:'PaperDetail',query:{tab: 'tab4'}}">-->
+                <!--<img :src="funnyList[3].picture" class="image">-->
+              <!--</router-link>-->
 
-              <div style="padding: 20px;text-align: center">
-                <router-link :to="{name:'PaperDetail',query:{tab: 'tab4'}}">
-                  <el-link style="transition-duration: 0.4s;">
-                    <div style="font-size: 24px;color: #000000; overflow: hidden;
-                         white-space: nowrap;text-overflow: ellipsis;">
-                      {{funnyList[3].title}}
-                    </div>
-                  </el-link>
-                </router-link>
-              </div>
+              <!--<div style="padding: 20px;text-align: center">-->
+                <!--<router-link :to="{name:'PaperDetail',query:{tab: 'tab4'}}">-->
+                  <!--<el-link style="transition-duration: 0.4s;">-->
+                    <!--<div style="font-size: 24px;color: #000000; overflow: hidden;-->
+                         <!--white-space: nowrap;text-overflow: ellipsis;">-->
+                      <!--{{funnyList[3].title}}-->
+                    <!--</div>-->
+                  <!--</el-link>-->
+                <!--</router-link>-->
+              <!--</div>-->
 
-            </el-card>
-          </el-col>
+            <!--</el-card>-->
+          <!--</el-col>-->
 
       <!--<div class="whats_funny">-->
         <!--<el-row :gutter="80" style="margin-left: 2%;margin-right: 2%">-->
@@ -684,14 +608,14 @@
             <!--</el-card>-->
           <!--</el-col>-->
 
-        </el-row>
-      </div>
+        <!--</el-row>-->
+      <!--</div>-->
 
-      <div style="margin-top: 7%; margin-bottom: 8%; margin-left: 5%; margin-right: 5%">
-        <el-divider content-position="center">STAY TUNED...</el-divider>
-      </div>
+      <!--<div style="margin-top: 7%; margin-bottom: 8%; margin-left: 5%; margin-right: 5%">-->
+        <!--<el-divider content-position="center">STAY TUNED...</el-divider>-->
+      <!--</div>-->
 
-    </el-footer>
+    <!--</el-footer>-->
 
   </el-container>
 </template>
@@ -701,8 +625,12 @@ import {
   getStatistics,getCommonSearchResult, getAdvancedSearchResult,getMatchAuthor,getMatchAffiliation,getMatchConference
   //   getAffiliationActivityRanking, getAuthorActivityRanking, getResearchDirectionPopularityRanking, getTopPapers, getTopAffiliations, getTopAuthors,  adminLogin,
 } from '../../API/Home/HomePageAPIs'
+import lo from '../../components/Center'
 
 export default {
+  components: {
+    lo
+  },
   data() {
     return {
       user: {
@@ -710,6 +638,8 @@ export default {
         logout: false,
         username: 'yry',
         password: '',
+        id: '',
+        token: ''
       },
       searchAuthor:{},
       searchAffiliation:{},
@@ -1020,8 +950,14 @@ export default {
           let total = 0
           getCommonSearchResult(this.commonInput, 0).then(res => {
             if (res.success) {
-              paperList = res.content.paperBriefInfoVOList
-              total = res.content.totalNum
+              console.log(res.content)
+                if(res.content=== "查询结果为0"){
+                  paperList=[]
+                }else{
+                  paperList = res.content.paperBriefInfoVOList
+                  total = res.content.totalNum
+                }
+
               console.log(total)
               this.searching = false
               this.$router.push({
@@ -1054,9 +990,13 @@ export default {
           let total = 0
           getAdvancedSearchResult(this.advSearchForm).then(res => {
             if (res.success) {
-              console.log(this.advSearchForm.authors)
-              paperList = res.content.paperBriefInfoVOList
-              total = res.content.totalNum
+              console.log(res.content)
+              if(res.content=== "搜索结果为0"){
+                paperList=[]
+              }else{
+                paperList = res.content.paperBriefInfoVOList
+                total = res.content.totalNum
+              }
               this.searching = false
               this.$router.push({
                 name: 'SearchPaper',
@@ -1090,12 +1030,14 @@ export default {
           let paperList = []
           let total = 0
           getAdvancedSearchResult(this.advSearchForm).then(res => {
-            console.log(this.advSearchForm)
-            console.log("!!!!!!!!")
-            console.log(res)
             if (res.success) {
-              paperList = res.content.paperBriefInfoVOList
-              total = res.content.totalNum
+              console.log(res.content)
+              if(res.content=== "搜索结果为0"){
+                paperList=[]
+              }else{
+                paperList = res.content.paperBriefInfoVOList
+                total = res.content.totalNum
+              }
               this.searching = false
               this.$router.push({
                 name: 'SearchPaper',
@@ -1129,8 +1071,13 @@ export default {
           let total = 0
           getAdvancedSearchResult(this.advSearchForm).then(res => {
             if (res.success ) {
-              paperList = res.content.paperBriefInfoVOList
-              total = res.content.totalNum
+              console.log(res.content)
+              if(res.content=== "搜索结果为0"){
+                paperList=[]
+              }else{
+                paperList = res.content.paperBriefInfoVOList
+                total = res.content.totalNum
+              }
               this.searching = false
               this.$router.push({
                 name: 'SearchPaper',
@@ -1256,8 +1203,13 @@ export default {
           console.log(this.advSearchForm)
           this.advSearchForm.keywords.push(this.searchConference)
           if (res.success ) {
-            paperList = res.content.paperBriefInfoVOList
-            total = res.content.totalNum
+            console.log(res.content)
+            if(res.content=== "搜索结果为0"){
+              paperList=[]
+            }else{
+              paperList = res.content.paperBriefInfoVOList
+              total = res.content.totalNum
+            }
             this.searching_advanced = false
             this.$router.push({
               name: 'SearchPaper',
@@ -1340,7 +1292,9 @@ export default {
     },
   },
   mounted: function () {
-    // this.$store.dispatch('flushFun')
+    this.user.username = localStorage.getItem('username')
+    this.user.token = localStorage.getItem('token')
+    console.log(this.user.token)
     this.loadData()
   }
 }
@@ -1353,30 +1307,13 @@ export default {
      margin-bottom: 0;
    }
   }
-  .el-col {
-    border-radius: 4px;
-  }
-  .bg-purple-dark {
-    background: #99a9bf;
-  }
+
   .bg-purple {
     background-color: rgba(255,255,255,0.43);
   }
-  .bg-purple2 {
-    background-color: rgba(255,255,255,0.8);
-  }
-  .bg-purple-light {
-    background: #e5e9f2;
-  }
-  .grid-content2 {
-    min-height: 60px;
-  }
+
   .grid-content {
     min-height: 100px;
-  }
-  .row-bg {
-    padding: 10px 0;
-    background-color: #f9fafc;
   }
 
   .header_icon{
@@ -1394,38 +1331,6 @@ export default {
   .header_type{
     margin-top: -5px;
     font-size: 21px;
-  }
-  .button_1{
-    border: none;
-    transition-duration: 0.4s;
-    font-size: 28px;
-  }
-  .avatar-dropdown {
-    display: flex;
-    align-content: center;
-    align-items: center;
-    justify-content: center;
-    justify-items: center;
-    height: 50px;
-    padding: 0;
-    font-size: 30px;
-  }
-  .button_1:hover{
-    background-color: whitesmoke;
-  }
-  .collection_item{
-    height: 120px;
-    line-height: 40px;
-    font-size: 29px;
-    transition-duration: 0.4s;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-  }
-  .collection_item:hover{
-    color: cornflowerblue;
-    background-color: whitesmoke;
   }
 
   .text {
@@ -1456,9 +1361,7 @@ export default {
     padding-top: 18px;
   }
 
-  .el-divider {
-    background-color: black;
-  }
+
 
   .image {
     width: 100%;

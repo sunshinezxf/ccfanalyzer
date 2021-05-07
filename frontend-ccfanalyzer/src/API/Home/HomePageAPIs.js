@@ -22,10 +22,6 @@ export const getAdvancedSearchResult = (advSearchMessage) => {
   return axios.get('/paper/search/advanced?authors='+advSearchMessage.authors+'&affiliations='+advSearchMessage.affiliations+'&startYear='+advSearchMessage.startYear+'&endYear='+advSearchMessage.endYear+'&conferenceName='+advSearchMessage.conferenceName+'&keywords='+advSearchMessage.keywords+'&index='+advSearchMessage.index).then(res => res.data)
 }
 
-// 管理员登录
-export const adminLogin = (params) => {
-  return axios.post('/admin/login', params).then(res => res.data)
-}
 
 //作者搜索提示
 export const getMatchAuthor = (input) => {

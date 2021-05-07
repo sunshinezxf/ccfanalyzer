@@ -1,80 +1,7 @@
 <template>
   <el-container>
-    <el-header class="header" style="overflow: hidden;padding: 0%">
-      <div style="margin-left: -19px;margin-right: -19px;text-align:center">
-        <el-row style="margin-bottom: 0%">
-          <el-col :span="4">
-            <div class="grid-content2 bg-purple2" style="color: white;text-align:center">
-
-              <el-row>
-                  <span class="avatar-dropdown">
-                    <i class="el-icon-s-home" ></i>
-                    <span class="u" style="font-size: 20px;color: grey;text-align: center">
-                    &nbsp;&nbsp;HomePage &nbsp;
-                 </span>
-                  </span>
-              </el-row>
-
-            </div>
-          </el-col>
-
-          <el-col :span="17">
-            <div class="grid-content2 bg-purple2" style="color: white;">
-
-              <el-row style="margin-bottom: -8%"></el-row>
-            </div>
-          </el-col>
-          <el-col :span="3"><div class="grid-content2 bg-purple2" style="color: white;">
-            <div v-show="user.login">
-              <el-dropdown @command="handleCommand">
-                 <span class="avatar-dropdown">
-                  <!--<el-avatar class="user-avatar" :src="avatar"></el-avatar>-->
-                  <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-
-                 <span class="u" style="font-size: 20px">
-                    &nbsp;&nbsp;{{ user.username }} &nbsp;
-                 </span>
-
-                   <i class="el-icon-arrow-down el-icon--right"></i>
-                </span>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
-            </div>
-
-            <div v-show="user.logout">
-
-                   <span class="avatar-dropdown">
-                        <!--<el-avatar class="user-avatar" :src="avatar"></el-avatar>-->
-                        <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-
-                       <span class="u" style="font-size: 20px">
-                          &nbsp;&nbsp; Login&nbsp;In&nbsp;&nbsp;
-                       </span>
-
-                      </span>
-            </div>
-          </div>
-          </el-col>
-        </el-row>
-      </div>
-
-      <el-dialog
-        title="Administrator Login"
-        :visible.sync="dialogVisible"
-        width="30%"
-        center>
-        <div style="text-align:center">
-          <el-input style="width: 70%" placeholder="username" v-model="username" clearable></el-input>
-        </div>
-        <div style="text-align:center">
-          <el-input style="width: 70%; margin-top: 5%" placeholder="password" v-model="password" show-password></el-input>
-        </div>
-        <span slot="footer" class="dialog-footer">
-          <el-button style="width: 70%; margin-bottom: 5%; font-size: large" type="primary" @click="dialogVisible = true; login()">LOGIN</el-button>
-        </span>
-      </el-dialog>
+    <el-header class="header" :style ="this.$store.state.background" style="overflow: hidden;padding: 0%">
+      <div><lo></lo></div>
     </el-header>
     <el-container>
       <el-aside class="side" width="200px">
@@ -91,19 +18,19 @@
             :span="2" :style="containerHeight">
             <el-menu-item index="/MyTeams">
               <i class="el-icon-menu"></i>
-              <span slot="title">我的团队</span>
+              <span slot="title">MyTeams</span>
             </el-menu-item>
             <el-menu-item index="/PersonalWarehouse">
               <i class="el-icon-menu"></i>
-              <span slot="title">个人仓库</span>
+              <span slot="title">PersonalWarehouse</span>
             </el-menu-item>
             <el-menu-item index="/Collections">
               <i class="el-icon-document"></i>
-              <span slot="title">我的收藏</span>
+              <span slot="title">MyCollections</span>
             </el-menu-item>
             <el-menu-item index="/PaperShared">
               <i class="el-icon-reading"></i>
-              <span slot="title">分享文章</span>
+              <span slot="title">PaperShared</span>
             </el-menu-item>
           </el-menu>
         </el-col>
@@ -113,43 +40,43 @@
           <br>
           <h1 style="margin-left: 3%;color:black;">{{paperNum}} Papers</h1>
           <div style="text-align:right">
-            <el-button type="text" @click="dialogFormVisible = true">文章上传</el-button>
-            <el-dialog title="文章信息" :visible.sync="dialogFormVisible" align="center" :modal="false" :close-on-click-modal="false">
+            <el-button type="text" @click="dialogFormVisible = true">Upload&nbsp;Paper</el-button>
+            <el-dialog title="PaperInfo" :visible.sync="dialogFormVisible" align="center" :modal="false" :close-on-click-modal="false">
               <el-form :model="form">
-                <el-form-item label="文章标题" :label-width="formLabelWidth">
+                <el-form-item label="Title" :label-width="formLabelWidth">
                   <el-input v-model="form.title" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="文章简介" :label-width="formLabelWidth">
+                <el-form-item label="Abstract" :label-width="formLabelWidth">
                   <el-input v-model="form.abstracts" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="文章doi" :label-width="formLabelWidth">
+                <el-form-item label="Paper doi" :label-width="formLabelWidth">
                   <el-input v-model="form.doi" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="文章引用数" :label-width="formLabelWidth">
+                <el-form-item label="Citation Counts" :label-width="formLabelWidth">
                   <el-input v-model="form.citation" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="出版标题" :label-width="formLabelWidth">
+                <el-form-item label="Book_title" :label-width="formLabelWidth">
                   <el-input v-model="form.book_title" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="文章页数" :label-width="formLabelWidth">
+                <el-form-item label="PaperPages" :label-width="formLabelWidth">
                   <el-input v-model="form.paperPages" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="年份" :label-width="formLabelWidth">
+                <el-form-item label="Years" :label-width="formLabelWidth">
                   <el-input v-model="form.years" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="出版商" :label-width="formLabelWidth">
+                <el-form-item label="Publisher" :label-width="formLabelWidth">
                   <el-input v-model="form.publisher" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="url" :label-width="formLabelWidth">
-                <el-input v-model="form.url" autocomplete="off"></el-input>
-              </el-form-item>
-                <el-form-item label="出版时间" :label-width="formLabelWidth">
+                <el-form-item label="Url" :label-width="formLabelWidth">
+                  <el-input v-model="form.url" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="PublishTime" :label-width="formLabelWidth">
                   <el-input v-model="form.time" autocomplete="off"></el-input>
                 </el-form-item>
               </el-form>
               <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="Upload(user.token, form)">确 定</el-button>
+                <el-button @click="dialogFormVisible = false">Cancel</el-button>
+                <el-button type="primary" @click="Upload(user.token, form)">Confirm</el-button>
               </div>
             </el-dialog>
           </div>
@@ -159,89 +86,72 @@
                 <el-link style="font-size: 27px;color: black" @click="getContent(item.paperId)"><strong>{{item.title}}</strong></el-link><br>
                 <el-row>
               <span class="affcon" style="font-size: 17px;color: dimgray">
-                Affiliations:&nbsp;&nbsp;&nbsp;
-                <span  class="divider" v-if="item.affiliations.length==0">None</span>
-              <span  v-for="(aff,index) in item.affiliations" :key="index">
-                <span role="separator" class="divider" v-if="index != 0">,</span>
-                <el-link style="font-size: 17px;color: cornflowerblue;font-style:italic"  :key='aff' @click="searchAffiliationPor(aff.affiliationId)">{{aff.name}}</el-link>
-              </span>
-              </span>
-                </el-row>
-                <el-row>
-              <span class="affcon" style="font-size: 17px;color: dimgray">
                 Authors:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <span  class="divider" v-if="item.authors.length==0">None</span>
               <span v-for="(author,index) in item.authors" :key="index">
                 <span role="separator" class="divider" v-if="index != 0">,</span>
-              <el-link style="font-size: 17px;color: cornflowerblue;font-style:italic" :key="author" @click="searchAuthorPor(author.authorId)">{{author.name}}</el-link>
+              <span style="font-size: 17px;color: dimgray;font-style:italic" :key="author" >{{author}}</span>
               </span>
               </span>
                 </el-row>
-                <span class="sum" style="font-size: 15px;color: dimgray;margin-top: 5px;margin-bottom: 5px" v-if="item.summary" >{{item.summary}}</span>
+                <span class="sum" style="font-size: 15px;color: dimgray;margin-top: 5px;margin-bottom: 5px" v-if="item.abstracts" >{{item.abstracts}}</span>
                 <el-row>
-              <span class="affcon" style="font-size: 17px;color: dimgray">
-                Keywords:&nbsp;&nbsp;&nbsp;
-                <span  class="divider" v-if="item.keywords.length==0">None</span>
-              <span v-for="(keyword,index) in item.keywords" :key="index">
-                <span role="separator" class="divider" v-if="index != 0">,</span>
-              <el-link style="font-size: 17px;color: cornflowerblue;font-style:italic" :key="keyword" @click="searchByKeyword(keyword)">{{keyword}}</el-link>
-              </span>
-                </span>
-                </el-row>
-                <el-row>
-                  <span style="font-size: 17px;color: dimgray">Publication:&nbsp;&nbsp;<el-link style="font-size: 17px;color: cornflowerblue;font-style:italic" @click="searchConferencePor(item.publication)">{{item.publication}}</el-link></span><br>
+                  <span style="font-size: 17px;color: dimgray">Publication:&nbsp;&nbsp;<el-link style="font-size: 17px;color: cornflowerblue;font-style:italic">{{item.publisher}}</el-link></span><br>
                 </el-row>
               </div>
               <div  style="text-align:right">
                 <el-button type="primary" icon="el-icon-edit" @click="dialogForm2Visible = true"></el-button>
-                <el-dialog title="文章信息" :visible.sync="dialogForm2Visible" align="center" :modal="false" :close-on-click-modal="false">
-                  <el-form :model="form">
-                    <el-form-item label="文章标题" :label-width="formLabelWidth">
-                      <el-input v-model="form.title" autocomplete="off"></el-input>
+                <el-dialog title="PaperInfo" :visible.sync="dialogForm2Visible" align="center" :modal="false" :close-on-click-modal="false">
+                  <el-form :model="modifyForm">
+                    <el-form-item label="Title" :label-width="formLabelWidth">
+                      <el-input v-model="modifyForm.title" autocomplete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="文章简介" :label-width="formLabelWidth">
-                      <el-input v-model="form.abstracts" autocomplete="off"></el-input>
+                    <el-form-item label="Authors" :label-width="formLabelWidth">
+                      <el-input v-model="modifyForm.authors" autocomplete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="文章doi" :label-width="formLabelWidth">
-                      <el-input v-model="form.doi" autocomplete="off"></el-input>
+                    <el-form-item label="Abstract" :label-width="formLabelWidth">
+                      <el-input v-model="modifyForm.abstracts" autocomplete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="文章引用数" :label-width="formLabelWidth">
-                      <el-input v-model="form.citation" autocomplete="off"></el-input>
+                    <el-form-item label="Paper doi" :label-width="formLabelWidth">
+                      <el-input v-model="modifyForm.doi" autocomplete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="出版标题" :label-width="formLabelWidth">
-                      <el-input v-model="form.book_title" autocomplete="off"></el-input>
+                    <el-form-item label="Citation Counts" :label-width="formLabelWidth">
+                      <el-input v-model="modifyForm.citation" autocomplete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="文章页数" :label-width="formLabelWidth">
-                      <el-input v-model="form.paperPages" autocomplete="off"></el-input>
+                    <el-form-item label="Book_title" :label-width="formLabelWidth">
+                      <el-input v-model="modifyForm.book_title" autocomplete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="年份" :label-width="formLabelWidth">
-                      <el-input v-model="form.years" autocomplete="off"></el-input>
+                    <el-form-item label="PaperPages" :label-width="formLabelWidth">
+                      <el-input v-model="modifyForm.paperPages" autocomplete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="出版商" :label-width="formLabelWidth">
-                      <el-input v-model="form.publisher" autocomplete="off"></el-input>
+                    <el-form-item label="Years" :label-width="formLabelWidth">
+                      <el-input v-model="modifyForm.years" autocomplete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="url" :label-width="formLabelWidth">
-                      <el-input v-model="form.url" autocomplete="off"></el-input>
+                    <el-form-item label="Publisher" :label-width="formLabelWidth">
+                      <el-input v-model="modifyForm.publisher" autocomplete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="出版时间" :label-width="formLabelWidth">
-                      <el-input v-model="form.time" autocomplete="off"></el-input>
+                    <el-form-item label="Url" :label-width="formLabelWidth">
+                      <el-input v-model="modifyForm.url" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="PublishTime" :label-width="formLabelWidth">
+                      <el-input v-model="modifyForm.time" autocomplete="off"></el-input>
                     </el-form-item>
                   </el-form>
                   <div slot="footer" class="dialog-footer">
-                    <el-button @click="dialogForm2Visible = false">取 消</el-button>
-                    <el-button type="primary" @click="UpdatePaper(user.token, form)">确 定</el-button>
+                    <el-button @click="dialogForm2Visible = false">Cancel</el-button>
+                    <el-button type="primary" @click="Upload(user.token, form)">Confirm</el-button>
                   </div>
                 </el-dialog>
                 <el-button type="primary" icon="el-icon-share" @click="dialogForm1Visible = true"></el-button>
-                <el-dialog title="文章分享" :visible.sync="dialogForm1Visible" align="center" :modal="false" :close-on-click-modal="false">
+                <el-dialog title="Paper Share" :visible.sync="dialogForm1Visible" align="center" :modal="false" :close-on-click-modal="false">
                   <el-form :model="shareForm">
-                    <el-form-item label="用户名" :label-width="formLabelWidth">
+                    <el-form-item label="UserName" :label-width="formLabelWidth">
                       <el-input v-model="shareForm.name" autocomplete="off"></el-input>
                     </el-form-item>
                   </el-form>
                   <div slot="footer" class="dialog-footer">
-                    <el-button @click="dialogForm1Visible = false">取 消</el-button>
-                    <el-button type="primary" @click="SharePapers(user.token, item.paperId, shareForm.name)">确 定</el-button>
+                    <el-button @click="dialogForm1Visible = false">Cancel</el-button>
+                    <el-button type="primary" @click="SharePapers(user.token, item.paper_id, shareForm.name); dialogForm1Visible = false">Confirm</el-button>
                   </div>
                 </el-dialog>
               </div>
@@ -254,9 +164,13 @@
 </template>
 
 <script>
-import {PaperUpload, PaperShare, PaperUpdate} from '../../API/User/PersonalWarehouseAPIs'
+import {PaperUpload, PaperShare, PaperUpdate, PaperInfo} from '../../API/User/PersonalWarehouseAPIs'
+import lo from '../../components/Center'
 
 export default {
+  components: {
+    lo
+  },
   name: 'PersonalWarehouse',
   data () {
     return {
@@ -273,42 +187,60 @@ export default {
       containerHeight: {
         height: ''
       },
-      paperNum: 8,
+      paperNum: '',
       PaperList: [
         {
-          paperId: 0,
-          title: 'Learning Styles and Inclusion.',
           authors: [{
-            name: 'apple',
-            id: 1
+            name: 'apple'
           }, {
-            name: 'bear',
-            id: 2
+            name: 'bear'
           }],
-          affiliations: [{
-            name: 'NJU',
-            id: 1
-          }, {
-            name: 'ZJU',
-            id: 2
-          }],
-          publication: 'IEEE',
-          summary: 'Learning Models and the Learning Cycle Learning Differences and Learning Styles The Role of the Learning Environment Background to Learning Styles Assessment of Learning Styles Learning Styles Learning and Teaching The Inclusive School Characteristics and Challenges Learning Styles in the Inclusive Context Promoting Effective Learning Learning Styles Strategies and Insights',
-          keywords: ['Educational technology']
+          abstracts: 'Learning Models and the Learning Cycle Learning Differences and Learning Styles The Role of the Learning Environment Background to Learning Styles Assessment of Learning Styles Learning Styles Learning and Teaching The Inclusive School Characteristics and Challenges Learning Styles in the Inclusive Context Promoting Effective Learning Learning Styles Strategies and Insights',
+          bib_source: '',
+          bib_url: '',
+          book_title: '',
+          citation: '',
+          doi: '',
+          pages: '',
+          paper_id: '',
+          publisher: '',
+          time: '',
+          title: '',
+          url: '',
+          year: '',
         }
       ],
       dialogFormVisible: false,
       form: {
+        authors: [],
         title: '',
         abstracts: '',
         doi: '',
         citation: '',
         book_title: '',
-        paperPages: '',
-        years: '',
+        pages: '',
+        year: '',
         publisher: '',
         url: '',
-        time: ''
+        time: '',
+        bib_url: '',
+        bib_source: ''
+      },
+      modifyForm: {
+        paper_id: '',
+        authors: [],
+        title: '',
+        abstracts: '',
+        doi: '',
+        citation: '',
+        book_title: '',
+        pages: '',
+        publisher: '',
+        year: '',
+        url: '',
+        time: '',
+        bib_url: '',
+        bib_source: ''
       },
       formLabelWidth: '120px',
       shareForm: {
@@ -321,6 +253,7 @@ export default {
   mounted () {
     this.user.username = this.user.username = localStorage.getItem('username')
     this.user.token = localStorage.getItem('token')
+    this.getPersonalPaper()
   },
   created () {
     var docHeight = document.documentElement.clientHeight
@@ -371,6 +304,7 @@ export default {
     },
     SharePapers (token, paperId, username) {
       PaperShare(token, paperId, username).then((res) => {
+        console.log(res)
         this.$message.success({
           message: 'Share Successful',
           center: true
@@ -383,6 +317,12 @@ export default {
           message: 'Update Successful',
           center: true
         })
+      })
+    },
+    getPersonalPaper () {
+      PaperInfo(localStorage.getItem('token')).then((res) => {
+        console.log(res)
+        this.PaperList = res.content
       })
     }
   }

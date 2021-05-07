@@ -1,80 +1,7 @@
 <template>
   <el-container>
-    <el-header class="header" style="overflow: hidden;padding: 0%">
-      <div style="margin-left: -19px;margin-right: -19px;text-align:center">
-        <el-row style="margin-bottom: 0%">
-          <el-col :span="4">
-            <div class="grid-content2 bg-purple2" style="color: white;text-align:center">
-
-              <el-row>
-                  <span class="avatar-dropdown">
-                    <i class="el-icon-s-home" ></i>
-                    <span class="u" style="font-size: 20px;color: grey;text-align: center">
-                    &nbsp;&nbsp;HomePage &nbsp;
-                 </span>
-                  </span>
-              </el-row>
-
-            </div>
-          </el-col>
-
-          <el-col :span="17">
-            <div class="grid-content2 bg-purple2" style="color: white;">
-
-              <el-row style="margin-bottom: -8%"></el-row>
-            </div>
-          </el-col>
-          <el-col :span="3"><div class="grid-content2 bg-purple2" style="color: white;">
-            <div v-show="user.login">
-              <el-dropdown @command="handleCommand">
-                 <span class="avatar-dropdown">
-                  <!--<el-avatar class="user-avatar" :src="avatar"></el-avatar>-->
-                  <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-
-                 <span class="u" style="font-size: 20px">
-                    &nbsp;&nbsp;{{ user.username }} &nbsp;
-                 </span>
-
-                   <i class="el-icon-arrow-down el-icon--right"></i>
-                </span>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
-            </div>
-
-            <div v-show="user.logout">
-
-                   <span class="avatar-dropdown">
-                        <!--<el-avatar class="user-avatar" :src="avatar"></el-avatar>-->
-                        <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-
-                       <span class="u" style="font-size: 20px">
-                          &nbsp;&nbsp; Login&nbsp;In&nbsp;&nbsp;
-                       </span>
-
-                      </span>
-            </div>
-          </div>
-          </el-col>
-        </el-row>
-      </div>
-
-      <el-dialog
-        title="Administrator Login"
-        :visible.sync="dialogVisible"
-        width="30%"
-        center>
-        <div style="text-align:center">
-          <el-input style="width: 70%" placeholder="username" v-model="username" clearable></el-input>
-        </div>
-        <div style="text-align:center">
-          <el-input style="width: 70%; margin-top: 5%" placeholder="password" v-model="password" show-password></el-input>
-        </div>
-        <span slot="footer" class="dialog-footer">
-          <el-button style="width: 70%; margin-bottom: 5%; font-size: large" type="primary" @click="dialogVisible = true; login()">LOGIN</el-button>
-        </span>
-      </el-dialog>
+    <el-header class="header" :style ="this.$store.state.background" style="overflow: hidden;padding: 0%">
+      <div><lo></lo></div>
     </el-header>
     <el-container>
       <el-aside class="side" width="200px">
@@ -91,19 +18,19 @@
             :span="2" :style="containerHeight">
             <el-menu-item index="/MyTeams">
               <i class="el-icon-menu"></i>
-              <span slot="title">我的团队</span>
+              <span slot="title">MyTeams</span>
             </el-menu-item>
             <el-menu-item index="/PersonalWarehouse">
               <i class="el-icon-menu"></i>
-              <span slot="title">个人仓库</span>
+              <span slot="title">PersonalWarehouse</span>
             </el-menu-item>
             <el-menu-item index="/Collections">
               <i class="el-icon-document"></i>
-              <span slot="title">我的收藏</span>
+              <span slot="title">MyCollections</span>
             </el-menu-item>
             <el-menu-item index="/PaperShared">
               <i class="el-icon-reading"></i>
-              <span slot="title">分享文章</span>
+              <span slot="title">PaperShared</span>
             </el-menu-item>
           </el-menu>
         </el-col>
@@ -112,90 +39,92 @@
         <el-breadcrumb separator="/" style="font-size: 32px">
           <el-breadcrumb-item :to="{ path: '/MyTeams' }">MyTeams</el-breadcrumb-item>
           <el-breadcrumb-item><a href="/">Team1</a></el-breadcrumb-item>
-          <el-button  plain style="float:right;width: 200px;font-size: 15px" @click="drawer = true" >修改成员</el-button>
-          <el-button  plain style="float:right;width: 100px;margin-right: 30px;font-size: 15px"  type="danger" :disabled="!isOwner" @click="open2">删除团队</el-button>
-          <el-button  plain style="float:right;width: 100px;margin-right: 30px;font-size: 15px"  type="info" @click="open">退出团队</el-button>
+          <el-button  plain style="float:right;width: 250px;font-size: 15px" @click="drawer = true" >Modify&nbsp;Member</el-button>
+          <el-button  plain style="float:right;width: 150px;margin-right: 30px;font-size: 15px"  type="danger" :disabled="!isOwner" @click="open2">Delete&nbsp;Team</el-button>
+          <el-button  plain style="float:right;width: 150px;margin-right: 30px;font-size: 15px"  type="info" @click="open">Exit&nbsp;Team</el-button>
         </el-breadcrumb>
         <el-divider></el-divider>
         <div>
           <el-drawer
             append-to-body="true"
-            style="margin-top: 8%"
-            title="全部成员"
+            style="margin-top: 10%;text-align: center;font-size: 20px;font-weight: bold"
+            title="All Menmber"
             :modal="false"
             :visible.sync="drawer"
             :direction="direction"
             :before-close="handleClose">
             <el-row style="text-align: center">
-              <el-col :span="4" >
-                <el-button type="primary" circle><span style="font-size: 10px">&nbsp;+&nbsp;</span></el-button>
-              </el-col>
               <el-col :span="20">
-              <el-input v-model="input" placeholder="addMember" style="width: 80%"></el-input>
+              <el-input v-model="input" placeholder="addMember" style="width: 90%"></el-input>
+              </el-col>
+              <el-col :span="4" >
+                <el-button type="warning" plain @click="Invite">Invite</el-button>
               </el-col>
             </el-row>
 
             <el-divider></el-divider>
-            <el-table
-              :data="tableData"
-              stripe
-              style="width: 100%">
-              <el-span :span="6">
+            <el-row style="font-weight: bold;color: grey;font-size: 14px">
+              <el-col :span="12">
+                <span>Name</span>
+              </el-col>
+              <el-col :span="12">
+                <span>Operations</span>
+              </el-col>
+              <el-divider></el-divider>
+            </el-row>
+            <div  style="color: grey;font-size: 14px" v-for="item in tableData" :key="item">
+              <el-row>
+                <el-col :span="12">
+                  <span>{{item}}</span>
+                </el-col>
+                <el-col :span="12">
+                  <el-button type="text" :disabled="!isOwner" @click.native.prevent="deleteRow(item)">Remove</el-button>
+                </el-col>
+              </el-row>
+            </div>
 
-              <el-table-column
-                prop="name"
-                label="姓名">
-              </el-table-column>
-              </el-span>
-              <el-table-column
-                prop="actions"
-                label="操作">
-                <template slot-scope="scope">
-                  <el-button type="text" :disabled="!isOwner">移出</el-button>
-                </template>
-              </el-table-column>
-            </el-table>
+
           </el-drawer>
           <br>
           <h1 style="margin-left: 3%;color:black;">{{paperNum}} Papers</h1>
           <div style="text-align:right">
-            <el-button type="text" @click="dialogFormVisible = true">文章上传</el-button>
-            <el-dialog title="文章信息" :visible.sync="dialogFormVisible" align="center" :modal="false" :close-on-click-modal="false">
+            <el-button type="text" @click="dialogFormVisible = true">Upload&nbsp;Paper</el-button>
+            <el-dialog title="PaperInfo" :visible.sync="dialogFormVisible" align="center" :modal="false" :close-on-click-modal="false">
               <el-form :model="form">
-                <el-form-item label="文章标题" :label-width="formLabelWidth">
+                <el-form-item label="Title" :label-width="formLabelWidth">
                   <el-input v-model="form.title" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="文章简介" :label-width="formLabelWidth">
+                <el-form-item label="Abstract" :label-width="formLabelWidth">
                   <el-input v-model="form.abstracts" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="文章doi" :label-width="formLabelWidth">
+                <el-form-item label="Paper doi" :label-width="formLabelWidth">
                   <el-input v-model="form.doi" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="文章引用数" :label-width="formLabelWidth">
+                <el-form-item label="Citation Counts" :label-width="formLabelWidth">
                   <el-input v-model="form.citation" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="出版标题" :label-width="formLabelWidth">
+                <el-form-item label="Book_title" :label-width="formLabelWidth">
                   <el-input v-model="form.book_title" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="文章页数" :label-width="formLabelWidth">
+                <el-form-item label="PaperPages" :label-width="formLabelWidth">
                   <el-input v-model="form.paperPages" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="年份" :label-width="formLabelWidth">
+                <el-form-item label="Years" :label-width="formLabelWidth">
                   <el-input v-model="form.years" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="出版商" :label-width="formLabelWidth">
+                <el-form-item label="Publisher" :label-width="formLabelWidth">
                   <el-input v-model="form.publisher" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="url" :label-width="formLabelWidth">
+                <el-form-item label="Url" :label-width="formLabelWidth">
                   <el-input v-model="form.url" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="出版时间" :label-width="formLabelWidth">
+                <el-form-item label="PublishTime" :label-width="formLabelWidth">
                   <el-input v-model="form.time" autocomplete="off"></el-input>
                 </el-form-item>
               </el-form>
               <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="Upload(user.token, form)">确 定</el-button>
+                <el-button @click="dialogFormVisible = false">Cancel</el-button>
+                <el-button type="primary" @click="Upload(user.token, form)">Confirm</el-button>
               </div>
             </el-dialog>
           </div>
@@ -286,8 +215,8 @@
                     </el-form-item>
                   </el-form>
                   <div slot="footer" class="dialog-footer">
-                    <el-button @click="dialogForm1Visible = false">取 消</el-button>
-                    <el-button type="primary" @click="SharePapers(user.token, item.paperId, shareForm.name)">确 定</el-button>
+                    <el-button @click="dialogForm1Visible = false">Cancel</el-button>
+                    <el-button type="primary" @click="SharePapers(user.token, item.paperId, shareForm.name)">Confirm</el-button>
                   </div>
                 </el-dialog>
               </div>
@@ -302,37 +231,20 @@
 
 <script>
   import {PaperUpload, PaperShare, PaperUpdate} from '../../API/User/PersonalWarehouseAPIs'
-  import {TeamMemberQuit,TeamDelete,getTeamOwner,getTeamList} from '../../API/User/TeamAPIs'
+  import {TeamMemberQuit,TeamDelete,getTeamOwner,getTeamList,TeamInviteMember,TeamDeleteMember,getTeamPaperList} from '../../API/User/TeamAPIs'
+  import lo from '../../components/Center'
+
   export default {
+    components: {
+      lo
+    },
     name: 'PersonalWarehouse',
     data () {
       return {
-        isOwner:false,
+        input:'',
+        isOwner:true,
         team_id:1,
-        tableData: [{
-          name: '王小虎',
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1517 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1519 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1516 弄',
-          zip: 200333
-        }],
+        tableData: ["A","B","c"],
         drawer: false,
         direction: 'rtl',
         user: {
@@ -396,8 +308,9 @@
     mounted () {
       this.user.username = this.user.username = localStorage.getItem('username')
       this.user.token = localStorage.getItem('token')
-      this.isOwnerAble(this.user.token ,this.team_id)
-      this.getMemberLists(this.team_id)
+      //this.isOwnerAble(this.user.token ,this.team_id)
+      //this.getMemberLists(this.team_id)
+      //this.getPaperList(this.team_id)
 
     },
     created () {
@@ -405,6 +318,43 @@
       this.containerHeight.height = docHeight - 40 + 'px'
     },
     methods: {
+      getPaperList(teamid){
+        getTeamPaperList(teamid).then((res) => {
+          this.PaperList=res.content.team_papers
+        }).catch(error => console.log(error))
+      },
+      deleteRow(item) {
+        console.log(item)
+        this.$confirm('This operation will remove this person,whether to continue?', 'Prompt', {
+          confirmButtonText: 'Confirm',
+          cancelButtonText: 'Cancel',
+          type: 'warning'
+        }).then(() => {
+          TeamDeleteMember({token:this.user.token, member:item,team_id:this.team_id}).then((res) => {
+            this.$message({
+              type: 'success',
+              message: 'Remove Successfully!'
+            });
+            rows.splice(index, 1);
+          }).catch(error => console.log(error))
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: 'Cancel Remove Successfully!'
+          });
+        });
+
+      },
+      Invite(){
+        TeamInviteMember({token:this.user.token, invitee:this.input,team_id:this.team_id}).then((res) => {
+          this.$message({
+            type: 'success',
+            message: 'Invite Successfully!'
+
+          });
+          this.getTeamList(this.team_id)
+        }).catch(error => console.log(error))
+      },
       isOwnerAble(userID,teamID) {
         getTeamOwner(userID,teamID).then((res) => {
           if(res.content===1){
@@ -424,40 +374,43 @@
         }).catch(error => console.log(error))
       },
       open() {
-        this.$confirm('此操作将退出团队1, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+        this.$confirm('This operation will exit this team,whether to continue?', 'Prompt', {
+          confirmButtonText: 'Confirm',
+          cancelButtonText: 'Cancel',
           type: 'warning'
         }).then(() => {
-            TeamMemberQuit(this.user.token, this.team_id).then((res) => {
+            TeamMemberQuit({token:this.user.token, team_id:this.team_id}).then((res) => {
               this.$message({
                 type: 'success',
-                message: '退出成功!'
+                message: 'Exit Successfully!'
+
               });
+              this.$router.push({path: '/MyTeams'})
             }).catch(error => console.log(error))
         }).catch(() => {
           this.$message({
             type: 'info',
-            message: '已取消退出'
+            message: 'Cancel Exit Successfully!'
           });
         });
       },
       open2() {
-        this.$confirm('此操作将删除团队1，包括所有数据, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+        this.$confirm('This operation will delete this team,whether to continue', 'Prompt', {
+          confirmButtonText: 'Confirm',
+          cancelButtonText: 'Cancel',
           type: 'warning'
         }).then(() => {
-          TeamDelete(this.user.token, this.team_id).then((res) => {
+          TeamDelete({token:this.user.token, team_id:this.team_id}).then((res) => {
             this.$message({
               type: 'success',
-              message: '退出成功!'
+              message: 'Delete Successfully!'
             });
+            this.$router.push({path: '/MyTeams'})
           }).catch(error => console.log(error))
         }).catch(() => {
           this.$message({
             type: 'info',
-            message: '已取消退出'
+            message: 'Cancel Delete Successfully!'
           });
         });
       },
@@ -465,7 +418,7 @@
         console.log(row);
       },
       handleClose(done) {
-        this.$confirm('确认关闭？')
+        this.$confirm('Close？')
           .then(_ => {
             done();
           })

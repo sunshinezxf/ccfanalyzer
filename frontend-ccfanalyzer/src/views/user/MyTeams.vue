@@ -1,80 +1,7 @@
 <template>
   <el-container>
-    <el-header class="header" style="overflow: hidden;padding: 0%">
-      <div style="margin-left: -19px;margin-right: -19px;text-align:center">
-        <el-row style="margin-bottom: 0%">
-          <el-col :span="4">
-            <div class="grid-content2 bg-purple2" style="color: white;text-align:center">
-
-              <el-row>
-                  <span class="avatar-dropdown">
-                    <i class="el-icon-s-home" ></i>
-                    <span class="u" style="font-size: 20px;color: grey;text-align: center">
-                    &nbsp;&nbsp;HomePage &nbsp;
-                 </span>
-                  </span>
-              </el-row>
-
-            </div>
-          </el-col>
-
-          <el-col :span="17">
-            <div class="grid-content2 bg-purple2" style="color: white;">
-
-              <el-row style="margin-bottom: -8%"></el-row>
-            </div>
-          </el-col>
-          <el-col :span="3"><div class="grid-content2 bg-purple2" style="color: white;">
-            <div v-show="user.login">
-              <el-dropdown @command="handleCommand">
-                 <span class="avatar-dropdown">
-                  <!--<el-avatar class="user-avatar" :src="avatar"></el-avatar>-->
-                  <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-
-                 <span class="u" style="font-size: 20px">
-                    &nbsp;&nbsp;{{ user.username }} &nbsp;
-                 </span>
-
-                   <i class="el-icon-arrow-down el-icon--right"></i>
-                </span>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
-            </div>
-
-            <div v-show="user.logout">
-
-                   <span class="avatar-dropdown">
-                        <!--<el-avatar class="user-avatar" :src="avatar"></el-avatar>-->
-                        <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-
-                       <span class="u" style="font-size: 20px">
-                          &nbsp;&nbsp; Login&nbsp;In&nbsp;&nbsp;
-                       </span>
-
-                      </span>
-            </div>
-          </div>
-          </el-col>
-        </el-row>
-      </div>
-
-      <el-dialog
-        title="Administrator Login"
-        :visible.sync="dialogVisible"
-        width="30%"
-        center>
-        <div style="text-align:center">
-          <el-input style="width: 70%" placeholder="username" v-model="username" clearable></el-input>
-        </div>
-        <div style="text-align:center">
-          <el-input style="width: 70%; margin-top: 5%" placeholder="password" v-model="password" show-password></el-input>
-        </div>
-        <span slot="footer" class="dialog-footer">
-          <el-button style="width: 70%; margin-bottom: 5%; font-size: large" type="primary" @click="dialogVisible = true; login()">LOGIN</el-button>
-        </span>
-      </el-dialog>
+    <el-header class="header" :style ="this.$store.state.background" style="overflow: hidden;padding: 0%">
+      <div><lo></lo></div>
     </el-header>
     <el-container>
       <el-aside class="side" width="200px">
@@ -91,19 +18,19 @@
             :span="2" :style="containerHeight">
             <el-menu-item index="/MyTeams">
               <i class="el-icon-menu"></i>
-              <span slot="title">我的团队</span>
+              <span slot="title">MyTeams</span>
             </el-menu-item>
             <el-menu-item index="/PersonalWarehouse">
               <i class="el-icon-menu"></i>
-              <span slot="title">个人仓库</span>
+              <span slot="title">PersonalWarehouse</span>
             </el-menu-item>
             <el-menu-item index="/Collections">
               <i class="el-icon-document"></i>
-              <span slot="title">我的收藏</span>
+              <span slot="title">MyCollections</span>
             </el-menu-item>
             <el-menu-item index="/PaperShared">
               <i class="el-icon-reading"></i>
-              <span slot="title">分享文章</span>
+              <span slot="title">PaperShared</span>
             </el-menu-item>
           </el-menu>
         </el-col>
@@ -156,8 +83,12 @@
 <script>
   import {getCollections, deleteCollection} from '../../API/User/CollectionAPIs'
   import {getTeamList,TeamCreate} from '../../API/User/TeamAPIs'
+  import lo from '../../components/Center'
+
   export default {
-    name: 'Collections',
+    components: {
+      lo
+    },
     data () {
       return {
         form:{
@@ -222,6 +153,7 @@
     mounted () {
       this.user.username = localStorage.getItem('username')
       this.user.token = localStorage.getItem('token')
+      console.log(this.user.token)
       this.getTeamLists(this.user.token)
     },
     created () {
@@ -246,11 +178,12 @@
       getTeamLists (userID) {
         getTeamList(userID).then((res) => {
           console.log("fsd")
+          console.log(res)
           this.Team = res.content.TeamInf
         })
       },
       Upload (token, Form) {
-        TeamCreate(token, Form.team_name).then((res) => {
+        TeamCreate({token:token, team_name:Form.team_name}).then((res) => {
           console.log(res)
           this.$message.success({
             message: 'Build Successful',

@@ -14,3 +14,8 @@ export const getPaperDetail = (paperId) => {
 export const getPaperDetailref = (paperId) => {
   return axios.get('/paper/simple/info/ref?paperId=' + paperId).then(res => res.data)
 }
+
+// 收藏该文章
+export const paperCollection = (params) => {
+  return axios.post('/user/collection', params).then(res => res.data)
+}

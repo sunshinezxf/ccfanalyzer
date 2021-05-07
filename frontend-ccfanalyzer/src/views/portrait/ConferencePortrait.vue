@@ -7,85 +7,12 @@
     <el-container >
       <div id="link"></div>
       <el-header class="headerr" :style ="this.$store.state.background" height="230px">
-        <div style="margin-left: -19px;margin-right: -19px;text-align:center">
-          <el-row style="margin-bottom: 1%">
-            <el-col :span="4">
-              <div class="grid-content2 bg-purple2" style="color: white;text-align:center">
-
-                <el-row>
-                  <span class="avatar-dropdown">
-                    <i class="el-icon-s-home" ></i>
-                    <span class="u" style="font-size: 20px;color: grey;text-align: center">
-                    &nbsp;&nbsp;HomePage &nbsp;
-                 </span>
-                  </span>
-                </el-row>
-
-              </div>
-            </el-col>
-
-            <el-col :span="17">
-              <div class="grid-content2 bg-purple2" style="color: white;">
-
-                <el-row style="margin-bottom: -8%"></el-row>
-              </div>
-            </el-col>
-            <el-col :span="3"><div class="grid-content2 bg-purple2" style="color: white;">
-              <div v-show="user.login">
-                <el-dropdown @command="handleCommand">
-                 <span class="avatar-dropdown">
-                  <!--<el-avatar class="user-avatar" :src="avatar"></el-avatar>-->
-                  <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-
-                 <span class="u" style="font-size: 20px">
-                    &nbsp;&nbsp;{{ user.username }} &nbsp;
-                 </span>
-
-                   <i class="el-icon-arrow-down el-icon--right"></i>
-                </span>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
-              </div>
-
-              <div v-show="user.logout">
-
-                   <span class="avatar-dropdown">
-                        <!--<el-avatar class="user-avatar" :src="avatar"></el-avatar>-->
-                        <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-
-                       <span class="u" style="font-size: 20px">
-                          &nbsp;&nbsp; Login&nbsp;In&nbsp;&nbsp;
-                       </span>
-
-                      </span>
-              </div>
-            </div>
-            </el-col>
-          </el-row>
-        </div>
-
-        <el-dialog
-          title="Administrator Login"
-          :visible.sync="dialogVisible"
-          width="30%"
-          center>
-          <div style="text-align:center">
-            <el-input style="width: 70%" placeholder="username" v-model="username" clearable></el-input>
-          </div>
-          <div style="text-align:center">
-            <el-input style="width: 70%; margin-top: 5%" placeholder="password" v-model="password" show-password></el-input>
-          </div>
-          <span slot="footer" class="dialog-footer">
-          <el-button style="width: 70%; margin-bottom: 5%; font-size: large" type="primary" @click="dialogVisible = false; login()">LOGIN</el-button>
-        </span>
-        </el-dialog>
+        <div><lo></lo></div>
 
         <el-row>
           <el-col :span="4">
             <el-row>
-              <div class="OASIS" id="OASIS" style="font-weight:bold;color:white;font-size: 40px;text-align:center;margin-top: 12%"
+              <div class="OASIS" id="OASIS" style="font-weight:bold;color:white;font-size: 40px;text-align:center;margin-top: 4%"
                    @mouseenter="highlight" @mouseout="redoHightLight" @click="toHomepage">
                 CCF ANALYZER
               </div>
@@ -97,23 +24,33 @@
           </el-col>
           <el-col :span="20">
             <!--普通搜索-->
-            <div style="text-align: center;">
-              <el-select v-model="commonSearchTypeValue" clearable placeholder="All" style="opacity:80%; width: 10%">
+            <div style="text-align: center;" >
+
+              <el-select v-model="commonSearchTypeValue" clearable placeholder="All"  style="opacity:80%; width: 10%;text-align: left;position:relative; z-index:9999;" :popper-append-to-body="false" >
                 <el-option
                   v-for="item in options"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value">
                 </el-option>
+
               </el-select>
               <el-input
-                style="opacity:80%;width:50%; justify-content: center;;margin-top: 4%"
+                v-if="commonSearchTypeValue === ''||commonSearchTypeValue === 'keyword'"
+                class="common_input"
+                style="opacity:80%;width:50%;margin-top: 4%"
                 placeholder="Enter something..."
                 v-model="commonInput"
                 :disabled="searching"
                 @keyup.enter.native="commonSearch"
                 clearable>
               </el-input>
+              <el-autocomplete v-if="commonSearchTypeValue === 'author'"
+                               :minlength="2" style="opacity:80%;width:50%;margin-top: 4%;text-align: left;position:relative; z-index:9999;" :popper-append-to-body="false" v-model="searchAuthor.name" :fetch-suggestions="querySearchAsync" placeholder="Enter something..."
+                               @select="handleSelect"></el-autocomplete>
+              <el-autocomplete v-if="commonSearchTypeValue === 'affiliation'"
+                               :minlength="2" style="opacity:80%;width:50%;margin-top: 4%;text-align: left;position:relative; z-index:9999;" :popper-append-to-body="false" v-model="searchAffiliation.name" :fetch-suggestions="querySearchAsync2" placeholder="Enter something..."
+                               @select="handleSelect2"></el-autocomplete>
 
               <el-button @click="commonSearch" type="primary" icon="el-icon-search" :loading="searching">SEARCH</el-button>
 
@@ -128,7 +65,7 @@
             <el-card style="height:320px">
               <el-row class="box-card">
                 <div style="margin-left: 2%;">
-                  <el-row><div style="font-size:40px">{{ConferencePor.name}}</div></el-row><br><br><br>
+                  <el-row><div style="font-size:30px">{{ConferencePor.name}}</div></el-row><br><br><br>
                   <el-row>
                     <el-col span="6">
                       <div style="font-size:25px">{{ConferencePor.articleNum}}</div>
@@ -157,14 +94,14 @@
             <div class="col-md-2 text-center" v-for="item in PaperList" :key="item.title">
               <el-card style=" height: 100%">
                 <div style="margin-left: 2%;margin-left: 2%">
-                  <el-link style="font-size: 27px;color: black" @click="getContent(item.id)"><strong>{{item.name}}</strong></el-link><br>
+                  <el-link style="font-size: 27px;color: black" @click="getContent(item.paperId)"><strong>{{item.title}}</strong></el-link><br>
                   <el-row>
               <span class="affcon" style="font-size: 17px;color: dimgray">
                 Affiliations:&nbsp;&nbsp;&nbsp;
-                <span  class="divider" v-if="item.affiliations.length==0">None</span>
-              <span  v-for="(aff,index) in item.affiliations" :key="index">
+                <span  class="divider" v-if="item.authors.length==0">None</span>
+              <span  v-for="(aff,index) in item.authors" :key="index">
                 <span role="separator" class="divider" v-if="index != 0">,</span>
-                <el-link style="font-size: 17px;color: cornflowerblue;font-style:italic"  :key='aff' @click="searchAffiliationPor(aff.id)">{{aff.name}}</el-link>
+                <el-link style="font-size: 17px;color: cornflowerblue;font-style:italic"  :key='aff' @click="searchAffiliationPor(aff.affiliations[0].id)">{{aff.affiliations[0].name}}</el-link>
               </span>
               </span>
                   </el-row>
@@ -178,7 +115,7 @@
               </span>
               </span>
                   </el-row>
-                  <span class="sum" style="font-size: 15px;color: dimgray;margin-top: 5px;margin-bottom: 5px" v-if="item.summary" >{{item.summary}}</span>
+                  <span class="sum" style="font-size: 15px;color: dimgray;margin-top: 5px;margin-bottom: 5px" v-if="item.abstract" >{{item.abstract}}</span>
                   <el-row>
               <span class="affcon" style="font-size: 17px;color: dimgray">
                 Keywords:&nbsp;&nbsp;&nbsp;
@@ -270,8 +207,12 @@
 <script>
 import {getCommonSearchResult, getAdvancedSearchResult} from '../../API/Home/HomePageAPIs'
 import {getConferencePaper, getConferencePortrait} from '../../API/Portrait/ConferencePortraitAPIs'
+import lo from '../../components/Center'
 
 export default {
+  components: {
+    lo
+  },
 
   data () {
     return {
@@ -330,15 +271,23 @@ export default {
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover'
       },
-
       PaperList: [{
+        id: 2,
+        name: 'a',
         paperId: 0,
         title: 'Learning Styles and Inclusion.',
-        authors: ['Gavin Reid', 'YRY'],
-        affiliations: ['NJU', 'NJU'],
+        authors: [{
+          id: 1,
+          name: 'zjh',
+          affiliations: [{
+            id: 1,
+            name: 'NJU'
+          }]
+        }],
         publication: 'IEEE',
-        summary: 'Learning Models and the Learning Cycle Learning Differences and Learning Styles The Role of the Learning Environment Background to Learning Styles Assessment of Learning Styles Learning Styles Learning and Teaching The Inclusive School Characteristics and Challenges Learning Styles in the Inclusive Context Promoting Effective Learning Learning Styles Strategies and Insights',
-        keywords: ['Educational technology']
+        abstract: 'Learning Models and the Learning Cycle Learning Differences and Learning Styles The Role of the Learning Environment Background to Learning Styles Assessment of Learning Styles Learning Styles Learning and Teaching The Inclusive School Characteristics and Challenges Learning Styles in the Inclusive Context Promoting Effective Learning Learning Styles Strategies and Insights',
+        keywords: ['Educational technology'],
+        citationCnt: 0
       }]
     }
   },
@@ -350,9 +299,9 @@ export default {
         let total = 0
         if (this.commonSearchTypeValue === '') { // type为All
           getCommonSearchResult(this.commonInput, 0).then((res) => {
-            if (res.status.code === '0000') {
-              paperList = res.data.paperBriefInfoVOList
-              total = res.data.totalNum
+            if (res.success) {
+              paperList = res.content.paperBriefInfoVOList
+              total = res.content.totalNum
               this.searching = false
               let newpage = this.$router.resolve({
                 name: 'SearchPaper',
@@ -378,9 +327,9 @@ export default {
             let paperList = []
             let total = 0
             getAdvancedSearchResult(this.advSearchForm).then((res) => {
-              if (res.status.code === '0000') {
-                paperList = res.data.paperBriefInfoVOList
-                total = res.data.totalNum
+              if (res.success) {
+                paperList = res.content.paperBriefInfoVOList
+                total = res.content.totalNum
                 this.searching = false
                 let newpage = this.$router.resolve({
                   name: 'SearchPaper',
@@ -405,9 +354,9 @@ export default {
             let paperList = []
             let total = 0
             getAdvancedSearchResult(this.advSearchForm).then((res) => {
-              if (res.status.code === '0000') {
-                paperList = res.data.paperBriefInfoVOList
-                total = res.data.totalNum
+              if (res.success) {
+                paperList = res.content.paperBriefInfoVOList
+                total = res.content.totalNum
                 this.searching = false
                 let newpage = this.$router.resolve({
                   name: 'SearchPaper',
@@ -432,9 +381,9 @@ export default {
             let paperList = []
             let total = 0
             getAdvancedSearchResult(this.advSearchForm).then((res) => {
-              if (res.status.code === '0000') {
-                paperList = res.data.paperBriefInfoVOList
-                total = res.data.totalNum
+              if (res.success) {
+                paperList = res.content.paperBriefInfoVOList
+                total = res.content.totalNum
                 this.searching = false
                 let newpage = this.$router.resolve({
                   name: 'SearchPaper',
@@ -513,8 +462,8 @@ export default {
       let paperList = []
       let total = 0
       getAdvancedSearchResult(this.advSearchForm).then((res) => {
-        paperList = res.data.paperBriefInfoVOList
-        total = res.data.totalNum
+        paperList = res.content.paperBriefInfoVOList
+        total = res.content.totalNum
         let newpage = this.$router.resolve({
           name: 'SearchPaper',
           query: {
@@ -529,8 +478,9 @@ export default {
     },
     handleCurrentChange (val) {
       this.page = val - 1
-      getConferencePaper(this.ConferencePor.name, this.page).then((res) => {
-        this.PaperList = res.data
+      getConferencePaper(this.ConferencePor.id, this.page).then((res) => {
+        console.log(res)
+        this.PaperList = res.content
       })
       document.querySelector('#link').scrollIntoView(true)
     },
@@ -538,9 +488,10 @@ export default {
     },
     getConferenceContent () {
       this.loading_chart = false
-      getConferencePortrait(this.ConferencePor.name).then((res) => {
+      getConferencePortrait(this.ConferencePor.id).then((res) => {
         console.log(res)
-        this.ConferencePor = res.data
+        this.ConferencePor = res.content
+        console.log(this.ConferencePor.articleNum)
         if (this.ConferencePor.articleNum > 20) {
           this.paperNum = 20
         } else {
@@ -549,8 +500,8 @@ export default {
       })
     },
     getPapers () {
-      getConferencePaper(this.ConferencePor.name, 0).then((res) => {
-        this.PaperList = res.data
+      getConferencePaper(this.ConferencePor.id, 0).then((res) => {
+        this.PaperList = res.content
         this.loading_chart = false
       })
     },
@@ -567,7 +518,7 @@ export default {
   },
   mounted () {
     let name = this.$route.query.name
-    this.ConferencePor.name = name
+    this.ConferencePor.id = name
     this.getConferenceContent()
     this.getPapers()
     this.$store.dispatch('flushFun')
