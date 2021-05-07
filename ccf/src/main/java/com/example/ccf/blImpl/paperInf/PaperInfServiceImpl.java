@@ -30,6 +30,7 @@ public class PaperInfServiceImpl implements PaperInfService {
         int endPage=Integer.parseInt(pages[1]);
         p2.setPaperId(paperId);
         p2.setAuthors(authors);
+        p2.setMeeting_id(searchMapper.get_meeting_id(p.getPublication()));
         p2.setAffiliations(affiliations);
         p2.setPublication(p.getPublication());
         p2.setPublicationYear(p.getPublicationYear());

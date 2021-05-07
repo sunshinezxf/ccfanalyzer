@@ -52,6 +52,9 @@
     <select id="conference_to_id" resultType="int">
         select paper_id from paper where book_title=#{conference}
     </select>
+    <select id="get_meeting_id" resultType="Integer">
+        select meeting_id from meeting where title=#{conference}
+    </select>
     <resultMap id="SearchResultForm" type="com.example.ccf.po.SearchResultForm">
         <result column="paperId" property="paperId"></result>
         <result column="title" property="title"></result>

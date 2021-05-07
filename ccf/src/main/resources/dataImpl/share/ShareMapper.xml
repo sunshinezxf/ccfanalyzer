@@ -19,7 +19,7 @@
         select count(*) from privatepaper_user_relation where user_id=#{user_id} and private_paper_id=#{paper_id}
     </select>
     <select id="authors_get" resultType="String">
-        select author from private_paper_author_relation where paper_id=#{paper_id}
+        select author from privatepaper_author_relation where paper_id=#{paper_id}
     </select>
     <resultMap id="Paper" type="com.example.ccf.po.Private_Paper_Must">
     </resultMap>

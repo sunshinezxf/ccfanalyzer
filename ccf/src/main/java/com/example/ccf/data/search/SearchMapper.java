@@ -67,4 +67,10 @@ public interface SearchMapper {
      * @return
      */
     List<Integer> conference_to_id(@Param("conference") String conference);
+    /**
+     * 根据会议获得会议id
+     * @param
+     * @return
+     */
+    Integer get_meeting_id(@Param("conference") String conference);
 }

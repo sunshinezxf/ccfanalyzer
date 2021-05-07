@@ -155,9 +155,14 @@ public class TeamManageServiceImpl implements TeamManageService,TeamManageBlServ
         }
     }
 
-    // TODO
     @Override
     public boolean isInTeam(int userId, int teamId) {
-        return false;
+
+        Integer member_if=teamManageMapper.member_if(userId,teamId);
+        if(member_if>=1){
+            return true;
+        }
+        else
+            return false;
     }
 }

@@ -63,7 +63,6 @@ public class CollectServiceImpl implements CollectService {
         List<SearchResultForm> srs=searchMapper.get_Inf(ids);
         for (int i = 0; i < ids.size(); i++) {
             SearchResultForm s=srs.get(i);
-            System.out.println(s.getPaperId());
             List<Authors> authors=searchMapper.get_author(s.getPaperId());
             List<Affiliations> affiliations=searchMapper.get_affiliation(s.getPaperId());
             List<String> keywords=searchMapper.get_keyword(s.getPaperId());
