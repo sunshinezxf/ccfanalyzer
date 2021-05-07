@@ -12,22 +12,22 @@ public class PaperUploadController {
     private PaperUploadService paperUploadService;
     @CrossOrigin(origins="*",maxAge=3600)
     @RequestMapping(value ="/user/paperImport",method = RequestMethod.POST)
-    public ResponseVO user_upload(Private_paper p,String token){
-        return paperUploadService.private_paper_upload(p,token);
+    public ResponseVO user_upload(UserPaperImport u){
+        return paperUploadService.private_paper_upload(u);
     }
     @CrossOrigin(origins="*",maxAge=3600)
     @RequestMapping(value ="/team/paperImport",method = RequestMethod.POST)
-    public ResponseVO team_upload(Private_paper p,int team_id,String token){
-        return paperUploadService.team_paper_upload(p,team_id,token);
+    public ResponseVO team_upload(TeamPaperImport t){
+        return paperUploadService.team_paper_upload(t);
     }
     @CrossOrigin(origins="*",maxAge=3600)
     @RequestMapping(value ="/user/paperAlter",method = RequestMethod.POST)
-    public ResponseVO user_alter(Private_paper p,String token){
-        return paperUploadService.private_paper_alter(p,token);
+    public ResponseVO user_alter(UserPaperImport u){
+        return paperUploadService.private_paper_alter(u);
     }
     @CrossOrigin(origins="*",maxAge=3600)
     @RequestMapping(value ="/team/paperAlter",method = RequestMethod.POST)
-    public ResponseVO team_alter(Private_paper p,int team_id,String token){
-        return paperUploadService.team_paper_alter(p,team_id,token);
+    public ResponseVO team_alter(TeamPaperImport t){
+        return paperUploadService.team_paper_alter(t);
     }
 }

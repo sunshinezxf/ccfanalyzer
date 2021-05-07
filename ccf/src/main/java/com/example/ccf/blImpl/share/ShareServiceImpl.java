@@ -1,6 +1,7 @@
 package com.example.ccf.blImpl.share;
 
 import com.example.ccf.bl.share.ShareService;
+import com.example.ccf.blImpl.JWT.JwtUtilsBIService;
 import com.example.ccf.data.share.ShareMapper;
 import com.example.ccf.po.Private_Paper_Must;
 import com.example.ccf.blImpl.Session.SessionBIService;
@@ -13,12 +14,18 @@ import java.util.List;
 @Service
 public class ShareServiceImpl implements ShareService {
     @Autowired
+    private JwtUtilsBIService jwtUtilsBIService;
+    @Autowired
     private ShareMapper shareMapper;
     @Autowired
     private SessionBIService sessionBIService;
     @Override
     public ResponseVO Share_paper(int paper_id,String receiver_name,String token){
-        int user_id=sessionBIService.get_id(token);
+        String userId=jwtUtilsBIService.getUserId(token);
+        int user_id=0;
+        if(userId!=null){
+            user_id=Integer.parseInt(userId);
+        }
         if(user_id==0){
             return ResponseVO.buildSuccess("该用户未登录");
         }
@@ -43,7 +50,11 @@ public class ShareServiceImpl implements ShareService {
     }
     @Override
     public ResponseVO Receiver_list(String token){
-        int user_id=sessionBIService.get_id(token);
+        String userId=jwtUtilsBIService.getUserId(token);
+        int user_id=0;
+        if(userId!=null){
+            user_id=Integer.parseInt(userId);
+        }
         if(user_id==0){
             return ResponseVO.buildSuccess("该用户未登录");
         }

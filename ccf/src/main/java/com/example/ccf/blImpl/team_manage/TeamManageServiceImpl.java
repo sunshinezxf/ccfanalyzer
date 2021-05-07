@@ -1,6 +1,7 @@
 package com.example.ccf.blImpl.team_manage;
 
 import com.example.ccf.bl.team_manage.TeamManageService;
+import com.example.ccf.blImpl.JWT.JwtUtilsBIService;
 import com.example.ccf.blImpl.Session.SessionBIService;
 import com.example.ccf.data.team_manage.TeamManageMapper;
 import com.example.ccf.po.TeamInf;
@@ -13,12 +14,18 @@ import java.util.List;
 @Service
 public class TeamManageServiceImpl implements TeamManageService,TeamManageBlService {
     @Autowired
+    private JwtUtilsBIService jwtUtilsBIService;
+    @Autowired
     private TeamManageMapper teamManageMapper;
     @Autowired
     private SessionBIService sessionBIService;
     @Override
     public ResponseVO team_create(String token, String team_name){
-        int user_id=sessionBIService.get_id(token);
+        String userId=jwtUtilsBIService.getUserId(token);
+        int user_id=0;
+        if(userId!=null){
+            user_id=Integer.parseInt(userId);
+        }
         if(user_id==0){
             return ResponseVO.buildSuccess("该用户未登录");
         }
@@ -34,7 +41,11 @@ public class TeamManageServiceImpl implements TeamManageService,TeamManageBlServ
     }
     @Override
     public ResponseVO team_invite(String token,String invitee,int team_id){
-        int user_id=sessionBIService.get_id(token);
+        String userId=jwtUtilsBIService.getUserId(token);
+        int user_id=0;
+        if(userId!=null){
+            user_id=Integer.parseInt(userId);
+        }
         if(user_id==0){
             return ResponseVO.buildSuccess("该用户未登录");
         }
@@ -59,7 +70,11 @@ public class TeamManageServiceImpl implements TeamManageService,TeamManageBlServ
     }
     @Override
     public ResponseVO team_quit(String token, int team_id){
-        int user_id=sessionBIService.get_id(token);
+        String userId=jwtUtilsBIService.getUserId(token);
+        int user_id=0;
+        if(userId!=null){
+            user_id=Integer.parseInt(userId);
+        }
         if(user_id==0){
             return ResponseVO.buildSuccess("该用户未登录");
         }
@@ -78,7 +93,11 @@ public class TeamManageServiceImpl implements TeamManageService,TeamManageBlServ
     }
     @Override
     public ResponseVO team_dismiss(String token,int team_id){
-        int user_id=sessionBIService.get_id(token);
+        String userId=jwtUtilsBIService.getUserId(token);
+        int user_id=0;
+        if(userId!=null){
+            user_id=Integer.parseInt(userId);
+        }
         if(user_id==0){
             return ResponseVO.buildSuccess("该用户未登录");
         }
@@ -96,7 +115,11 @@ public class TeamManageServiceImpl implements TeamManageService,TeamManageBlServ
     }
     @Override
     public ResponseVO team_member_quit(String token,String member,int team_id){
-        int user_id=sessionBIService.get_id(token);
+        String userId=jwtUtilsBIService.getUserId(token);
+        int user_id=0;
+        if(userId!=null){
+            user_id=Integer.parseInt(userId);
+        }
         if(user_id==0){
             return ResponseVO.buildSuccess("该用户未登录");
         }
@@ -117,7 +140,11 @@ public class TeamManageServiceImpl implements TeamManageService,TeamManageBlServ
     }
     @Override
     public ResponseVO team_list(String token){
-        int user_id=sessionBIService.get_id(token);
+        String userId=jwtUtilsBIService.getUserId(token);
+        int user_id=0;
+        if(userId!=null){
+            user_id=Integer.parseInt(userId);
+        }
         if(user_id==0){
             return ResponseVO.buildSuccess("该用户未登录");
         }
@@ -131,7 +158,11 @@ public class TeamManageServiceImpl implements TeamManageService,TeamManageBlServ
     }
     @Override
     public ResponseVO team_owner_check(String token,int team_id){
-        int user_id=sessionBIService.get_id(token);
+        String userId=jwtUtilsBIService.getUserId(token);
+        int user_id=0;
+        if(userId!=null){
+            user_id=Integer.parseInt(userId);
+        }
         if(user_id==0){
             return ResponseVO.buildSuccess("该用户未登录");
         }

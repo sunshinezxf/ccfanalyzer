@@ -2,10 +2,8 @@ package com.example.ccf.controller.share;
 import com.example.ccf.bl.share.ShareService;
 import com.example.ccf.vo.ResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 @RestController
 @RequestMapping("/user")
 public class ShareController {
@@ -13,6 +11,7 @@ public class ShareController {
     private ShareService shareService;
     @CrossOrigin(origins="*",maxAge=3600)
     @RequestMapping(value ="/share",method = RequestMethod.POST)
+    @ResponseBody
     public ResponseVO user_share(int paper_id,String username,String token){
         return shareService.Share_paper(paper_id, username, token);
     }
