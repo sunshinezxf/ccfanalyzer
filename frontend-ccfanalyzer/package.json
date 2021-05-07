@@ -20,7 +20,8 @@
     "view-design": "^4.5.0-beta.5",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
-    "vuex": "latest"
+    "vuex": "latest",
+    "Qs": "latest"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

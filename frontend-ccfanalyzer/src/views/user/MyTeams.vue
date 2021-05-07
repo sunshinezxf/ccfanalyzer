@@ -67,7 +67,7 @@
                 <div style="padding: 14px;">
 
                   <div class="bottom clearfix">
-                    <router-link :to="{ path: '/TeamDetails' }"><span style="font-size: 20px;">{{team.name}}</span></router-link>
+                    <el-link  @click="getTeamDetail(team.name,team.team_id)"><span style="font-size: 20px;">{{team.name}}</span></el-link>
                   </div>
                 </div>
               </el-card>
@@ -177,9 +177,8 @@
       },
       getTeamLists (userID) {
         getTeamList(userID).then((res) => {
-          console.log("fsd")
-          console.log(res)
-          this.Team = res.content.TeamInf
+          this.Team = res.content
+          console.log(this.Team)
         })
       },
       Upload (token, Form) {
@@ -189,7 +188,14 @@
             message: 'Build Successful',
             center: true
           })
-        })
+          this.dialogFormVisible = false
+          this.getTeamLists(token)
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: 'Fail to Build'
+          });
+        });
       },
 
       deletePaper (userId, paperId) {
@@ -209,6 +215,11 @@
         })
         window.open(newpage.href, '_blank')
       },
+      getTeamDetail (name,id) {
+        this.$router.push({ path: 'TeamDetails', query: { teamName:name,
+            teamId:id }})
+      },
+
       searchAffiliationPor (affiliationId) {
         let newpage = this.$router.resolve({
           name: 'AffiliationPortrait',

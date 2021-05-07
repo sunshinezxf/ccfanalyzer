@@ -38,7 +38,7 @@
       <el-main class="main">
         <el-breadcrumb separator="/" style="font-size: 32px">
           <el-breadcrumb-item :to="{ path: '/MyTeams' }">MyTeams</el-breadcrumb-item>
-          <el-breadcrumb-item><a href="/">Team1</a></el-breadcrumb-item>
+          <el-breadcrumb-item><a href="/">{{team_name}}</a></el-breadcrumb-item>
           <el-button  plain style="float:right;width: 250px;font-size: 15px" @click="drawer = true" >Modify&nbsp;Member</el-button>
           <el-button  plain style="float:right;width: 150px;margin-right: 30px;font-size: 15px"  type="danger" :disabled="!isOwner" @click="open2">Delete&nbsp;Team</el-button>
           <el-button  plain style="float:right;width: 150px;margin-right: 30px;font-size: 15px"  type="info" @click="open">Exit&nbsp;Team</el-button>
@@ -48,7 +48,7 @@
           <el-drawer
             append-to-body="true"
             style="margin-top: 10%;text-align: center;font-size: 20px;font-weight: bold"
-            title="All Menmber"
+            title="All Member"
             :modal="false"
             :visible.sync="drawer"
             :direction="direction"
@@ -231,7 +231,7 @@
 
 <script>
   import {PaperUpload, PaperShare, PaperUpdate} from '../../API/User/PersonalWarehouseAPIs'
-  import {TeamMemberQuit,TeamDelete,getTeamOwner,getTeamList,TeamInviteMember,TeamDeleteMember,getTeamPaperList} from '../../API/User/TeamAPIs'
+  import {TeamMemberQuit,TeamDelete,getTeamOwner,getTeamMember,TeamInviteMember,TeamDeleteMember,getTeamPaperList} from '../../API/User/TeamAPIs'
   import lo from '../../components/Center'
 
   export default {
@@ -244,6 +244,7 @@
         input:'',
         isOwner:true,
         team_id:1,
+        team_name:'',
         tableData: ["A","B","c"],
         drawer: false,
         direction: 'rtl',
@@ -306,8 +307,7 @@
       }
     },
     mounted () {
-      this.user.username = this.user.username = localStorage.getItem('username')
-      this.user.token = localStorage.getItem('token')
+
       //this.isOwnerAble(this.user.token ,this.team_id)
       //this.getMemberLists(this.team_id)
       //this.getPaperList(this.team_id)
@@ -319,8 +319,9 @@
     },
     methods: {
       getPaperList(teamid){
-        getTeamPaperList(teamid).then((res) => {
-          this.PaperList=res.content.team_papers
+        getTeamPaperList(this.user.token,teamid).then((res) => {
+          console.log(res)
+          this.PaperList=res.content
         }).catch(error => console.log(error))
       },
       deleteRow(item) {
@@ -335,7 +336,8 @@
               type: 'success',
               message: 'Remove Successfully!'
             });
-            rows.splice(index, 1);
+            this.getMemberLists(this.team_id)
+
           }).catch(error => console.log(error))
         }).catch(() => {
           this.$message({
@@ -347,12 +349,26 @@
       },
       Invite(){
         TeamInviteMember({token:this.user.token, invitee:this.input,team_id:this.team_id}).then((res) => {
-          this.$message({
-            type: 'success',
-            message: 'Invite Successfully!'
+          if(res.content==="邀请对象不存在"){
+            this.$message({
+              type: 'info',
+              message: 'This user does not exist!'
+            });
+          }else{
+            if(res.content==="该用户已经是该团队的成员。"){
+              this.$message({
+                type: 'info',
+                message: 'This user already exists!'
+              });
+            }else {
+              this.$message({
+                type: 'success',
+                message: 'Invite Successfully!'
+              });
+              this.getMemberLists(this.team_id)
+            }
+          }
 
-          });
-          this.getTeamList(this.team_id)
         }).catch(error => console.log(error))
       },
       isOwnerAble(userID,teamID) {
@@ -365,12 +381,9 @@
         }).catch(error => console.log(error))
       },
       getMemberLists(team_id) {
-        getTeamList(team_id).then((res) => {
-          if(res.content===1){
-            this.isOwner=true
-          }else{
-            this.isOwner=false
-          }
+        getTeamMember(team_id).then((res) => {
+          console.log(res)
+          this.tableData=res.content
         }).catch(error => console.log(error))
       },
       open() {
@@ -383,9 +396,9 @@
               this.$message({
                 type: 'success',
                 message: 'Exit Successfully!'
-
               });
-              this.$router.push({path: '/MyTeams'})
+           this.$router.go(-1)
+
             }).catch(error => console.log(error))
         }).catch(() => {
           this.$message({
@@ -405,7 +418,7 @@
               type: 'success',
               message: 'Delete Successfully!'
             });
-            this.$router.push({path: '/MyTeams'})
+            this.$router.go(-1)
           }).catch(error => console.log(error))
         }).catch(() => {
           this.$message({
@@ -480,6 +493,19 @@
           })
         })
       }
+    },
+    mounted () {
+
+      this.team_id = this.$route.query.teamId
+      this.team_name=this.$route.query.teamName
+
+      this.user.username = this.user.username = localStorage.getItem('username')
+      this.user.token = localStorage.getItem('token')
+
+      this.isOwnerAble(this.user.token ,this.team_id)
+      this.getMemberLists(this.team_id)
+      this.getPaperList(this.team_id)
+      this.$store.dispatch('flushFun')
     }
   }
 </script>
