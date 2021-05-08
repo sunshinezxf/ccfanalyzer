@@ -44,39 +44,42 @@
             <el-dialog title="PaperInfo" :visible.sync="dialogFormVisible" align="center" :modal="false" :close-on-click-modal="false">
               <el-form :model="form">
                 <el-form-item label="Title" :label-width="formLabelWidth">
-                  <el-input v-model="form.title" autocomplete="off"></el-input>
+                  <el-input v-model="form.title" autocomplete="off" placeholder="标题只允许出现两次数字和-, :.'?特殊符号"></el-input>
                 </el-form-item>
                 <el-form-item label="Abstract" :label-width="formLabelWidth">
-                  <el-input v-model="form.abstracts" autocomplete="off"></el-input>
+                  <el-input v-model="form.abstracts" autocomplete="off" placeholder="简介允许出现-, :.'?()_特殊符号"></el-input>
+                </el-form-item>
+                <el-form-item label="Authors" :label-width="formLabelWidth">
+                  <el-input v-model="form.authors" autocomplete="off" placeholder="作者名字间用英文逗号分隔"></el-input>
                 </el-form-item>
                 <el-form-item label="Paper doi" :label-width="formLabelWidth">
-                  <el-input v-model="form.doi" autocomplete="off"></el-input>
+                  <el-input v-model="form.doi" autocomplete="off" placeholder="需要 数字.数字/字符串 的形式"></el-input>
                 </el-form-item>
                 <el-form-item label="Citation Counts" :label-width="formLabelWidth">
                   <el-input v-model="form.citation" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="Book_title" :label-width="formLabelWidth">
-                  <el-input v-model="form.book_title" autocomplete="off"></el-input>
+                  <el-input v-model="form.book_title" autocomplete="off" placeholder="出版刊物标题允许-, :.'?特殊符号"></el-input>
                 </el-form-item>
                 <el-form-item label="PaperPages" :label-width="formLabelWidth">
-                  <el-input v-model="form.paperPages" autocomplete="off"></el-input>
+                  <el-input v-model="form.pages" autocomplete="off" placeholder="页数需要 页数--页数/页数-页数 的形式"></el-input>
                 </el-form-item>
-                <el-form-item label="Years" :label-width="formLabelWidth">
-                  <el-input v-model="form.years" autocomplete="off"></el-input>
+                <el-form-item label="Year" :label-width="formLabelWidth">
+                  <el-input v-model="form.year" autocomplete="off" placeholder="年份1960到今年"></el-input>
                 </el-form-item>
                 <el-form-item label="Publisher" :label-width="formLabelWidth">
-                  <el-input v-model="form.publisher" autocomplete="off"></el-input>
+                  <el-input v-model="form.publisher" autocomplete="off" placeholder="出版商简称需大写且长度3到10中"></el-input>
                 </el-form-item>
                 <el-form-item label="Url" :label-width="formLabelWidth">
-                  <el-input v-model="form.url" autocomplete="off"></el-input>
+                  <el-input v-model="form.url" autocomplete="off" placeholder="url开头必须是https://doi.org/"></el-input>
                 </el-form-item>
                 <el-form-item label="PublishTime" :label-width="formLabelWidth">
-                  <el-input v-model="form.time" autocomplete="off"></el-input>
+                  <el-input v-model="form.time" autocomplete="off" placeholder="按照周几(简写) 日 月(简写) 年的形式"></el-input>
                 </el-form-item>
               </el-form>
               <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">Cancel</el-button>
-                <el-button type="primary" @click="Upload(user.token, form)">Confirm</el-button>
+                <el-button type="primary" @click="Upload(user.token, form); dialogFormVisible = false">Confirm</el-button>
               </div>
             </el-dialog>
           </div>
@@ -104,42 +107,42 @@
                 <el-dialog title="PaperInfo" :visible.sync="dialogForm2Visible" align="center" :modal="false" :close-on-click-modal="false">
                   <el-form :model="modifyForm">
                     <el-form-item label="Title" :label-width="formLabelWidth">
-                      <el-input v-model="modifyForm.title" autocomplete="off"></el-input>
+                      <el-input v-model="modifyForm.title" autocomplete="off" placeholder="标题只允许出现两次数字和-, :.'?特殊符号"></el-input>
                     </el-form-item>
                     <el-form-item label="Authors" :label-width="formLabelWidth">
-                      <el-input v-model="modifyForm.authors" autocomplete="off"></el-input>
+                      <el-input v-model="modifyForm.authors" autocomplete="off" placeholder="简介允许出现-, :.'?()_特殊符号"></el-input>
                     </el-form-item>
                     <el-form-item label="Abstract" :label-width="formLabelWidth">
-                      <el-input v-model="modifyForm.abstracts" autocomplete="off"></el-input>
+                      <el-input v-model="modifyForm.abstracts" autocomplete="off" placeholder="作者名字间用英文逗号分隔"></el-input>
                     </el-form-item>
                     <el-form-item label="Paper doi" :label-width="formLabelWidth">
-                      <el-input v-model="modifyForm.doi" autocomplete="off"></el-input>
+                      <el-input v-model="modifyForm.doi" autocomplete="off" placeholder="需要 数字.数字/字符串 的形式"></el-input>
                     </el-form-item>
                     <el-form-item label="Citation Counts" :label-width="formLabelWidth">
                       <el-input v-model="modifyForm.citation" autocomplete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="Book_title" :label-width="formLabelWidth">
-                      <el-input v-model="modifyForm.book_title" autocomplete="off"></el-input>
+                      <el-input v-model="modifyForm.book_title" autocomplete="off" placeholder="出版刊物标题允许-, :.'?特殊符号"></el-input>
                     </el-form-item>
                     <el-form-item label="PaperPages" :label-width="formLabelWidth">
-                      <el-input v-model="modifyForm.paperPages" autocomplete="off"></el-input>
+                      <el-input v-model="modifyForm.pages" autocomplete="off" placeholder="页数需要 页数--页数/页数-页数 的形式"></el-input>
                     </el-form-item>
-                    <el-form-item label="Years" :label-width="formLabelWidth">
-                      <el-input v-model="modifyForm.years" autocomplete="off"></el-input>
+                    <el-form-item label="Year" :label-width="formLabelWidth">
+                      <el-input v-model="modifyForm.year" autocomplete="off" placeholder="年份1960到今年"></el-input>
                     </el-form-item>
                     <el-form-item label="Publisher" :label-width="formLabelWidth">
-                      <el-input v-model="modifyForm.publisher" autocomplete="off"></el-input>
+                      <el-input v-model="modifyForm.publisher" autocomplete="off" placeholder="出版商简称需大写且长度3到10中"></el-input>
                     </el-form-item>
                     <el-form-item label="Url" :label-width="formLabelWidth">
-                      <el-input v-model="modifyForm.url" autocomplete="off"></el-input>
+                      <el-input v-model="modifyForm.url" autocomplete="off" placeholder="url开头必须是https://doi.org/"></el-input>
                     </el-form-item>
                     <el-form-item label="PublishTime" :label-width="formLabelWidth">
-                      <el-input v-model="modifyForm.time" autocomplete="off"></el-input>
+                      <el-input v-model="modifyForm.time" autocomplete="off" placeholder="按照周几(简写) 日 月(简写) 年的形式"></el-input>
                     </el-form-item>
                   </el-form>
                   <div slot="footer" class="dialog-footer">
                     <el-button @click="dialogForm2Visible = false">Cancel</el-button>
-                    <el-button type="primary" @click="Upload(user.token, form)">Confirm</el-button>
+                    <el-button type="primary" @click="UpdatePaper(user.token, modifyForm, item.paper_id); dialogForm2Visible = false">Confirm</el-button>
                   </div>
                 </el-dialog>
                 <el-button type="primary" icon="el-icon-share" @click="dialogForm1Visible = true"></el-button>
@@ -166,7 +169,7 @@
 <script>
 import {PaperUpload, PaperShare, PaperUpdate, PaperInfo} from '../../API/User/PersonalWarehouseAPIs'
 import lo from '../../components/Center'
-
+import Qs from 'qs'
 export default {
   components: {
     lo
@@ -207,12 +210,12 @@ export default {
           time: '',
           title: '',
           url: '',
-          year: '',
+          year: ''
         }
       ],
       dialogFormVisible: false,
       form: {
-        authors: [],
+        authors: '',
         title: '',
         abstracts: '',
         doi: '',
@@ -224,7 +227,8 @@ export default {
         url: '',
         time: '',
         bib_url: '',
-        bib_source: ''
+        bib_source: '',
+        token: ''
       },
       modifyForm: {
         paper_id: '',
@@ -294,13 +298,49 @@ export default {
       window.open(newpage.href, '_blank')
     },
     Upload (token, Form) {
-      console.log(Form)
-      PaperUpload(token, Form).then((res) => {
-        this.$message.success({
-          message: 'Upload Successful',
+      Form.token = token
+      if (Form.year === '' || Form.year < 1960 || Form.year > 2021) {
+        this.$message.error({
+          message: 'Please Enter Correct Year',
           center: true
         })
-      })
+      } else if (Form.citation === '') {
+        Form.citation = 0
+      } else if (Form.title === '') {
+        this.$message.error({
+          message: 'Please Enter Title',
+          center: true
+        })
+      } else if (Form.abstracts === '') {
+        this.$message.error({
+          message: 'Please Enter abstract',
+          center: true
+        })
+      } else if (Form.doi === '') {
+        this.$message.error({
+          message: 'Please Enter doi',
+          center: true
+        })
+      } else if (Form.publisher === '') {
+        this.$message.error({
+          message: 'Please Enter Publisher',
+          center: true
+        })
+      } else if (Form.authors === '') {
+        this.$message.error({
+          message: 'Please Enter Authors',
+          center: true
+        })
+      } else {
+        PaperUpload(Qs.stringify(Form)).then((res) => {
+          console.log(res)
+          this.$message.success({
+            message: 'Upload Successful',
+            center: true
+          })
+          location.reload()
+        })
+      }
     },
     SharePapers (token, paperId, username) {
       PaperShare(token, paperId, username).then((res) => {
@@ -311,13 +351,51 @@ export default {
         })
       })
     },
-    UpdatePaper (token, Form) {
-      PaperUpdate(token, Form).then((res) => {
-        this.$message.success({
-          message: 'Update Successful',
+    UpdatePaper (token, Form, paperId) {
+      Form.token = token
+      Form.paper_id = paperId
+      if (Form.year === '' || Form.year < 1960 || Form.year > 2021) {
+        this.$message.error({
+          message: 'Please Enter Correct Year',
           center: true
         })
-      })
+      } else if (Form.citation === '') {
+        Form.citation = 0
+      } else if (Form.title === '') {
+        this.$message.error({
+          message: 'Please Enter Title',
+          center: true
+        })
+      } else if (Form.abstracts === '') {
+        this.$message.error({
+          message: 'Please Enter abstract',
+          center: true
+        })
+      } else if (Form.doi === '') {
+        this.$message.error({
+          message: 'Please Enter doi',
+          center: true
+        })
+      } else if (Form.publisher === '') {
+        this.$message.error({
+          message: 'Please Enter Publisher',
+          center: true
+        })
+      } else if (Form.authors === '') {
+        this.$message.error({
+          message: 'Please Enter Authors',
+          center: true
+        })
+      } else {
+        PaperUpdate(Qs.stringify(Form)).then((res) => {
+          console.log(res)
+          this.$message.success({
+            message: 'Update Successful',
+            center: true
+          })
+          location.reload()
+        })
+      }
     },
     getPersonalPaper () {
       PaperInfo(localStorage.getItem('token')).then((res) => {

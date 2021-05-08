@@ -3,8 +3,8 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 axios.defaults.baseURL = 'http://47.97.228.185:8080'
 
 // 个人论文上传
-export const PaperUpload = (token, params) => {
-  return axios.post('/user/paperImport?token=' + token + '&Private_paper=' + params).then(res => res.data)
+export const PaperUpload = (params) => {
+  return axios.post('/user/paperImport', params).then(res => res.data)
 }
 
 // 分享
@@ -13,8 +13,8 @@ export const PaperShare = (token, paperId, username) => {
 }
 
 // 修改论文
-export const PaperUpdate = (token, params) => {
-  return axios.post('/user/paperAlter?token=' + token + '&Private_paper=' + params).then(res => res.data)
+export const PaperUpdate = (params) => {
+  return axios.post('/user/paperAlter', params).then(res => res.data)
 }
 
 // 获取私人文章
