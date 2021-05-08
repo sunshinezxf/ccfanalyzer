@@ -13,7 +13,6 @@
                  </div>
                   </dic>
           </el-row>
-
         </div>
       </el-col>
 
@@ -91,7 +90,7 @@ export default{
     return {
       user: {
         flag: false,
-        username: 'yry',
+        username: '',
         password: '',
         id: '',
         token: ''

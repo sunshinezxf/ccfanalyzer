@@ -4,10 +4,30 @@
     <el-main class="main" :style="this.$store.state.background" style="overflow: hidden;padding: 0%">
        <div><lo></lo></div>
 
-      <div class="OASIS" style="font-weight: bold ;color:white;font-size: 130px;text-align:center;margin-top: 7%">
+      <div class="OASIS" style="font-weight: bold ;color:white;font-size: 130px;text-align:center;margin-top: 7%" @click="showInfo">
             CCF ANALYZER
       </div>
+      <el-drawer
+        title="CRAWL Info"
+        :visible.sync="Info"
+        direction="ttb"
+        size="50%">
+        <el-table :data="gridData">
+          <el-table-column property="requestBytes" label="requestBytes" width="140"></el-table-column>
+          <el-table-column property="requestCount" label="requestCount" width="140"></el-table-column>
+          <el-table-column property="countGET" label="countGET" width="140"></el-table-column>
+          <el-table-column property="count200" label="count200" width="140"></el-table-column>
+          <el-table-column property="count301" label="count301" width="140"></el-table-column>
+          <el-table-column property="count302" label="count302" width="140"></el-table-column>
+          <el-table-column property="count40x" label="count40x" width="140"></el-table-column>
+          <el-table-column property="finishReason" label="finishReason" width="140"></el-table-column>
+          <el-table-column property="finishTime" label=" finishTime" width="140"></el-table-column>
+          <el-table-column property="startTime" label="startTime" width="140"></el-table-column>
+          <el-table-column property="paperCount" label="paperCount" width="140"></el-table-column>
+          <el-table-column property="meetingCount" label="meetingCount" width="140"></el-table-column>
 
+        </el-table>
+      </el-drawer>
       <div class="_radio" style="text-align: center;margin-top: -8px">
         <el-radio-group v-model="searchRadio" style="opacity: 80%" size="medium">
           <el-radio-button label= '1'>Common   Search</el-radio-button>
@@ -622,7 +642,7 @@
 
 <script>
 import {
-  getStatistics,getCommonSearchResult, getAdvancedSearchResult,getMatchAuthor,getMatchAffiliation,getMatchConference
+  getStatistics,getCommonSearchResult, getAdvancedSearchResult,getMatchAuthor,getMatchAffiliation,getMatchConference,getCrawl
   //   getAffiliationActivityRanking, getAuthorActivityRanking, getResearchDirectionPopularityRanking, getTopPapers, getTopAffiliations, getTopAuthors,  adminLogin,
 } from '../../API/Home/HomePageAPIs'
 import lo from '../../components/Center'
@@ -633,10 +653,12 @@ export default {
   },
   data() {
     return {
+      gridData:[],
+      Info:false,
       user: {
         login: true,
         logout: false,
-        username: 'yry',
+        username: '',
         password: '',
         id: '',
         token: ''
@@ -850,7 +872,6 @@ export default {
     },
     loadStatisticsNums() {
       getStatistics().then(res => {
-        console.log(res.content.authorNum)
         if (res.success) {
           this.statisticsNums.authorNum = (res.content.authorNum).toLocaleString('en-US')
           this.statisticsNums.affiliationNum = (res.content.affiliationNum).toLocaleString('en-US')
@@ -863,6 +884,10 @@ export default {
           })
         }
       }).catch(error => console.log(error))
+      getCrawl().then(res => {
+        this.gridData=res.content
+      }).catch(error => console.log(error))
+
     },
     loadTopAffiliations() {
       //   getTopAffiliations().then(res => {
@@ -938,6 +963,9 @@ export default {
       //       })
       //     }
       //   }).catch(error => console.log(error))
+    },
+    showInfo(){
+        this.Info=true
     },
     commonSearch() {
       if (this.searching) {
