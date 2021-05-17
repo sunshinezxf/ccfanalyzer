@@ -119,7 +119,7 @@
             <br>
 
             <div class="col-md-2 text-center" v-for="item in PaperList" :key="item.title" v-if="showData">
-              <el-card style=" height: 100%">
+              <el-card style=" margin-right: 45px; height: 100%">
                 <div style="margin-left: 2%;margin-left: 2%">
                   <el-link style="font-size: 27px;color: black" @click="getContent(item.paperId)"><strong>{{item.title}}</strong></el-link><br>
                   <el-row>
@@ -178,49 +178,6 @@
           <el-col span="7">
 
             <div class="ranking_1 grid-content" style="margin-left: 10px">
-
-              <el-card class="box-card" style="height:100%">
-                <div slot="header" class="clearfix head_card" style="text-align: center">
-                <span style="font-size: 20px;font-weight: bold">
-                  <Icon type="md-person" style="color: cornflowerblue;margin-left: 2%" size = "40" />
-                  Authors Rank
-                </span>
-                </div>
-                <div>
-                  <el-row style="font-size: 18px">
-                    <el-col :span="4" style="text-align: left">Rank</el-col>
-                    <el-col :span="6" >Name</el-col>
-                    <el-col :span="12" style="text-align: right">AffiliationArticleNum</el-col>
-                  </el-row>
-                </div>
-                <br><br>
-                <div v-for="(item,index) in AffPor.authors" :key="item.id">
-                  <!--{{'列表内容 ' + o }}-->
-                  <el-row style="font-size: 20px">
-                    <el-col :span="4">{{index+1}}</el-col>
-                    <el-col :span="16" style="text-align: left">
-                      <el-tooltip effect="dark" placement="left">
-                        <div slot="content">
-                          {{item.name}}
-                        </div>
-                        <router-link target="_blank" :to="{name:'AuthorPortrait',query:{authorId:item.id}}">
-                          <div style="width: 240px; font-size: 17px;color: cornflowerblue; overflow: hidden;
-                       white-space: nowrap;text-overflow: ellipsis;">
-                            {{item.name}}
-                          </div>
-                        </router-link>
-                      </el-tooltip>
-                    </el-col>
-                    <el-col :span="3" style="text-align: right; ">
-                      <span style="float: right">{{item.AffiliationArticleNum.toFixed(2)}}</span>
-                    </el-col>
-                  </el-row>
-                  <div>
-                    <el-divider></el-divider>
-                  </div>
-                </div>
-              </el-card>
-
             </div>
           </el-col>
         </el-row>
@@ -660,7 +617,7 @@ export default {
             type: 'radar',
             data: [
               {
-                value: [this.AffPor.articleNum, this.AffPor.articleCitationNum, this.AffPor.AffiliationCitationNum.toFixed(2), this.AffPor.authorNum, this.AffPor.AffiliationArticleNum.toFixed(2)],
+                value: [Math.log(this.AffPor.articleNum), this.AffPor.articleCitationNum, this.AffPor.AffiliationCitationNum.toFixed(2), this.AffPor.authorNum, this.AffPor.AffiliationArticleNum.toFixed(2)],
                 name: 'Statistics'
               }, {
                 value: [this.aveArticleNum.toFixed(2), this.aveCitationNum.toFixed(2), this.aveAffiliationCitationNum.toFixed(2), this.aveAuthorNum.toFixed(2), this.aveAffiliationArticleNum.toFixed(2)],
@@ -715,6 +672,10 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
 
+  }
+  .el-card-define {
+    min-height: 100%;
+    height: 100%;
   }
   .sum{
     display: -webkit-box;
