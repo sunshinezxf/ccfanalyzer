@@ -1267,7 +1267,7 @@ export default {
           if (res.success) {
             var list = [{}];
             for(let i of res.content){
-              i.value = i.name;  //将想要展示的数据作为value
+              i.value = i.name;
             }
             list = res.content;
             cb(list);

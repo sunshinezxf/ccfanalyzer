@@ -13,8 +13,7 @@ import PersonalWarehouse from '@/views/user/PersonalWarehouse'
 import PaperShared from '@/views/user/PaperShared'
 import MyTeams from '@/views/user/MyTeams'
 import TeamDetails from '@/views/user/TeamDetails'
-import AdminLogin from '@/views/Admin/AdminLogin'
-import UpdateTime from '@/views/Admin/UpdateTime'
+import AdminCrawl from '@/views/Admin/AdminCrawl'
 Vue.use(Router)
 
 export default new Router({
@@ -98,16 +97,10 @@ export default new Router({
       meta: { requireAuth: true },
     },
     {
-      path: '/AdminLogin',
-      name: 'AdminLogin',
-      component: AdminLogin,
-      meta: { requireAuth: true },
-    },
-    {
-      path: '/UpdateTime',
-      name: 'UpdateTime',
-      component: UpdateTime,
-      meta: { requireAuth: true },
+      path: '/AdminCrawl',
+      name: 'AdminCrawl',
+      component: AdminCrawl,
+      meta: { requireAuth: false },
     }
   ]
 })
