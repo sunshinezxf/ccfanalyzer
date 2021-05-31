@@ -95,14 +95,10 @@
           team_name:''
         },
         carouselData:[
-
           {url:require('../../assets/team1.jpg'),id:1},
-
           {url:require('../../assets/team2.jpg'),id:2},
-
           {url:require('../../assets/team3.jpg'),id:3},
           {url:require('../../assets/team4.jpg'),id:4}
-
         ],
         Team:[],
         dialogFormVisible:false,
