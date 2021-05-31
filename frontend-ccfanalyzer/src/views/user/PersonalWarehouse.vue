@@ -157,6 +157,7 @@
                     <el-button type="primary" @click="SharePapers(user.token, item.paper_id, shareForm.name); dialogForm1Visible = false">Confirm</el-button>
                   </div>
                 </el-dialog>
+                <el-button type="primary" icon="el-icon-delete" @click="deletePaper(user.token, item.paper_id)" style="text-align:right"></el-button>
               </div>
             </el-card>
           </div>
@@ -167,7 +168,7 @@
 </template>
 
 <script>
-import {PaperUpload, PaperShare, PaperUpdate, PaperInfo} from '../../API/User/PersonalWarehouseAPIs'
+import {PaperUpload, PaperShare, PaperUpdate, PaperInfo,deletePaper} from '../../API/User/PersonalWarehouseAPIs'
 import lo from '../../components/Center'
 import Qs from 'qs'
 export default {
@@ -401,6 +402,22 @@ export default {
       PaperInfo(localStorage.getItem('token')).then((res) => {
         console.log(res)
         this.PaperList = res.content
+      })
+    },
+    deletePaper (token, id) {
+      this.$confirm('Are you sure to delete this article?', 'Prompt', {
+        confirmButtonText: 'Confirm',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(() => {
+        deletePaper(token, id).then((res) => {
+          console.log(res)
+          this.$message.success({
+            message: 'Update Successful',
+            center: true
+          })
+          location.reload()
+        })
       })
     }
   }
